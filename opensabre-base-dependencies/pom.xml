@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>opensabre-base-release</artifactId>
+        <groupId>io.github.opensabre</groupId>
+        <version>0.0.3</version>
+    </parent>
+
+    <artifactId>opensabre-base-dependencies</artifactId>
+    <packaging>pom</packaging>
+
+    <properties>
+        <dockerhub.repository>opensabre</dockerhub.repository>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!--  编译   -->
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <lombok.version>1.18.24</lombok.version>
+        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+        <spring-boot-maven-plugin.version>2.7.5</spring-boot-maven-plugin.version>
+        <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
+        <!--  依赖   -->
+        <common-web.version>0.0.3</common-web.version>
+        <spring.boot.version>2.7.5</spring.boot.version>
+        <spring.cloud.version>2021.0.4</spring.cloud.version>
+        <spring.cloud.alibaba.version>2021.0.4.0</spring.cloud.alibaba.version>
+        <jetcache-starter-redis.version>2.7.0</jetcache-starter-redis.version>
+        <springdoc-openapi-ui.version>1.6.12</springdoc-openapi-ui.version>
+        <mysql-connector-j.version>8.0.31</mysql-connector-j.version>
+        <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
+        <!--  测试   -->
+        <common-test.version>0.0.3</common-test.version>
+    </properties>
+
+    <!-- 依赖管理定义 -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- spring boot 依赖导入 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- spring cloud 依赖导入 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- spring cloud alibaba 依赖导入 -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring.cloud.alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- 多级缓存 local and Redis -->
+            <dependency>
+                <groupId>com.alicp.jetcache</groupId>
+                <artifactId>jetcache-starter-redis-lettuce</artifactId>
+                <version>${jetcache-starter-redis.version}</version>
+            </dependency>
+            <!--数据库-->
+            <dependency>
+                <groupId>com.mysql</groupId>
+                <artifactId>mysql-connector-j</artifactId>
+                <version>${mysql-connector-j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${javax.servlet-api.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <!--springdoc - restfull API文档-->
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${springdoc-openapi-ui.version}</version>
+            </dependency>
+            <!--opensabre 常用web组件-->
+            <dependency>
+                <groupId>io.github.opensabre</groupId>
+                <artifactId>common-web</artifactId>
+                <version>${common-web.version}</version>
+            </dependency>
+            <!--使用 lombok 简化 Java 代码-->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.github.opensabre</groupId>
+                <artifactId>common-test</artifactId>
+                <version>${common-test.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <!--依赖插件版本定义-->
+        <pluginManagement>
+            <plugins>
+                <!--springboot官方构建插件，可构建docker image-->
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot-maven-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>build-info</goal>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!--docker镜像构建-->
+                <plugin>
+                    <groupId>com.spotify</groupId>
+                    <artifactId>dockerfile-maven-plugin</artifactId>
+                    <version>${dockerfile-maven-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>default</id>
+                            <goals>
+                                <goal>build</goal>
+                                <goal>push</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <repository>${dockerhub.repository}/${project.name}</repository>
+                        <tag>${project.version}</tag>
+                        <buildArgs>
+                            <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                        </buildArgs>
+                        <dockerfile>src/main/docker/Dockerfile</dockerfile>
+                    </configuration>
+                </plugin>
+                <!--测试案例-->
+                <plugin>
+                    <!-- JUnit 5 requires Surefire version 2.22.0 or higher -->
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>
