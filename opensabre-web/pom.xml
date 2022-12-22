@@ -6,7 +6,7 @@
     <parent>
         <artifactId>opensabre-base-release</artifactId>
         <groupId>io.github.opensabre</groupId>
-        <version>0.0.4</version>
+        <version>0.0.5</version>
     </parent>
 
     <artifactId>opensabre-web</artifactId>
@@ -57,7 +57,7 @@
             <dependency>
                 <groupId>io.github.opensabre</groupId>
                 <artifactId>opensabre-base-dependencies</artifactId>
-                <version>0.0.4</version>
+                <version>0.0.5</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

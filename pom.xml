@@ -7,7 +7,7 @@
     <groupId>io.github.opensabre</groupId>
     <artifactId>opensabre-base-release</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
 
     <modules>
         <module>opensabre-base-dependencies</module>
