@@ -31,7 +31,7 @@ public class Result<T> {
     public Result() {
         this.code = SUCCESSFUL_CODE;
         this.mesg = SUCCESSFUL_MESG;
-        this.time = ZonedDateTime.now().toInstant();
+        this.time = Instant.now();
     }
 
     /**
@@ -40,7 +40,7 @@ public class Result<T> {
     public Result(ErrorType errorType) {
         this.code = errorType.getCode();
         this.mesg = errorType.getMesg();
-        this.time = ZonedDateTime.now().toInstant();
+        this.time = Instant.now();
     }
 
     /**
