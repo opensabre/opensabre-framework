@@ -7,7 +7,7 @@
     <parent>
         <artifactId>opensabre-base-release</artifactId>
         <groupId>io.github.opensabre</groupId>
-        <version>0.0.3</version>
+        <version>0.0.4</version>
     </parent>
 
     <artifactId>opensabre-base-dependencies</artifactId>
@@ -21,7 +21,6 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <lombok.version>1.18.24</lombok.version>
-        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
         <spring-boot-maven-plugin.version>2.7.5</spring-boot-maven-plugin.version>
         <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
         <!--  依赖   -->
@@ -33,8 +32,22 @@
         <springdoc-openapi-ui.version>1.6.12</springdoc-openapi-ui.version>
         <mysql-connector-j.version>8.0.31</mysql-connector-j.version>
         <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
+        <mybatis-plus-boot-starter.version>3.5.2</mybatis-plus-boot-starter.version>
+        <mybatis-spring.version>2.0.7</mybatis-spring.version>
+        <common-core.version>0.0.3</common-core.version>
+        <commons-pool2.version>2.11.1</commons-pool2.version>
+        <commons-lang3.version>3.12.0</commons-lang3.version>
+        <jackson-databind.version>2.13.4.2</jackson-databind.version>
+        <spring-webmvc.version>5.3.23</spring-webmvc.version>
+        <mybatis-spring.version>2.0.7</mybatis-spring.version>
+        <mybatis-plus-boot-starter.version>3.5.2</mybatis-plus-boot-starter.version>
+        <spring-boot-starter-data-redis.version>2.7.5</spring-boot-starter-data-redis.version>
+        <feign-interceptors>1.1.2</feign-interceptors>
         <!--  测试   -->
         <common-test.version>0.0.3</common-test.version>
+        <junit-jupiter.version>5.9.1</junit-jupiter.version>
+        <spring-test.version>5.3.23</spring-test.version>
+        <spring-boot-starter-test.version>2.7.5</spring-boot-starter-test.version>
     </properties>
 
     <!-- 依赖管理定义 -->
@@ -83,6 +96,12 @@
                 <version>${javax.servlet-api.version}</version>
                 <scope>provided</scope>
             </dependency>
+            <!--  负载组件 -->
+            <dependency>
+                <groupId>no.ks.fiks</groupId>
+                <artifactId>feign-interceptors</artifactId>
+                <version>${feign-interceptors}</version>
+            </dependency>
             <!--springdoc - restfull API文档-->
             <dependency>
                 <groupId>org.springdoc</groupId>
@@ -106,6 +125,16 @@
                 <groupId>io.github.opensabre</groupId>
                 <artifactId>common-test</artifactId>
                 <version>${common-test.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus-boot-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-spring</artifactId>
+                <version>${mybatis-spring.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
