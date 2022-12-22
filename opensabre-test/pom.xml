@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>opensabre-base-release</artifactId>
+        <groupId>io.github.opensabre</groupId>
+        <version>0.0.4</version>
+    </parent>
+
+    <artifactId>opensabre-test</artifactId>
+    <packaging>jar</packaging>
+
+    <name>opensabre-test</name>
+    <url>https://github.com/opensabre/</url>
+    <description>Opensabre Test project for Spring Boot</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- 编译 -->
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <maven-source-plugin.version>3.1.0</maven-source-plugin.version>
+        <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
+        <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+        <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
+        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+        <!-- 测试 -->
+        <junit-jupiter.version>5.9.1</junit-jupiter.version>
+        <!-- 依赖 -->
+        <common-core.version>0.0.3</common-core.version>
+        <spring-core.version>5.3.23</spring-core.version>
+    </properties>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>zhoutaoo</name>
+            <email>zhoutaoo@foxmail.com</email>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>+8</timezone>
+        </developer>
+    </developers>
+
+    <scm>
+        <tag>opensabre-test</tag>
+        <url>https://github.com/opensabre/opensabre-base-release/opensabre-test</url>
+        <connection>scm:git:https://github.com/opensabre/opensabre-base-release.git</connection>
+        <developerConnection>scm:git:https://github.com/opensabre/opensabre-base-release.git</developerConnection>
+    </scm>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.github.opensabre</groupId>
+                <artifactId>opensabre-base-dependencies</artifactId>
+                <version>0.0.3</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.github.opensabre</groupId>
+            <artifactId>common-core</artifactId>
+            <version>${common-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+        <!--junit单元测试-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>
