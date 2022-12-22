@@ -24,7 +24,6 @@
         <maven.compiler.target>11</maven.compiler.target>
         <!--   测试     -->
         <!--   依赖     -->
-        <common-core.version>0.0.3</common-core.version>
     </properties>
 
     <licenses>
@@ -65,10 +64,10 @@
     </dependencyManagement>
 
     <dependencies>
+        <!--Swagger - RESTful API文档-->
         <dependency>
-            <groupId>io.github.opensabre</groupId>
-            <artifactId>common-core</artifactId>
-            <version>${common-core.version}</version>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
         </dependency>
         <!--使用 lombok 简化 Java 代码-->
         <dependency>
@@ -80,10 +79,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
         </dependency>
         <!--mybatis plus依赖包-->
         <dependency>
@@ -99,6 +94,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
+        <!--常用工具包-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
@@ -107,10 +103,25 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <!--常用json包-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
         <dependency>
             <groupId>no.ks.fiks</groupId>
             <artifactId>feign-interceptors</artifactId>
         </dependency>
+        <!--表单校验-->
         <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
@@ -121,6 +132,7 @@
             <artifactId>javax.servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
+
         <!--测试框架-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

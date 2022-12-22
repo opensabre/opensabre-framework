@@ -27,7 +27,6 @@
         <common-core.version>0.0.3</common-core.version>
     </properties>
 
-
     <scm>
         <tag>opensabre-test</tag>
         <url>https://github.com/opensabre/opensabre-base-release/opensabre-test</url>

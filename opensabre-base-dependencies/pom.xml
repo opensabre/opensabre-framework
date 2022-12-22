@@ -39,10 +39,11 @@
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <jackson-databind.version>2.13.4.2</jackson-databind.version>
         <spring-webmvc.version>5.3.23</spring-webmvc.version>
-        <mybatis-spring.version>2.0.7</mybatis-spring.version>
-        <mybatis-plus-boot-starter.version>3.5.2</mybatis-plus-boot-starter.version>
         <spring-boot-starter-data-redis.version>2.7.5</spring-boot-starter-data-redis.version>
         <feign-interceptors>1.1.2</feign-interceptors>
+        <guava.version>31.1-jre</guava.version>
+        <swagger-annotations.version>2.2.4</swagger-annotations.version>
+        <jackson-annotations.version>2.13.4</jackson-annotations.version>
         <!--  测试   -->
         <common-test.version>0.0.3</common-test.version>
         <junit-jupiter.version>5.9.1</junit-jupiter.version>
@@ -145,6 +146,18 @@
                 <groupId>org.mybatis</groupId>
                 <artifactId>mybatis-spring</artifactId>
                 <version>${mybatis-spring.version}</version>
+            </dependency>
+            <!--Swagger - RESTful API文档-->
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swagger-annotations.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
