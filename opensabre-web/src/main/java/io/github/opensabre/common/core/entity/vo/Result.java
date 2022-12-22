@@ -8,8 +8,7 @@ import io.github.opensabre.common.core.exception.SystemErrorType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
-import java.time.Instant;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @Schema(description = "rest请求的返回模型，所有rest正常都返回该类的对象")
 @Getter
@@ -23,7 +22,7 @@ public class Result<T> {
     @Schema(title = "处理结果描述信息")
     private final String mesg;
     @Schema(title = "请求结果生成时间戳", required = true)
-    private final Instant time;
+    private final LocalDateTime time;
     @Schema(title = "处理结果数据信息", required = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
@@ -31,7 +30,7 @@ public class Result<T> {
     public Result() {
         this.code = SUCCESSFUL_CODE;
         this.mesg = SUCCESSFUL_MESG;
-        this.time = Instant.now();
+        this.time = LocalDateTime.now();
     }
 
     /**
@@ -40,7 +39,7 @@ public class Result<T> {
     public Result(ErrorType errorType) {
         this.code = errorType.getCode();
         this.mesg = errorType.getMesg();
-        this.time = Instant.now();
+        this.time = LocalDateTime.now();
     }
 
     /**
@@ -63,7 +62,7 @@ public class Result<T> {
         this.code = code;
         this.mesg = mesg;
         this.data = data;
-        this.time = ZonedDateTime.now().toInstant();
+        this.time = LocalDateTime.now();
     }
 
     /**
