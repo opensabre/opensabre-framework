@@ -12,6 +12,12 @@
     <modules>
         <module>opensabre-base-dependencies</module>
         <module>opensabre-base-starter</module>
+        <module>opensabre-boot-starter</module>
+        <module>opensabre-cache-starter</module>
+        <module>opensabre-config-starter</module>
+        <module>opensabre-register-starter</module>
+        <module>opensabre-rpc-starter</module>
+        <module>opensabre-persistence-starter</module>
         <module>opensabre-test</module>
         <module>opensabre-web</module>
     </modules>
