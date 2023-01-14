@@ -1,0 +1,2 @@
+io.github.opensabre.persistence.config.MybatisConfig
+io.github.opensabre.persistence.config.MyMetaObjectHandler

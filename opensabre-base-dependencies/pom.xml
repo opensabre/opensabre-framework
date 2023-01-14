@@ -28,24 +28,23 @@
         <spring.boot.version>2.7.5</spring.boot.version>
         <spring.cloud.version>2021.0.4</spring.cloud.version>
         <spring.cloud.alibaba.version>2021.0.4.0</spring.cloud.alibaba.version>
+        <spring-boot-starter-data-redis.version>2.7.5</spring-boot-starter-data-redis.version>
         <jetcache-starter-redis.version>2.7.0</jetcache-starter-redis.version>
         <springdoc-openapi-ui.version>1.6.12</springdoc-openapi-ui.version>
+        <swagger-annotations.version>2.2.4</swagger-annotations.version>
         <mysql-connector-j.version>8.0.31</mysql-connector-j.version>
         <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
         <mybatis-plus-boot-starter.version>3.5.2</mybatis-plus-boot-starter.version>
         <mybatis-spring.version>2.0.7</mybatis-spring.version>
-        <common-core.version>0.0.3</common-core.version>
         <commons-pool2.version>2.11.1</commons-pool2.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
-        <jackson-databind.version>2.13.4.2</jackson-databind.version>
         <spring-webmvc.version>5.3.23</spring-webmvc.version>
-        <spring-boot-starter-data-redis.version>2.7.5</spring-boot-starter-data-redis.version>
         <feign-interceptors>1.1.2</feign-interceptors>
         <guava.version>31.1-jre</guava.version>
-        <swagger-annotations.version>2.2.4</swagger-annotations.version>
+        <jackson-databind.version>2.13.4.2</jackson-databind.version>
         <jackson-annotations.version>2.13.4</jackson-annotations.version>
         <!--  测试   -->
-        <common-test.version>0.0.3</common-test.version>
+        <opensabre-test.version>0.0.5</opensabre-test.version>
         <junit-jupiter.version>5.9.1</junit-jupiter.version>
         <spring-test.version>5.3.23</spring-test.version>
         <spring-boot-starter-test.version>2.7.5</spring-boot-starter-test.version>
@@ -132,14 +131,15 @@
                 <version>${lombok.version}</version>
                 <scope>compile</scope>
             </dependency>
-            <dependency>
-                <groupId>io.github.opensabre</groupId>
-                <artifactId>common-test</artifactId>
-                <version>${common-test.version}</version>
-            </dependency>
+            <!--持久化数据库-->
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus-boot-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-extension</artifactId>
                 <version>${mybatis-plus-boot-starter.version}</version>
             </dependency>
             <dependency>
@@ -147,7 +147,7 @@
                 <artifactId>mybatis-spring</artifactId>
                 <version>${mybatis-spring.version}</version>
             </dependency>
-            <!--Swagger - RESTful API文档-->
+            <!--Swagger - RESTFULL API文档-->
             <dependency>
                 <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-annotations</artifactId>
@@ -158,6 +158,12 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+            </dependency>
+            <!--opensabre测试组件-->
+            <dependency>
+                <groupId>io.github.opensabre</groupId>
+                <artifactId>opensabre-test</artifactId>
+                <version>{opensabre-test.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

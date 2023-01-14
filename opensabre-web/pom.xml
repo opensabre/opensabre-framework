@@ -29,7 +29,7 @@
     <licenses>
         <license>
             <name>The Apache License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
 
@@ -64,7 +64,7 @@
     </dependencyManagement>
 
     <dependencies>
-        <!--Swagger - RESTful API文档-->
+        <!--Swagger - RESTFULL API文档-->
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-annotations</artifactId>
