@@ -24,7 +24,7 @@
         <spring-boot-maven-plugin.version>2.7.5</spring-boot-maven-plugin.version>
         <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
         <!--  依赖   -->
-        <common-web.version>0.0.4</common-web.version>
+        <opensabre-web.version>0.0.5</opensabre-web.version>
         <spring.boot.version>2.7.5</spring.boot.version>
         <spring.cloud.version>2021.0.4</spring.cloud.version>
         <spring.cloud.alibaba.version>2021.0.4.0</spring.cloud.alibaba.version>
@@ -122,8 +122,8 @@
             <!--opensabre 常用web组件-->
             <dependency>
                 <groupId>io.github.opensabre</groupId>
-                <artifactId>common-web</artifactId>
-                <version>${common-web.version}</version>
+                <artifactId>opensabre-web</artifactId>
+                <version>${opensabre-web.version}</version>
             </dependency>
             <!--使用 lombok 简化 Java 代码-->
             <dependency>
