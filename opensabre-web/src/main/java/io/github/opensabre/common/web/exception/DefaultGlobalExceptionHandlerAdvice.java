@@ -4,7 +4,6 @@ import io.github.opensabre.common.core.entity.vo.Result;
 import io.github.opensabre.common.core.exception.BaseException;
 import io.github.opensabre.common.core.exception.SystemErrorType;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -35,29 +34,16 @@ public class DefaultGlobalExceptionHandlerAdvice {
         return Result.fail(SystemErrorType.ARGUMENT_NOT_VALID, ex.getBindingResult().getFieldError().getDefaultMessage());
     }
 
-    @ExceptionHandler(value = {DuplicateKeyException.class})
-    public Result duplicateKeyException(DuplicateKeyException ex) {
-        log.error("primary key duplication exception:{}", ex.getMessage());
-        return Result.fail(SystemErrorType.DUPLICATE_PRIMARY_KEY);
-    }
-
     @ExceptionHandler(value = {BaseException.class})
     public Result baseException(BaseException ex) {
         log.error("base exception:{}", ex.getMessage());
         return Result.fail(ex.getErrorType());
     }
 
-    @ExceptionHandler(value = {Exception.class})
+    @ExceptionHandler(value = {Exception.class, Throwable.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Result exception(Exception ex) {
-        log.error("base exception:{}", ex.getMessage());
-        return Result.fail();
-    }
-
-    @ExceptionHandler(value = {Throwable.class})
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Result throwable(Throwable throwable) {
-        log.error("base exception:{}", throwable.getMessage());
+    public Result exception(Throwable ex) {
+        log.error("exception:{}", ex.getMessage());
         return Result.fail();
     }
 }

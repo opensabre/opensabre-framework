@@ -17,6 +17,7 @@
         <module>opensabre-config-starter</module>
         <module>opensabre-register-starter</module>
         <module>opensabre-rpc-starter</module>
+        <module>opensabre-eda-starter</module>
         <module>opensabre-persistence-starter</module>
         <module>opensabre-test</module>
         <module>opensabre-web</module>

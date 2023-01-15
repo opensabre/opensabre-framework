@@ -1,7 +1,8 @@
 package io.github.opensabre.common.web.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.opensabre.common.core.entity.vo.Result;
-import org.jetbrains.annotations.NotNull;
+import lombok.SneakyThrows;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.MediaType;
@@ -11,6 +12,8 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * Rest统一返回报文封装，在rest方法返回后送给客户端前执行
@@ -25,6 +28,7 @@ public class RestResponseBodyAdvice implements ResponseBodyAdvice<Object> {
                 returnType.hasMethodAnnotation(ResponseBody.class));
     }
 
+    @SneakyThrows
     @Override
     public Object beforeBodyWrite(Object body,
                                   @NotNull MethodParameter returnType,
@@ -35,6 +39,11 @@ public class RestResponseBodyAdvice implements ResponseBodyAdvice<Object> {
         // 提供一定的灵活度，如果body已经被包装了，就不进行包装
         if (body instanceof Result) {
             return body;
+        }
+        // 如果是String，将Result转为json string
+        if (body instanceof String) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString(Result.success(body));
         }
         return Result.success(body);
     }
