@@ -48,8 +48,6 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-extension</artifactId>
-            <!-- TODO 升级到新的方式3.5.2 -->
-            <version>3.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.mybatis</groupId>

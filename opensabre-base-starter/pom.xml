@@ -104,7 +104,7 @@
         <!--opensabre 常用web组件-->
         <dependency>
             <groupId>io.github.opensabre</groupId>
-            <artifactId>common-web</artifactId>
+            <artifactId>opensabre-web</artifactId>
         </dependency>
         <!--热加载-->
         <dependency>
