@@ -1,7 +1,12 @@
 package io.github.opensabre.common.core.entity.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.github.opensabre.common.core.exception.BaseException;
 import io.github.opensabre.common.core.exception.ErrorType;
 import io.github.opensabre.common.core.exception.SystemErrorType;
@@ -22,6 +27,9 @@ public class Result<T> {
     @Schema(title = "处理结果描述信息")
     private final String mesg;
     @Schema(title = "请求结果生成时间戳", required = true)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private final LocalDateTime time;
     @Schema(title = "处理结果数据信息", required = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)

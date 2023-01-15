@@ -2,7 +2,6 @@ package io.github.opensabre.common.web.interceptor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.opensabre.common.core.util.UserContextHolder;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -14,7 +13,6 @@ import java.util.Map;
 /**
  * 用户信息拦截器
  */
-@Slf4j
 public class UserInterceptor implements HandlerInterceptor {
     /**
      * 服务间调用token用户信息,格式为json
@@ -40,7 +38,6 @@ public class UserInterceptor implements HandlerInterceptor {
 
     private void checkToken(String token) {
         //TODO 从网关获取并校验,通过校验就可信任x-client-token-user中的信息
-        log.debug("//TODO 校验token:{}", token);
     }
 
     @Override

@@ -2,7 +2,7 @@ package io.github.opensabre.persistence.handler;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import io.github.opensabre.common.core.util.UserContextHolder;
-import io.github.opensabre.common.web.entity.po.BasePo;
+import io.github.opensabre.persistence.entity.po.BasePo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.reflection.MetaObject;
