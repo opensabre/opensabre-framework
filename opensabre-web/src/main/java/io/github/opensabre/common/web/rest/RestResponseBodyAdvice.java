@@ -1,8 +1,6 @@
 package io.github.opensabre.common.web.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.opensabre.common.core.entity.vo.Result;
-import lombok.SneakyThrows;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.MediaType;
@@ -18,17 +16,22 @@ import javax.validation.constraints.NotNull;
 /**
  * Rest统一返回报文封装，在rest方法返回后送给客户端前执行
  */
-@RestControllerAdvice
+@RestControllerAdvice(basePackages = "io.github.opensabre")
 public class RestResponseBodyAdvice implements ResponseBodyAdvice<Object> {
+
     @Override
     public boolean supports(@NotNull MethodParameter returnType,
                             @NotNull Class<? extends HttpMessageConverter<?>> converterType) {
         // 如果不需要进行封装的，可以添加一些校验手段，比如添加标记排除的注解
-        return (AnnotatedElementUtils.hasAnnotation(returnType.getContainingClass(), ResponseBody.class) ||
-                returnType.hasMethodAnnotation(ResponseBody.class));
+        boolean hasResponseBody = AnnotatedElementUtils.hasAnnotation(returnType.getContainingClass(), ResponseBody.class) ||
+                returnType.hasMethodAnnotation(ResponseBody.class);
+        // String类型不做处理，Rest方法返回String使用Result进行包装返回
+        if (returnType.getGenericParameterType().equals(String.class)) {
+            return false;
+        }
+        return hasResponseBody;
     }
 
-    @SneakyThrows
     @Override
     public Object beforeBodyWrite(Object body,
                                   @NotNull MethodParameter returnType,
@@ -39,11 +42,6 @@ public class RestResponseBodyAdvice implements ResponseBodyAdvice<Object> {
         // 提供一定的灵活度，如果body已经被包装了，就不进行包装
         if (body instanceof Result) {
             return body;
-        }
-        // 如果是String，将Result转为json string
-        if (body instanceof String) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.writeValueAsString(Result.success(body));
         }
         return Result.success(body);
     }
