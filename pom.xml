@@ -12,13 +12,13 @@
     <modules>
         <module>opensabre-base-dependencies</module>
         <module>opensabre-base-starter</module>
-        <module>opensabre-boot-starter</module>
-        <module>opensabre-cache-starter</module>
-        <module>opensabre-config-starter</module>
-        <module>opensabre-register-starter</module>
-        <module>opensabre-rpc-starter</module>
-        <module>opensabre-eda-starter</module>
-        <module>opensabre-persistence-starter</module>
+        <module>opensabre-starter-boot</module>
+        <module>opensabre-starter-cache</module>
+        <module>opensabre-starter-config</module>
+        <module>opensabre-starter-register</module>
+        <module>opensabre-starter-rpc</module>
+        <module>opensabre-starter-eda</module>
+        <module>opensabre-starter-persistence</module>
         <module>opensabre-test</module>
         <module>opensabre-web</module>
     </modules>

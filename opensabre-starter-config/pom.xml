@@ -10,7 +10,7 @@
         <version>0.0.5</version>
     </parent>
 
-    <artifactId>opensabre-register-starter</artifactId>
+    <artifactId>opensabre-starter-config</artifactId>
     <packaging>jar</packaging>
 
     <dependencyManagement>
@@ -31,10 +31,10 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
         </dependency>
-        <!--注册中心-->
+        <!--配置中心-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
     </dependencies>
 </project>
