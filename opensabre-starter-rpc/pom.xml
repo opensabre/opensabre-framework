@@ -10,7 +10,7 @@
         <version>0.0.5</version>
     </parent>
 
-    <artifactId>opensabre-cache-starter</artifactId>
+    <artifactId>opensabre-starter-rpc</artifactId>
     <packaging>jar</packaging>
 
     <dependencyManagement>
@@ -26,29 +26,35 @@
     </dependencyManagement>
 
     <dependencies>
-        <!--Redis缓存-->
+        <!--熔断降级-->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
         </dependency>
-        <!-- 多级缓存 local and Redis -->
+        <!-- 服务调用 -->
         <dependency>
-            <groupId>com.alicp.jetcache</groupId>
-            <artifactId>jetcache-starter-redis-lettuce</artifactId>
-        </dependency>
-        <!--常用json包-->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
+            <groupId>no.ks.fiks</groupId>
+            <artifactId>feign-interceptors</artifactId>
         </dependency>
-        <!--使用 lombok 简化 Java 代码-->
+        <!-- 服务调用负载 -->
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <!--web开发相关-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
