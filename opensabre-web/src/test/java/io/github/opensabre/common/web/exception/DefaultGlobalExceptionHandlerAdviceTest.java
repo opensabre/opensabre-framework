@@ -28,7 +28,8 @@ public class DefaultGlobalExceptionHandlerAdviceTest {
 
     @Test
     public void testMissingServletRequestParameterException() {
-        Result result = defaultGlobalExceptionHandlerAdvice.missingServletRequestParameterException(new MissingServletRequestParameterException("test", "string"));
+        Result result = defaultGlobalExceptionHandlerAdvice
+                .missingServletRequestParameterException(new MissingServletRequestParameterException("test", "string"));
         assertEquals(SystemErrorType.ARGUMENT_NOT_VALID.getCode(), result.getCode());
     }
 
@@ -47,7 +48,7 @@ public class DefaultGlobalExceptionHandlerAdviceTest {
         when(bindingResult.getFieldError()).thenReturn(fieldError);
         MethodArgumentNotValidException exception = new MethodArgumentNotValidException(methodParameter, bindingResult);
         //调用
-        Result result = defaultGlobalExceptionHandlerAdvice.serviceException(exception);
+        Result result = defaultGlobalExceptionHandlerAdvice.argumentInvalidException(exception);
         //验证
         assertEquals(SystemErrorType.ARGUMENT_NOT_VALID.getCode(), result.getCode());
         assertEquals("testmessage", result.getData());

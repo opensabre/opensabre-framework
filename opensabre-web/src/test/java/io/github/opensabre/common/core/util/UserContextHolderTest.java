@@ -4,7 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class UserContextHolderTest {
 
@@ -29,7 +30,7 @@ class UserContextHolderTest {
 
     @Test
     void getContextNotSet() {
-        assertNull(UserContextHolder.getInstance().getContext());
+        assertEquals(0, UserContextHolder.getInstance().getContext().size());
     }
 
     @Test
@@ -46,6 +47,6 @@ class UserContextHolderTest {
         map.put(UserContextHolder.getInstance().KEY_USERNAME, "zhangsan");
         UserContextHolder.getInstance().setContext(map);
         UserContextHolder.getInstance().clear();
-        assertNull(UserContextHolder.getInstance().getContext());
+        assertEquals(0, UserContextHolder.getInstance().getContext().size());
     }
 }
