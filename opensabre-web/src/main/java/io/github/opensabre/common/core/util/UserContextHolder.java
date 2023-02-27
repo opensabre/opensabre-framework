@@ -50,7 +50,7 @@ public class UserContextHolder {
      * @return
      */
     public Map<String, String> getContext() {
-        return threadLocal.get();
+        return Optional.ofNullable(threadLocal.get()).orElse(Maps.newHashMap());
     }
 
     /**
