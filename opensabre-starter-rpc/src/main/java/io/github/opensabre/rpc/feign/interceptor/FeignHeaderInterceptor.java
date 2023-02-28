@@ -30,7 +30,7 @@ public class FeignHeaderInterceptor implements RequestInterceptor {
     /**
      * 获取 request 中的所有的 header 值
      *
-     * @return Map<String, String> header map
+     * @return header map
      */
     private Map<String, String> getHeaders() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
