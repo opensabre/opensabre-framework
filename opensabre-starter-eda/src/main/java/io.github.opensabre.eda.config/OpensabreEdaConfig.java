@@ -15,6 +15,8 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
 
 /**
+ * 消息中心配置类
+ *
  * @author zhoutaoo
  */
 @Slf4j
