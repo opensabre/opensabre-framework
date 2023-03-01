@@ -14,6 +14,9 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
 
+/**
+ * @author zhoutaoo
+ */
 @Slf4j
 @AutoConfiguration
 public class OpensabreEdaConfig {

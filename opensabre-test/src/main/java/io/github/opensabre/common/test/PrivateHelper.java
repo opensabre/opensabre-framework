@@ -5,6 +5,11 @@ import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+/**
+ * 测试工具类，辅助测试使用
+ *
+ * @author zhoutaoo
+ */
 public class PrivateHelper {
 
     private PrivateHelper() {
@@ -67,7 +72,7 @@ public class PrivateHelper {
      *
      * @param instance 实例对象
      * @param method   方法对象
-     * @param args 实例的参数
+     * @param args     实例的参数
      * @return 对象
      */
     public Object invokePrivateMethod(Object instance, Method method, Object... args) {

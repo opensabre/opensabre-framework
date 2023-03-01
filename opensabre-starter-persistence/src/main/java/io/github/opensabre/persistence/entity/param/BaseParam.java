@@ -8,6 +8,7 @@ import java.util.Date;
 
 /**
  * Created by zhoutaoo on 2018/6/1.
+ * @author zhoutaoo
  */
 @Data
 public class BaseParam<T extends BasePo> {
