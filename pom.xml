@@ -17,8 +17,8 @@
         <module>opensabre-starter-config</module>
         <module>opensabre-starter-register</module>
         <module>opensabre-starter-rpc</module>
-        <module>opensabre-starter-eda</module>
         <module>opensabre-starter-persistence</module>
+        <module>opensabre-starter-eda</module>
         <module>opensabre-test</module>
         <module>opensabre-web</module>
     </modules>
@@ -59,7 +59,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <maven-source-plugin.version>3.1.0</maven-source-plugin.version>
-        <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
