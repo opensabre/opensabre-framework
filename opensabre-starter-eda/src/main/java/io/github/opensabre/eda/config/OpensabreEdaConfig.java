@@ -27,6 +27,11 @@ public class OpensabreEdaConfig {
     public static final String EXCHANGE_NAME = "exchange-opensabre";
     public static final String ROUTING_KEY = "routing-organization";
 
+    /**
+     * test
+     *
+     * @return Queue
+     */
     @Bean
     Queue queue() {
         log.info("queue name:{}", QUEUE_NAME);
