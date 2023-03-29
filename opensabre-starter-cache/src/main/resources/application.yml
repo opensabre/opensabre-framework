@@ -1,11 +1,4 @@
 spring:
-  redis:
-    host: ${REDIS_HOST:localhost}
-    port: ${REDIS_PORT:6379}
-    lettuce:
-      pool:
-        max-active: 300
-    #password: ${REDIS_PASSWORD:123456}
   jackson:
     time-zone: GMT+8
 
@@ -17,19 +10,19 @@ jetcache:
     # 默认5分钟本地缓存
     default:
       type: caffeine
-      keyConvertor: fastjson
+      keyConvertor: jackson
       expireAfterWriteInMillis: 300000
       expireAfterAccessInMillis: 180000
     # 長時本地緩存1小时，主要用于要求时效一般
     longTime:
       type: caffeine
-      keyConvertor: fastjson
+      keyConvertor: jackson
       expireAfterWriteInMillis: 3600000
       expireAfterAccessInMillis: 1800000
     # 短時本地緩存1分钟，主要用于要求时效较高的配置
     shortTime:
       type: caffeine
-      keyConvertor: fastjson
+      keyConvertor: jackson
       expireAfterWriteInMillis: 60000
       expireAfterAccessInMillis: 40000
   remote:
@@ -37,7 +30,7 @@ jetcache:
     default:
       type: redis.lettuce
       expireAfterWriteInMillis: 7200000
-      keyConvertor: fastjson
+      keyConvertor: jackson
       valueEncoder: java
       valueDecoder: java
       poolConfig:
@@ -49,7 +42,7 @@ jetcache:
     longTime:
       type: redis.lettuce
       expireAfterWriteInMillis: 43200000
-      keyConvertor: fastjson
+      keyConvertor: jackson
       valueEncoder: java
       valueDecoder: java
       poolConfig:
@@ -61,7 +54,7 @@ jetcache:
     shortTime:
       type: redis.lettuce
       expireAfterWriteInMillis: 300000
-      keyConvertor: fastjson
+      keyConvertor: jackson
       valueEncoder: java
       valueDecoder: java
       poolConfig:
