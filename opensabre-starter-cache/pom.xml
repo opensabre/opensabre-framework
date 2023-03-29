@@ -26,11 +26,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <!--Redis缓存-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
         <!-- 多级缓存 local and Redis -->
         <dependency>
             <groupId>com.alicp.jetcache</groupId>
