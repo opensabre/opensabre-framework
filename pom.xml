@@ -197,6 +197,22 @@
                         <autoReleaseAfterClose>false</autoReleaseAfterClose>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                            </manifest>
+                            <manifestEntries>
+                                <url>${project.url}</url>
+                                <build-time>${maven.build.timestamp}</build-time>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>

@@ -1,11 +1,13 @@
 ${AnsiColor.BRIGHT_YELLOW}${AnsiStyle.BOLD}
-  ___  _ __   ___ _ __  ___  __ _| |__  _ __ ___ 
- / _ \| '_ \ / _ \ '_ \/ __|/ _` | '_ \| '__/ _ \
-| (_) | |_) |  __/ | | \__ \ (_| | |_) | | |  __/
- \___/| .__/ \___|_| |_|___/\__,_|_.__/|_|  \___|
-      |_|
+   ___                                         _
+  / _ \   _ __     ___   _ __    ___    __ _  | |__    _ __    ___
+ | | | | | '_ \   / _ \ | '_ \  / __|  / _` | | '_ \  | '__|  / _ \
+ | |_| | | |_) | |  __/ | | | | \__ \ | (_| | | |_) | | |    |  __/
+  \___/  | .__/   \___| |_| |_| |___/  \__,_| |_.__/  |_|     \___|
+         |_|
 ${AnsiColor.CYAN}${AnsiStyle.BOLD}
-::  Java                 ::  (v${java.version})
-::  Spring Boot          ::  (v${spring-boot.version})
-::  Opensabre            ::  (v${application.title})
+::  Java                 ::   (v${java.version})
+::  Spring Boot          ::  ${spring-boot.formatted-version}
+::  Opensabre            ::  ${opensabre.formatted-version}
+::  Application          ::  ${application.formatted-version}
 ${AnsiStyle.NORMAL}
