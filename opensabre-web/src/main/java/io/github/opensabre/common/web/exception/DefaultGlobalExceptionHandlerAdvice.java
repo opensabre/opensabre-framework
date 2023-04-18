@@ -6,6 +6,7 @@ import io.github.opensabre.common.core.exception.SystemErrorType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -39,6 +40,12 @@ public class DefaultGlobalExceptionHandlerAdvice {
     public Result uploadFileLimitException(MultipartException ex) {
         log.error("upload file size limit:{}", ex.getMessage());
         return Result.fail(SystemErrorType.UPLOAD_FILE_SIZE_LIMIT);
+    }
+
+    @ExceptionHandler(value = {HttpRequestMethodNotSupportedException.class})
+    public Result notSupportedMethodException(HttpRequestMethodNotSupportedException ex) {
+        log.error(ex.getMessage());
+        return Result.fail(SystemErrorType.METHOD_NOT_SUPPORTED);
     }
 
     @ExceptionHandler(value = {BaseException.class})
