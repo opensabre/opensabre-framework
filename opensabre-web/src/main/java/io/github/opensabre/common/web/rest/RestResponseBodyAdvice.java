@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
 /**
  * Rest统一返回报文封装，在rest方法返回后送给客户端前执行
  */
-@RestControllerAdvice(basePackages = "io.github.opensabre")
+@RestControllerAdvice(basePackages = "${project.groupId}")
 public class RestResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
     @Override
