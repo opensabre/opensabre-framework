@@ -50,7 +50,7 @@ public class DefaultGlobalExceptionHandlerAdvice {
     @ExceptionHandler(value = {Exception.class, Throwable.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Result exception(Throwable ex) {
-        log.error("exception:{}", ex.getMessage());
+        log.error("exception: ", ex);
         return Result.fail();
     }
 }

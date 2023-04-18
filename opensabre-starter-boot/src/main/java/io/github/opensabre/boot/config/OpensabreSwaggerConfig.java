@@ -14,7 +14,7 @@ public class OpensabreSwaggerConfig {
     public OpenAPI openAPI() {
         return new OpenAPI()
                 .info(new Info().title("Opensabre API")
-                        .description("Opensabre organization API")
+                        .description("Opensabre rest API")
                         .version("v0.0.1")
                         .license(new License().name("Apache 2.0").url("https://github.com/opensabre/opensabre-framework")))
                 .externalDocs(new ExternalDocumentation()
