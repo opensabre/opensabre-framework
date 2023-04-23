@@ -8,5 +8,4 @@ import org.springframework.context.annotation.Import;
 @AutoConfiguration
 @Import({DefaultGlobalExceptionHandlerAdvice.class, RestResponseBodyAdvice.class})
 public class OpensabreBootConfig {
-
 }
