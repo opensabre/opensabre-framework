@@ -38,6 +38,7 @@
         <mybatis-spring.version>2.0.7</mybatis-spring.version>
         <commons-pool2.version>2.11.1</commons-pool2.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
+        <hutool.version>5.8.18</hutool.version>
         <spring-webmvc.version>5.3.23</spring-webmvc.version>
         <feign-interceptors>1.1.2</feign-interceptors>
         <guava.version>31.1-jre</guava.version>
@@ -77,7 +78,14 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
+            <!-- hutool工具 -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-bom</artifactId>
+                <version>${hutool.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <!-- 多级缓存 local and Redis -->
             <dependency>
                 <groupId>com.alicp.jetcache</groupId>

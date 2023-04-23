@@ -1,5 +1,6 @@
 package io.github.opensabre.common.core.entity.vo;
 
+import cn.hutool.core.date.DatePattern;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -27,7 +28,7 @@ public class Result<T> {
     @Schema(title = "处理结果描述信息")
     private final String mesg;
     @Schema(title = "请求结果生成时间戳", required = true)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    @JsonFormat(pattern = DatePattern.UTC_PATTERN)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private final LocalDateTime time;
