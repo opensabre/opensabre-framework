@@ -16,14 +16,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 @Constraint(validatedBy = EnumStringValidator.class)//标明由哪个类执行校验逻辑
 public @interface EnumString {
-    String message() default "value not in enum values.";
+    String message() default "类型只能为 value 列表内的值";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
 
     /**
-     * @return date must in this value array
+     * @return data must in this value array
      */
     String[] value();
 
