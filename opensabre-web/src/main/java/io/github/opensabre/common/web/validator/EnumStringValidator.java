@@ -1,5 +1,7 @@
 package io.github.opensabre.common.web.validator;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Arrays;
@@ -15,9 +17,9 @@ public class EnumStringValidator implements ConstraintValidator<EnumString, Stri
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if (value == null) {
+        //值为空时不校验
+        if (StringUtils.isBlank(value))
             return true;
-        }
         return enumStringList.contains(value);
     }
 }
