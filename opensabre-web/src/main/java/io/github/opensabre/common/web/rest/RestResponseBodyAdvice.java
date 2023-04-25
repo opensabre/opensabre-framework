@@ -3,6 +3,8 @@ package io.github.opensabre.common.web.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.opensabre.common.core.entity.vo.Result;
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.MediaType;
@@ -19,18 +21,33 @@ import javax.validation.constraints.NotNull;
 /**
  * Rest统一返回报文封装，在rest方法返回后送给客户端前执行
  */
-@RestControllerAdvice(basePackages = "${project.groupId}")
+@RestControllerAdvice
 public class RestResponseBodyAdvice implements ResponseBodyAdvice<Object> {
+
+    @Value("${opensabre.rest.result.framework.excludes}")
+    private String excludeFrameworkPackageStr;
+    @Value("${opensabre.rest.result.excludes}")
+    private String excludePackageStr;
 
     @Override
     public boolean supports(@NotNull MethodParameter returnType,
                             @NotNull Class<? extends HttpMessageConverter<?>> converterType) {
         // 如果不需要进行封装的，可以添加一些校验手段，比如添加标记排除的注解
-        boolean hasResponseBody = AnnotatedElementUtils.hasAnnotation(returnType.getContainingClass(), ResponseBody.class) ||
+        Class<?> returnTypeContainingClass = returnType.getContainingClass();
+        boolean hasResponseBody = AnnotatedElementUtils.hasAnnotation(returnTypeContainingClass, ResponseBody.class) ||
                 returnType.hasMethodAnnotation(ResponseBody.class);
-        boolean hasRestController = AnnotatedElementUtils.hasAnnotation(returnType.getContainingClass(), RestController.class) ||
+        boolean hasRestController = AnnotatedElementUtils.hasAnnotation(returnTypeContainingClass, RestController.class) ||
                 returnType.hasMethodAnnotation(RestController.class);
-        return hasResponseBody && hasRestController;
+        return hasResponseBody && hasRestController && isNeedWrap(returnTypeContainingClass.getPackageName());
+    }
+
+    /**
+     * @param packageName 包名
+     * @return 是否需要 true/false
+     */
+    private boolean isNeedWrap(String packageName) {
+        String allExcludePackageStr = StringUtils.joinWith(",", excludeFrameworkPackageStr, excludePackageStr);
+        return !StringUtils.startsWithAny(packageName, StringUtils.split(allExcludePackageStr, ","));
     }
 
     @SneakyThrows
