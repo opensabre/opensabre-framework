@@ -22,6 +22,9 @@ public class OpensabreStartedEventHandler implements ApplicationListener<Applica
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
         log.info("ApplicationReadyEvent received");
-        mappingInfoHandler.getMappingInfo().forEach(mappingInfo -> context.publishEvent(new MappingRegisteredEvent(mappingInfo)));
+        mappingInfoHandler.getMappingInfo().forEach(mappingInfo -> {
+            context.publishEvent(new MappingRegisteredEvent(mappingInfo));
+            log.info("Mapping Registered :{}", mappingInfo);
+        });
     }
 }
