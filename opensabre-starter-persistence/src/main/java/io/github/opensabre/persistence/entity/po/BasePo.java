@@ -4,13 +4,17 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import io.github.opensabre.common.web.entity.convert.EntityModelConverter;
+import io.github.opensabre.common.web.entity.vo.BaseVo;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class BasePo implements Serializable {
+@NoArgsConstructor
+public class BasePo<V extends BaseVo> implements Serializable {
     public final static String DEFAULT_USERNAME = "system";
     @TableId(type = IdType.ASSIGN_ID)
     private String id;
@@ -26,4 +30,14 @@ public class BasePo implements Serializable {
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updatedTime;
+
+    /**
+     * Po转化为Vo
+     *
+     * @param clazz Vo类
+     * @return 返回Vo
+     */
+    public V toVo(Class<V> clazz) {
+        return EntityModelConverter.getInstance().convert(this, clazz);
+    }
 }
