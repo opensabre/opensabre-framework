@@ -26,6 +26,10 @@
     </dependencyManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>io.github.opensabre</groupId>
+            <artifactId>opensabre-starter-boot</artifactId>
+        </dependency>
         <!-- 加载bootstrap.yml文件 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -35,6 +39,10 @@
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 </project>
