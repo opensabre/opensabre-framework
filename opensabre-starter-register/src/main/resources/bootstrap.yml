@@ -3,3 +3,6 @@ spring:
     nacos:
       discovery:
         server-addr: ${REGISTER_HOST:localhost}:${REGISTER_PORT:8848}
+        watch:
+          enabled: true
+        enabled: true
