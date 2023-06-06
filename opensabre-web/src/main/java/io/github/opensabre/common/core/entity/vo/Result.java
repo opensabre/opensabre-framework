@@ -126,6 +126,7 @@ public class Result<T> {
      * 系统异常类并返回结果数据
      *
      * @param data 错误数据对象
+     * @param baseException 异常对象
      * @return Result
      */
     public static Result fail(BaseException baseException, Object data) {

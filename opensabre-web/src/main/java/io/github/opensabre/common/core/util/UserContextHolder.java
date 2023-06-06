@@ -21,7 +21,7 @@ public class UserContextHolder {
     /**
      * 创建实例
      *
-     * @return
+     * @return UserContextHolder单例
      */
     public static UserContextHolder getInstance() {
         return SingletonHolder.sInstance;
@@ -47,7 +47,7 @@ public class UserContextHolder {
     /**
      * 获取上下文中的信息
      *
-     * @return
+     * @return 返回上下文map
      */
     public Map<String, String> getContext() {
         return Optional.ofNullable(threadLocal.get()).orElse(Maps.newHashMap());
@@ -56,7 +56,7 @@ public class UserContextHolder {
     /**
      * 获取上下文中的用户名
      *
-     * @return
+     * @return 操作用户的用户名
      */
     public String getUsername() {
         return Optional.ofNullable(threadLocal.get()).orElse(Maps.newHashMap()).get(KEY_USERNAME);
