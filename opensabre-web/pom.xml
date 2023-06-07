@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>opensabre-base-release</artifactId>
+        <artifactId>opensabre-framework</artifactId>
         <groupId>io.github.opensabre</groupId>
         <version>0.0.5</version>
     </parent>
@@ -46,9 +46,9 @@
 
     <scm>
         <tag>opensabre-web</tag>
-        <url>https://github.com/opensabre/opensabre-base-release/common-web</url>
-        <connection>scm:git:https://github.com/opensabre/opensabre-base-release.git</connection>
-        <developerConnection>scm:git:https://github.com/opensabre/opensabre-base-release.git</developerConnection>
+        <url>https://github.com/opensabre/opensabre-framework/opensabre-web</url>
+        <connection>scm:git:https://github.com/opensabre/opensabre-framework.git</connection>
+        <developerConnection>scm:git:https://github.com/opensabre/opensabre-framework.git</developerConnection>
     </scm>
 
     <dependencyManagement>
@@ -73,7 +73,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.opensabre</groupId>
-    <artifactId>opensabre-base-release</artifactId>
+    <artifactId>opensabre-framework</artifactId>
     <packaging>pom</packaging>
     <version>0.0.5</version>
 
@@ -22,8 +22,8 @@
         <module>opensabre-web</module>
     </modules>
 
-    <name>opensabre-base-release</name>
-    <url>https://github.com/opensabre/opensabre-base-release</url>
+    <name>opensabre-framework</name>
+    <url>https://github.com/opensabre/opensabre-framework</url>
     <description>Dependencies And Starter Project for Opensabre</description>
 
     <licenses>
@@ -46,9 +46,9 @@
 
     <scm>
         <tag>base-dependencies</tag>
-        <url>https://github.com/opensabre/opensabre-base-release</url>
-        <connection>scm:git:https://github.com/opensabre/opensabre-base-release.git</connection>
-        <developerConnection>scm:git:https://github.com/opensabre/opensabre-base-release.git</developerConnection>
+        <url>https://github.com/opensabre/opensabre-framework</url>
+        <connection>scm:git:https://github.com/opensabre/opensabre-framework.git</connection>
+        <developerConnection>scm:git:https://github.com/opensabre/opensabre-framework.git</developerConnection>
     </scm>
 
     <properties>
