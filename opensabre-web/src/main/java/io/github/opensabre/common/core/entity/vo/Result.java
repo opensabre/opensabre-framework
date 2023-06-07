@@ -16,26 +16,48 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+/**
+ * Rest统一返回数据结构
+ */
 @Schema(description = "rest请求的返回模型，所有rest正常都返回该类的对象")
 @Getter
 public class Result<T> {
-
+    /**
+     * 处理成功的常量代码
+     */
     public static final String SUCCESSFUL_CODE = "000000";
+    /**
+     * 处理成功的默认提示信息
+     */
     public static final String SUCCESSFUL_MESG = "处理成功";
-
+    /**
+     * 统一报文中code代码，标明异常类型
+     */
     @Schema(title = "处理结果code", required = true)
     private final String code;
+    /**
+     * 统一报文中提示信息
+     */
     @Schema(title = "处理结果描述信息")
     private final String mesg;
+    /**
+     * 统一报文中报文生成时间
+     */
     @Schema(title = "请求结果生成时间戳", required = true)
     @JsonFormat(pattern = DatePattern.UTC_PATTERN)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private final LocalDateTime time;
+    /**
+     * 统一报文中数据部分，支持泛型
+     */
     @Schema(title = "处理结果数据信息", required = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
 
+    /**
+     * 默认构建方法，无参时默认为成功报文
+     */
     public Result() {
         this.code = SUCCESSFUL_CODE;
         this.mesg = SUCCESSFUL_MESG;
@@ -43,6 +65,8 @@ public class Result<T> {
     }
 
     /**
+     * 通过ErrorType构建Result
+     *
      * @param errorType 错误类型
      */
     public Result(ErrorType errorType) {
@@ -52,6 +76,8 @@ public class Result<T> {
     }
 
     /**
+     * 通过ErrorType和data数据构建Result
+     *
      * @param errorType 错误类型
      * @param data      错误数据
      */
@@ -125,7 +151,7 @@ public class Result<T> {
     /**
      * 系统异常类并返回结果数据
      *
-     * @param data 错误数据对象
+     * @param data          错误数据对象
      * @param baseException 异常对象
      * @return Result
      */

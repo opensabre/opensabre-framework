@@ -8,5 +8,4 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @AutoConfiguration
 public class OpensabreWebConfiguration implements WebMvcConfigurer {
-
 }

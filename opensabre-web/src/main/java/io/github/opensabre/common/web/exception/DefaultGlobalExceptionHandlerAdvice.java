@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MultipartException;
 
+/**
+ * 默认全局异常处理类
+ */
 @Slf4j
 @RestControllerAdvice
 public class DefaultGlobalExceptionHandlerAdvice {
@@ -44,7 +47,7 @@ public class DefaultGlobalExceptionHandlerAdvice {
 
     @ExceptionHandler(value = {HttpRequestMethodNotSupportedException.class})
     public Result notSupportedMethodException(HttpRequestMethodNotSupportedException ex) {
-        log.error(ex.getMessage());
+        log.error("http request method not supported exception {}", ex.getMessage());
         return Result.fail(SystemErrorType.METHOD_NOT_SUPPORTED);
     }
 
