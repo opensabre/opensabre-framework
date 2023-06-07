@@ -13,16 +13,23 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * 获取springboot注册的Rest接口处理类
+ *
+ * @author zhoutaoo
+ */
 @Component
 public class MappingInfoHandler {
-
+    /**
+     * RequestMappingHandlerMapping类，spring web的Rest注册管理类
+     */
     @Resource
     RequestMappingHandlerMapping requestMappingHandlerMapping;
 
     /**
      * 获取spring web应用所有注册的接口服务信息
      *
-     * @return Set<RestMappingInfo>
+     * @return Set RestMappingInfo
      */
     public Set<RestMappingInfo> getMappingInfo() {
         // 拿到Handler适配器中的全部方法

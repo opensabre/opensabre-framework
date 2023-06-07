@@ -3,6 +3,10 @@ package io.github.opensabre.common.web.entity.convert;
 import lombok.SneakyThrows;
 import org.springframework.beans.BeanUtils;
 
+/**
+ * 对象转换工具类
+ * @author zhoutaoo
+ */
 public class EntityModelConverter implements EntityConverter {
     private EntityModelConverter() {
     }

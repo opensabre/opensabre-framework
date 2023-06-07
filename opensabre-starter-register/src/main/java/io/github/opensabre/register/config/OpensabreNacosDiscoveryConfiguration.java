@@ -12,12 +12,21 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 
+/**
+ * 初使化元数据，将元数据注册到注册中心
+ */
 @Slf4j
 @AutoConfiguration
 @ConditionalOnNacosDiscoveryEnabled
 @AutoConfigureBefore({NacosDiscoveryClientConfiguration.class})
 public class OpensabreNacosDiscoveryConfiguration {
-
+    /**
+     * 将Opensabre元数据注册到注册中心
+     *
+     * @param nacosServiceManager      nacos服务管理对象
+     * @param nacosDiscoveryProperties nacos服务发现配置对象
+     * @return NacosWatch
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "spring.cloud.nacos.discovery.watch.enabled", matchIfMissing = true)

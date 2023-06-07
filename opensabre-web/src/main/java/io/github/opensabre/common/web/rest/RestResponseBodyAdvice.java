@@ -23,9 +23,14 @@ import javax.validation.constraints.NotNull;
  */
 @RestControllerAdvice
 public class RestResponseBodyAdvice implements ResponseBodyAdvice<Object> {
-
+    /**
+     * 框架中不需要包装为Result对象的包名
+     */
     @Value("${opensabre.rest.result.framework.excludes}")
     private String excludeFrameworkPackageStr;
+    /**
+     * 应用中不需要包装为Result对象的包名
+     */
     @Value("${opensabre.rest.result.excludes}")
     private String excludePackageStr;
 
@@ -42,12 +47,15 @@ public class RestResponseBodyAdvice implements ResponseBodyAdvice<Object> {
     }
 
     /**
+     * 是否需要包装为Result统一报文
+     *
      * @param packageName 包名
      * @return 是否需要 true/false
      */
     private boolean isNeedWrap(String packageName) {
-        String allExcludePackageStr = StringUtils.joinWith(",", excludeFrameworkPackageStr, excludePackageStr);
-        return !StringUtils.startsWithAny(packageName, StringUtils.split(allExcludePackageStr, ","));
+        String delimiter = ",";
+        String allExcludePackageStr = StringUtils.joinWith(delimiter, excludeFrameworkPackageStr, excludePackageStr);
+        return !StringUtils.startsWithAny(packageName, StringUtils.split(allExcludePackageStr, delimiter));
     }
 
     @SneakyThrows

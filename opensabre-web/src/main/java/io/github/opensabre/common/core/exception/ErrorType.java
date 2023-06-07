@@ -1,5 +1,8 @@
 package io.github.opensabre.common.core.exception;
 
+/**
+ * 错误类型接口
+ */
 public interface ErrorType {
     /**
      * 返回code

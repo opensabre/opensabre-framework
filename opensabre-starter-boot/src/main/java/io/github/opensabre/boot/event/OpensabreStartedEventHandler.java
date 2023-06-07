@@ -9,13 +9,20 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
+/**
+ * springboot应用启动完成后，发送Rest注册事件
+ */
 @Slf4j
 @Component
 public class OpensabreStartedEventHandler implements ApplicationListener<ApplicationReadyEvent> {
-
+    /**
+     * spring上下文
+     */
     @Resource
     private ApplicationContext context;
-
+    /**
+     * Rest信息获取处对象
+     */
     @Resource
     MappingInfoHandler mappingInfoHandler;
 

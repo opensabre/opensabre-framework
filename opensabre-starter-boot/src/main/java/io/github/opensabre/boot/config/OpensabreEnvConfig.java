@@ -10,10 +10,19 @@ import org.springframework.core.env.MutablePropertySources;
 
 import java.util.HashMap;
 
+/**
+ * Opensabre环境变更初使化
+ * 将版本号初使化到环境变更中，方便应用后续扩展使用
+ */
 @Slf4j
 public class OpensabreEnvConfig implements EnvironmentPostProcessor {
-
+    /**
+     * Opensabre版本号环境变更Key
+     */
     public static final String OPENSABRE_VERSION = "opensabre.version";
+    /**
+     * Opensabre完整版本号环境变更Key
+     */
     public static final String OPENSABRE_FORMATTED_VERSION = "opensabre.formatted-version";
 
     @Override

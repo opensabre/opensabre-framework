@@ -9,11 +9,18 @@ import java.util.Optional;
  * 用户上下文
  */
 public class UserContextHolder {
-
+    /**
+     * 用户名默认key
+     */
     public final String KEY_USERNAME = "user_name";
-
+    /**
+     * 用于存储线程相关变量
+     */
     private final ThreadLocal<Map<String, String>> threadLocal;
 
+    /**
+     * 默认构造方法
+     */
     private UserContextHolder() {
         this.threadLocal = new ThreadLocal<>();
     }
@@ -32,6 +39,9 @@ public class UserContextHolder {
      * 单例初使化
      */
     private static class SingletonHolder {
+        /**
+         * 使用静态变量返回单例
+         */
         private static final UserContextHolder sInstance = new UserContextHolder();
     }
 

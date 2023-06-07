@@ -7,7 +7,13 @@ import javax.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 枚举字符串校验注解判定器
+ */
 public class EnumStringValidator implements ConstraintValidator<EnumString, String> {
+    /**
+     * 枚举字串，被校验对象，包含在内的字串
+     */
     private List<String> enumStringList;
 
     @Override

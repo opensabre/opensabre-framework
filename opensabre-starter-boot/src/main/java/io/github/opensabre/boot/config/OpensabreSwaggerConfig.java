@@ -7,9 +7,16 @@ import io.swagger.v3.oas.models.info.License;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
 
+/**
+ * Swagger配置类
+ */
 @AutoConfiguration
 public class OpensabreSwaggerConfig {
-
+    /**
+     * Swagger配置对象初使化
+     *
+     * @return OpenAPI
+     */
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
