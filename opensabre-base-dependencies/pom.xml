@@ -7,7 +7,7 @@
     <parent>
         <artifactId>opensabre-framework</artifactId>
         <groupId>io.github.opensabre</groupId>
-        <version>0.0.5</version>
+        <version>0.0.6</version>
     </parent>
 
     <artifactId>opensabre-base-dependencies</artifactId>
@@ -24,7 +24,6 @@
         <spring-boot-maven-plugin.version>2.7.5</spring-boot-maven-plugin.version>
         <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
         <!--  依赖   -->
-        <opensabre.version>0.0.5</opensabre.version>
         <spring.boot.version>2.7.5</spring.boot.version>
         <spring.cloud.version>2021.0.4</spring.cloud.version>
         <spring.cloud.alibaba.version>2021.0.4.0</spring.cloud.alibaba.version>
@@ -45,7 +44,6 @@
         <jackson-databind.version>2.13.4.2</jackson-databind.version>
         <jackson-annotations.version>2.13.4</jackson-annotations.version>
         <!--  测试   -->
-        <opensabre-test.version>0.0.5</opensabre-test.version>
         <junit-jupiter.version>5.9.1</junit-jupiter.version>
         <spring-test.version>5.3.23</spring-test.version>
         <spring-boot-starter-test.version>2.7.5</spring-boot-starter-test.version>
@@ -166,7 +164,7 @@
             <dependency>
                 <groupId>io.github.opensabre</groupId>
                 <artifactId>opensabre-test</artifactId>
-                <version>{opensabre-test.version}</version>
+                <version>{opensabre.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
