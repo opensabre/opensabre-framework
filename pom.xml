@@ -7,7 +7,7 @@
     <groupId>io.github.opensabre</groupId>
     <artifactId>opensabre-framework</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
 
     <modules>
         <module>opensabre-base-dependencies</module>
@@ -63,6 +63,7 @@
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
 
+        <opensabre.version>0.0.6</opensabre.version>
     </properties>
 
     <!--发布仓库的定义-->
