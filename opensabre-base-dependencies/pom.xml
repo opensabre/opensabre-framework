@@ -47,6 +47,7 @@
         <junit-jupiter.version>5.9.1</junit-jupiter.version>
         <spring-test.version>5.3.23</spring-test.version>
         <spring-boot-starter-test.version>2.7.5</spring-boot-starter-test.version>
+        <httpclient5.version>5.2.1</httpclient5.version>
     </properties>
 
     <!-- 依赖管理定义 -->
@@ -103,13 +104,19 @@
                 <artifactId>feign-interceptors</artifactId>
                 <version>${feign-interceptors}</version>
             </dependency>
+            <!-- 服务调用负载 -->
+            <dependency>
+                <groupId>org.apache.httpcomponents.client5</groupId>
+                <artifactId>httpclient5</artifactId>
+                <version>${httpclient5.version}</version>
+            </dependency>
             <!--springdoc - restfull API文档-->
             <dependency>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-ui</artifactId>
                 <version>${springdoc-openapi-ui.version}</version>
             </dependency>
-            <!--opensabre 常用web组件-->
+            <!--opensabre 组件-->
             <dependency>
                 <groupId>io.github.opensabre</groupId>
                 <artifactId>opensabre-web</artifactId>
@@ -118,6 +125,36 @@
             <dependency>
                 <groupId>io.github.opensabre</groupId>
                 <artifactId>opensabre-starter-boot</artifactId>
+                <version>${opensabre.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.opensabre</groupId>
+                <artifactId>opensabre-starter-register</artifactId>
+                <version>${opensabre.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.opensabre</groupId>
+                <artifactId>opensabre-starter-rpc</artifactId>
+                <version>${opensabre.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.opensabre</groupId>
+                <artifactId>opensabre-starter-config</artifactId>
+                <version>${opensabre.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.opensabre</groupId>
+                <artifactId>opensabre-starter-persistence</artifactId>
+                <version>${opensabre.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.opensabre</groupId>
+                <artifactId>opensabre-starter-cache</artifactId>
+                <version>${opensabre.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.opensabre</groupId>
+                <artifactId>opensabre-starter-eda</artifactId>
                 <version>${opensabre.version}</version>
             </dependency>
             <!--使用 lombok 简化 Java 代码-->
