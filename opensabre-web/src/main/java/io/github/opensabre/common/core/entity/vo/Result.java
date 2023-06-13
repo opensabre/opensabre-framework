@@ -44,7 +44,7 @@ public class Result<T> {
      * 统一报文中报文生成时间
      */
     @Schema(title = "请求结果生成时间戳", required = true)
-    @JsonFormat(pattern = DatePattern.UTC_PATTERN)
+    @JsonFormat(pattern = DatePattern.UTC_MS_PATTERN)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private final LocalDateTime time;
