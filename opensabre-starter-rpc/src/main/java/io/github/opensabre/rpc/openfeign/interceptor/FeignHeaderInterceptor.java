@@ -1,4 +1,4 @@
-package io.github.opensabre.rpc.feign.interceptor;
+package io.github.opensabre.rpc.openfeign.interceptor;
 
 import com.google.common.collect.Maps;
 import feign.RequestInterceptor;
