@@ -18,14 +18,17 @@ spring:
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
-
+# 优雅停机
+server:
+  shutdown: graceful
+# opensabre framework配置，统一报文排除的包名，该包下的rest不使用统一报文
 opensabre:
   rest:
     result:
       framework:
         excludes: org.springdoc
       excludes:
-
+# 日志相关
 logging:
   level:
     io.github.opensabre: info

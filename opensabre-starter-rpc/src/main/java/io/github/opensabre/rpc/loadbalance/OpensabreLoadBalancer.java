@@ -46,9 +46,9 @@ public class OpensabreLoadBalancer implements ReactorServiceInstanceLoadBalancer
     }
 
     /**
-     * @param supplier
-     * @param serviceInstances
-     * @return
+     * @param supplier         服务实例提供者
+     * @param serviceInstances 可用服务实例
+     * @return Response ServiceInstance
      */
     private Response<ServiceInstance> processInstanceResponse(ServiceInstanceListSupplier supplier,
                                                               List<ServiceInstance> serviceInstances) {
@@ -60,8 +60,8 @@ public class OpensabreLoadBalancer implements ReactorServiceInstanceLoadBalancer
     }
 
     /**
-     * @param instances
-     * @return
+     * @param instances 可用实例
+     * @return Response ServiceInstance
      */
     private Response<ServiceInstance> getInstanceResponse(List<ServiceInstance> instances) {
         if (instances.isEmpty()) {

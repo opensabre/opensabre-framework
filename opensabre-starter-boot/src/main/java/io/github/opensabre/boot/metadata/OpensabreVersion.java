@@ -1,4 +1,4 @@
-package io.github.opensabre.boot.version;
+package io.github.opensabre.boot.metadata;
 
 /**
  * 获取opensabre版本信息

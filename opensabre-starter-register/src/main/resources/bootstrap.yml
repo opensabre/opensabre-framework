@@ -6,3 +6,4 @@ spring:
         watch:
           enabled: true
         enabled: true
+        cluster-name: ${CLOUD_AZ}  # 取环境变量AZ做为集群名
