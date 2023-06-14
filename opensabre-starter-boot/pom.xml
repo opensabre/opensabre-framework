@@ -34,7 +34,7 @@
         <!--web支持 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-undertow</artifactId>
         </dependency>
         <!--opensabre 常用web组件-->
         <dependency>
