@@ -1,0 +1,16 @@
+{
+  "groups": [
+  ],
+  "properties": [
+    {
+      "name": "opensabre.rest.result.framework.excludes",
+      "type": "java.lang.String",
+      "description": "Opensabre Framework Restful Unified Response Packet Format Exclusion Package Name, Multiple Package Names Are Separated By ',' ."
+    },
+    {
+      "name": "opensabre.rest.result.excludes",
+      "type": "java.lang.String",
+      "description": "Opensabre Application Restful Unified Response Packet Format Exclusion Package Name, Multiple Package Names Are Separated By ',' ."
+    }
+  ]
+}
