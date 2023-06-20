@@ -28,7 +28,7 @@ public class DesensitizationSerialize extends JsonSerializer<String> implements 
     public void serialize(String str, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         switch (type) {
             // 自定义类型脱敏
-            case CUSTOMER:
+            case CUSTOM:
                 jsonGenerator.writeString(CharSequenceUtil.hide(str, startInclude, endExclude));
                 break;
             // userId脱敏
