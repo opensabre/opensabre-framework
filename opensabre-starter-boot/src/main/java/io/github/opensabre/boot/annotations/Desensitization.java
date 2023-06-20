@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @JsonSerialize(using = DesensitizationSerialize.class)
 public @interface Desensitization {
     /**
-     * 脱敏数据类型，只要在CUSTOMER的时候，startInclude和endExclude生效
+     * 脱敏数据类型，只有在CUSTOM的时候，startInclude和endExclude生效
      */
     DesensitizationTypeEnum type() default DesensitizationTypeEnum.CUSTOM;
 

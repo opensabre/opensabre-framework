@@ -1,5 +1,8 @@
 package io.github.opensabre.boot.security.sensitive;
 
+/**
+ * 脱敏策略枚举
+ */
 public enum DesensitizationTypeEnum {
     //自定义
     CUSTOM,
@@ -19,7 +22,7 @@ public enum DesensitizationTypeEnum {
     EMAIL,
     //密码
     PASSWORD,
-    //中国大陆车牌，包含普通车辆、新能源车辆
+    //中国大陆车牌
     CAR_LICENSE,
     //银行卡
     BANK_CARD
