@@ -15,13 +15,23 @@ import lombok.NoArgsConstructor;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * 脱敏数据处理类
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 public class DesensitizationSerialize extends JsonSerializer<String> implements ContextualSerializer {
+    /**
+     * 脱敏策略
+     */
     private DesensitizationTypeEnum type;
-
+    /**
+     * 开始掩码位置
+     */
     private Integer startInclude;
-
+    /**
+     * 掩码结束位置
+     */
     private Integer endExclude;
 
     @Override
