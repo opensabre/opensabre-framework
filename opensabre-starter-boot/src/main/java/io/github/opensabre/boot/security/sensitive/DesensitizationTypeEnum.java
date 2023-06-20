@@ -2,7 +2,7 @@ package io.github.opensabre.boot.security.sensitive;
 
 public enum DesensitizationTypeEnum {
     //自定义
-    CUSTOMER,
+    CUSTOM,
     //用户id
     USER_ID,
     //中文名

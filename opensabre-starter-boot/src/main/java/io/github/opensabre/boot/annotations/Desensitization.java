@@ -18,7 +18,7 @@ public @interface Desensitization {
     /**
      * 脱敏数据类型，只要在CUSTOMER的时候，startInclude和endExclude生效
      */
-    DesensitizationTypeEnum type() default DesensitizationTypeEnum.CUSTOMER;
+    DesensitizationTypeEnum type() default DesensitizationTypeEnum.CUSTOM;
 
     /**
      * 开始位置（包含）
