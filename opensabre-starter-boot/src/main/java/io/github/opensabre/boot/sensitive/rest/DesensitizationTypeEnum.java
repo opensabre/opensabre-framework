@@ -1,4 +1,4 @@
-package io.github.opensabre.boot.security.sensitive;
+package io.github.opensabre.boot.sensitive.rest;
 
 /**
  * 脱敏策略枚举
