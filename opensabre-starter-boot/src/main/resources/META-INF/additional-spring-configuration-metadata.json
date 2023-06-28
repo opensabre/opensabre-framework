@@ -11,6 +11,11 @@
       "name": "opensabre.rest.result.excludes",
       "type": "java.lang.String",
       "description": "Opensabre Application Restful Unified Response Packet Format Exclusion Package Name, Multiple Package Names Are Separated By ',' ."
+    },
+    {
+      "name": "opensabre.sensitive.log.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Opensabre Application Sensitive log Enabled, Default is 'true' ."
     }
   ]
 }
