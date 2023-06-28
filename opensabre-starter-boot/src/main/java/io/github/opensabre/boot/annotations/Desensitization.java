@@ -2,8 +2,8 @@ package io.github.opensabre.boot.annotations;
 
 import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.github.opensabre.boot.security.sensitive.DesensitizationSerialize;
-import io.github.opensabre.boot.security.sensitive.DesensitizationTypeEnum;
+import io.github.opensabre.boot.sensitive.rest.DesensitizationSerialize;
+import io.github.opensabre.boot.sensitive.rest.DesensitizationTypeEnum;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
