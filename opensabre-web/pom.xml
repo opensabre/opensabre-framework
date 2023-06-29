@@ -6,7 +6,7 @@
     <parent>
         <artifactId>opensabre-framework</artifactId>
         <groupId>io.github.opensabre</groupId>
-        <version>${opensabre.version}</version>
+        <version>0.0.7</version>
     </parent>
 
     <artifactId>opensabre-web</artifactId>
