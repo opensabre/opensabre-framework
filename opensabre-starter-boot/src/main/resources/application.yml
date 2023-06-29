@@ -40,4 +40,5 @@ logging:
       max-file-size: 1GB
   file:
     path: logs/
+  config: classpath:logback-opensabre.xml
 
