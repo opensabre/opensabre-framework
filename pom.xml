@@ -7,7 +7,7 @@
     <groupId>io.github.opensabre</groupId>
     <artifactId>opensabre-framework</artifactId>
     <packaging>pom</packaging>
-    <version>${opensabre.version}</version>
+    <version>${revision}</version>
 
     <modules>
         <module>opensabre-base-dependencies</module>
@@ -63,7 +63,7 @@
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
 
-        <opensabre.version>0.0.7</opensabre.version>
+        <revision>0.0.7</revision>
     </properties>
 
     <!--发布仓库的定义-->
@@ -212,6 +212,34 @@
                             </manifestEntries>
                         </archive>
                     </configuration>
+                </plugin>
+                <!--版本管理-->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>flatten-maven-plugin</artifactId>
+                    <version>1.5.0</version>
+                    <configuration>
+                        <!-- 避免IDE将 .flattened-pom.xml 自动识别为功能模块 -->
+                        <flattenedPomFilename>pom-xml-flattened</flattenedPomFilename>
+                        <updatePomFile>true</updatePomFile>
+                        <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>flatten</id>
+                            <phase>process-resources</phase>
+                            <goals>
+                                <goal>flatten</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>flatten.clean</id>
+                            <phase>clean</phase>
+                            <goals>
+                                <goal>clean</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>

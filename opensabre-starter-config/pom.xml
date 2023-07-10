@@ -7,7 +7,7 @@
     <parent>
         <artifactId>opensabre-framework</artifactId>
         <groupId>io.github.opensabre</groupId>
-        <version>${opensabre.version}</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>opensabre-starter-config</artifactId>
@@ -18,7 +18,7 @@
             <dependency>
                 <groupId>io.github.opensabre</groupId>
                 <artifactId>opensabre-base-dependencies</artifactId>
-                <version>${opensabre.version}</version>
+                <version>${revision}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
