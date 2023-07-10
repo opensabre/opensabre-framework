@@ -2,6 +2,7 @@
 data
 logs
 target/
+pom-xml-flattened
 
 ### STS ###
 .apt_generated

@@ -7,7 +7,7 @@
     <parent>
         <artifactId>opensabre-framework</artifactId>
         <groupId>io.github.opensabre</groupId>
-        <version>0.0.7</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>opensabre-base-dependencies</artifactId>
@@ -120,42 +120,42 @@
             <dependency>
                 <groupId>io.github.opensabre</groupId>
                 <artifactId>opensabre-web</artifactId>
-                <version>${opensabre.version}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.opensabre</groupId>
                 <artifactId>opensabre-starter-boot</artifactId>
-                <version>${opensabre.version}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.opensabre</groupId>
                 <artifactId>opensabre-starter-register</artifactId>
-                <version>${opensabre.version}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.opensabre</groupId>
                 <artifactId>opensabre-starter-rpc</artifactId>
-                <version>${opensabre.version}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.opensabre</groupId>
                 <artifactId>opensabre-starter-config</artifactId>
-                <version>${opensabre.version}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.opensabre</groupId>
                 <artifactId>opensabre-starter-persistence</artifactId>
-                <version>${opensabre.version}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.opensabre</groupId>
                 <artifactId>opensabre-starter-cache</artifactId>
-                <version>${opensabre.version}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.opensabre</groupId>
                 <artifactId>opensabre-starter-eda</artifactId>
-                <version>${opensabre.version}</version>
+                <version>${revision}</version>
             </dependency>
             <!--使用 lombok 简化 Java 代码-->
             <dependency>
@@ -197,11 +197,18 @@
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
             </dependency>
+            <!--junit单元测试-->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${junit-jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
             <!--opensabre测试组件-->
             <dependency>
                 <groupId>io.github.opensabre</groupId>
                 <artifactId>opensabre-test</artifactId>
-                <version>{opensabre.version}</version>
+                <version>${revision}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
