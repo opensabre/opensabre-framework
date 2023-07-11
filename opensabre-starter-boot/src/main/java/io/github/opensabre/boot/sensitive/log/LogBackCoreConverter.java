@@ -2,8 +2,8 @@ package io.github.opensabre.boot.sensitive.log;
 
 import ch.qos.logback.classic.pattern.MessageConverter;
 import ch.qos.logback.classic.spi.ILoggingEvent;
-import io.github.opensabre.boot.sensitive.log.desensitizer.DefaultLogBackDesensitizer;
-import io.github.opensabre.boot.sensitive.log.desensitizer.LogBackDesensitizer;
+import io.github.opensabre.boot.sensitive.log.strategy.DefaultDesensitizerStrategy;
+import io.github.opensabre.boot.sensitive.log.strategy.DesensitizerStrategy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;
@@ -17,16 +17,14 @@ import org.apache.commons.lang3.StringUtils;
 @EqualsAndHashCode(callSuper = true)
 public class LogBackCoreConverter extends MessageConverter {
     /**
-     * 默认的脱敏器
+     * 默认日志脱敏策略
      */
-    private LogBackDesensitizer desensitizer = new DefaultLogBackDesensitizer();
+    private DesensitizerStrategy desensitizerStrategy = new DefaultDesensitizerStrategy();
 
     @Override
     public String convert(ILoggingEvent event) {
-        String formattedMessage = event.getFormattedMessage();
-        if (StringUtils.isBlank(formattedMessage)) {
+        if (StringUtils.isBlank(event.getFormattedMessage()))
             return StringUtils.EMPTY;
-        }
-        return desensitizer.desensitize(event);
+        return desensitizerStrategy.desensitizing(event);
     }
 }
