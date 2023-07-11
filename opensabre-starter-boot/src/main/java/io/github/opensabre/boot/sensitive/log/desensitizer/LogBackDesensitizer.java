@@ -21,5 +21,5 @@ public interface LogBackDesensitizer {
      *
      * @param event 事件
      */
-    String desensitize(final ILoggingEvent event);
+    String desensitize(final ILoggingEvent event, String originStr);
 }
