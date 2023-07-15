@@ -2,6 +2,7 @@ package io.github.opensabre.boot.sensitive.log.desensitizer;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,7 +20,7 @@ public class PasswordLogBackDesensitizer extends AbstractLogBackDesensitizer {
      * secret 12345678
      * secret>12345678
      */
-    public static final Pattern passwdPattern = Pattern.compile("(password|pass|passwd|secret|key|credential|token)([\\s:=>]+)(\\S+)(.*)$", Pattern.CASE_INSENSITIVE);
+    public static final Pattern PATTERN_PASSWD = Pattern.compile("(password|pass|passwd|secret|key|credential|token)\\s*(?:(is)|[:：=<>]+)\\s*(\\S+)", Pattern.CASE_INSENSITIVE);
 
     /**
      * 判断日志内容中是否包含密码等字样
@@ -29,8 +30,7 @@ public class PasswordLogBackDesensitizer extends AbstractLogBackDesensitizer {
      */
     @Override
     public boolean support(ILoggingEvent event) {
-        Matcher matcher = passwdPattern.matcher(event.getFormattedMessage());
-        return matcher.find();
+        return PATTERN_PASSWD.matcher(event.getFormattedMessage()).find();
     }
 
     /**
@@ -42,12 +42,12 @@ public class PasswordLogBackDesensitizer extends AbstractLogBackDesensitizer {
      */
     @Override
     public String desensitizing(ILoggingEvent event, String originStr) {
-        StringBuilder buffer = new StringBuilder();
-        Matcher matcher = passwdPattern.matcher(originStr);
+        AtomicReference<String> message = new AtomicReference<>(originStr);
+        Matcher matcher = PATTERN_PASSWD.matcher(originStr);
         while (matcher.find()) {
-            String replacement = matcher.group(3).replaceAll(".", "*");
-            matcher.appendReplacement(buffer, matcher.group(1) + matcher.group(2) + replacement + matcher.group(4));
+            String passwd = matcher.group(3);
+            message.set(message.get().replaceAll(passwd, passwd.replaceAll(".", "*")));
         }
-        return buffer.toString();
+        return message.get();
     }
 }
