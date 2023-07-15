@@ -2,3 +2,4 @@ io.github.opensabre.boot.config.OpensabreSwaggerConfig
 io.github.opensabre.boot.config.OpensabreBootConfig
 io.github.opensabre.boot.config.OpensabreWebConfiguration
 io.github.opensabre.boot.config.OpensabreServiceConfig
+io.github.opensabre.boot.config.OpensabreSensitiveConfig

@@ -12,10 +12,11 @@ class PasswordLogBackDesensitizerTest {
         PasswordLogBackDesensitizer passwordLogBackDesensitizer = new PasswordLogBackDesensitizer();
         LoggingEvent loggingEvent = new LoggingEvent();
         assertEquals("password  :  *******", passwordLogBackDesensitizer.desensitizing(loggingEvent, "password  :  1234567"));
+        assertEquals("password  ：  *******", passwordLogBackDesensitizer.desensitizing(loggingEvent, "password  ：  1234567"));
         assertEquals("PASSWORD :*******", passwordLogBackDesensitizer.desensitizing(loggingEvent, "PASSWORD :1234567"));
         assertEquals("password:************", passwordLogBackDesensitizer.desensitizing(loggingEvent, "password:1qaz@WSXsdff"));
         assertEquals("password=************", passwordLogBackDesensitizer.desensitizing(loggingEvent, "password=1qaz@WSXsdff"));
-        assertEquals("password>************", passwordLogBackDesensitizer.desensitizing(loggingEvent, "password>1qaz@WSXsdff"));
+        assertEquals("password>************ , password<************", passwordLogBackDesensitizer.desensitizing(loggingEvent, "password>1qaz@WSXsdff , password<123456789012"));
         assertEquals("Password:************", passwordLogBackDesensitizer.desensitizing(loggingEvent, "Password:1qaz@WSXsdff"));
         assertEquals("PASSWORD:************", passwordLogBackDesensitizer.desensitizing(loggingEvent, "PASSWORD:1qaz@WSXsdff"));
         assertEquals("PASSWD:************", passwordLogBackDesensitizer.desensitizing(loggingEvent, "PASSWD:1qaz@WSXsdff"));
@@ -30,8 +31,12 @@ class PasswordLogBackDesensitizerTest {
         assertEquals("secret:*********", passwordLogBackDesensitizer.desensitizing(loggingEvent, "secret:12345678="));
         assertEquals("secret: *********", passwordLogBackDesensitizer.desensitizing(loggingEvent, "secret: 12345678="));
         assertEquals("Secret : *********", passwordLogBackDesensitizer.desensitizing(loggingEvent, "Secret : 12345678="));
+        assertEquals("Secret : ***********", passwordLogBackDesensitizer.desensitizing(loggingEvent, "Secret : \"12345678=\""));
+        assertEquals("Secret is *********", passwordLogBackDesensitizer.desensitizing(loggingEvent, "Secret is 12345678="));
+        assertEquals("Secret IS *********", passwordLogBackDesensitizer.desensitizing(loggingEvent, "Secret IS 12345678="));
         assertEquals("this a Secret : ********", passwordLogBackDesensitizer.desensitizing(loggingEvent, "this a Secret : 12345678"));
         assertEquals("this a Secret : ******** please change it", passwordLogBackDesensitizer.desensitizing(loggingEvent, "this a Secret : 12345678 please change it"));
         assertEquals("this a Secret : ********* please change it", passwordLogBackDesensitizer.desensitizing(loggingEvent, "this a Secret : 12345678, please change it"));
+        assertEquals("this a Secret : ********* please change it. passwd:******", passwordLogBackDesensitizer.desensitizing(loggingEvent, "this a Secret : 12345678, please change it. passwd:123456"));
     }
 }

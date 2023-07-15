@@ -18,7 +18,7 @@ public abstract class AbstractLogBackDesensitizer implements LogBackDesensitizer
     public String desensitize(ILoggingEvent event, String originStr) {
         if (support(event))
             return desensitizing(event, originStr);
-        return event.getFormattedMessage();
+        return originStr;
     }
 
     /**
