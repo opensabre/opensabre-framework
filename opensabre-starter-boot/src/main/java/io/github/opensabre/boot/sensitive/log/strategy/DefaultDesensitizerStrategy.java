@@ -6,6 +6,7 @@ import io.github.opensabre.boot.sensitive.log.desensitizer.LogBackDesensitizer;
 import io.github.opensabre.boot.sensitive.log.desensitizer.PasswordLogBackDesensitizer;
 
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 默认脱敏策略
@@ -19,11 +20,11 @@ public class DefaultDesensitizerStrategy implements DesensitizerStrategy {
 
     @Override
     public String desensitizing(ILoggingEvent event) {
-        final String[] message = {event.getFormattedMessage()};
+        AtomicReference<String> message = new AtomicReference<>(event.getFormattedMessage());
         desensitizers.forEach(desensitizer -> {
-            message[0] = desensitizer.desensitize(event, message[0]);
+            message.set(desensitizer.desensitize(event, message.get()));
         });
-        return message[0];
+        return message.get();
     }
 
     /**
