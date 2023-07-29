@@ -1,10 +1,12 @@
 package io.github.opensabre.boot.sensitive.log.desensitizer;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import cn.hutool.core.text.CharSequenceUtil;
+import io.github.opensabre.boot.sensitive.rule.DefaultSensitiveRule;
+import io.github.opensabre.boot.sensitive.rule.SensitiveRule;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 密码的脱敏器
@@ -14,13 +16,9 @@ import java.util.regex.Pattern;
  */
 public class PasswordLogBackDesensitizer extends AbstractLogBackDesensitizer {
     /**
-     * 匹配密码字样日志内容，如
-     * password:12345678
-     * secret=12345678
-     * secret 12345678
-     * secret>12345678
+     * password默认规则
      */
-    public static final Pattern PATTERN_PASSWD = Pattern.compile("(password|pass|passwd|secret|key|credential|token)\\s*(?:(is)|[:：=<>]+)\\s*(\\S+)", Pattern.CASE_INSENSITIVE);
+    private final SensitiveRule sensitiveRule = DefaultSensitiveRule.PASSWORD;
 
     /**
      * 判断日志内容中是否包含密码等字样
@@ -30,7 +28,7 @@ public class PasswordLogBackDesensitizer extends AbstractLogBackDesensitizer {
      */
     @Override
     public boolean support(ILoggingEvent event) {
-        return PATTERN_PASSWD.matcher(event.getFormattedMessage()).find();
+        return sensitiveRule.pattern().matcher(event.getFormattedMessage()).find();
     }
 
     /**
@@ -43,10 +41,11 @@ public class PasswordLogBackDesensitizer extends AbstractLogBackDesensitizer {
     @Override
     public String desensitizing(ILoggingEvent event, String originStr) {
         AtomicReference<String> message = new AtomicReference<>(originStr);
-        Matcher matcher = PATTERN_PASSWD.matcher(originStr);
+        Matcher matcher = sensitiveRule.pattern().matcher(originStr);
         while (matcher.find()) {
             String passwd = matcher.group(3);
-            message.set(message.get().replaceAll(passwd, passwd.replaceAll(".", "*")));
+            String replacement = CharSequenceUtil.replace(passwd, sensitiveRule.retainPrefixCount(), passwd.length() - sensitiveRule.retainSuffixCount(), sensitiveRule.replaceChar());
+            message.set(message.get().replaceAll(passwd, replacement));
         }
         return message.get();
     }
