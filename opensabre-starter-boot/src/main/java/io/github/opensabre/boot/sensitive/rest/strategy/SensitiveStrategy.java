@@ -1,6 +1,6 @@
 package io.github.opensabre.boot.sensitive.rest.strategy;
 
-import io.github.opensabre.boot.sensitive.rest.DesensitizationTypeEnum;
+import io.github.opensabre.boot.sensitive.rule.SensitiveRule;
 
 /**
  * 脱敏策略接口
@@ -13,5 +13,5 @@ public interface SensitiveStrategy {
      * @param originStr 原始字符串
      * @return 脱敏后的字符
      */
-    String desensitizing(DesensitizationTypeEnum type, String originStr);
+    String desensitizing(SensitiveRule type, String originStr);
 }
