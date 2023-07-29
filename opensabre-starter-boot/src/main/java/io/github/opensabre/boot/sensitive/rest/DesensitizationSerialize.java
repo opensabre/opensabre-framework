@@ -10,6 +10,9 @@ import io.github.opensabre.boot.annotations.Desensitization;
 import io.github.opensabre.boot.sensitive.rest.strategy.CustomSensitiveStrategy;
 import io.github.opensabre.boot.sensitive.rest.strategy.DefaultSensitiveStrategy;
 import io.github.opensabre.boot.sensitive.rest.strategy.SensitiveStrategy;
+import io.github.opensabre.boot.sensitive.rule.CustomSensitiveRule;
+import io.github.opensabre.boot.sensitive.rule.DefaultSensitiveRule;
+import io.github.opensabre.boot.sensitive.rule.SensitiveRule;
 import lombok.NoArgsConstructor;
 
 import java.io.IOException;
@@ -26,16 +29,16 @@ public class DesensitizationSerialize extends JsonSerializer<String> implements 
      */
     private SensitiveStrategy sensitiveStrategy;
     /**
-     * 脱敏类型
+     * 脱敏规则
      */
-    private DesensitizationTypeEnum type;
+    private SensitiveRule type;
 
     /**
      * 默认策略
      *
      * @param type 脱敏类型
      */
-    public DesensitizationSerialize(DesensitizationTypeEnum type) {
+    public DesensitizationSerialize(SensitiveRule type) {
         this.type = type;
         this.sensitiveStrategy = new DefaultSensitiveStrategy();
     }
@@ -43,12 +46,13 @@ public class DesensitizationSerialize extends JsonSerializer<String> implements 
     /**
      * 自定义脱敏类型
      *
-     * @param startInclude 开始掩码位置
-     * @param endExclude   掩码结束位置
+     * @param retainPrefixCount 保留前缀个数
+     * @param retainSuffixCount 保留后缀个数
      */
-    public DesensitizationSerialize(int startInclude, int endExclude) {
-        this.type = DesensitizationTypeEnum.CUSTOM;
-        this.sensitiveStrategy = new CustomSensitiveStrategy(startInclude, endExclude);
+    public DesensitizationSerialize(int retainPrefixCount, int retainSuffixCount, char replaceChar) {
+        CustomSensitiveRule sensitiveRule = new CustomSensitiveRule(retainPrefixCount, retainSuffixCount, replaceChar);
+        this.type = sensitiveRule;
+        this.sensitiveStrategy = new CustomSensitiveStrategy(sensitiveRule);
     }
 
     @Override
@@ -69,8 +73,10 @@ public class DesensitizationSerialize extends JsonSerializer<String> implements 
             // 不为null
             if (desensitization != null) {
                 // 创建定义的序列化类的实例并且返回，入参为注解定义的type,开始位置，结束位置。
-                if (DesensitizationTypeEnum.CUSTOM.equals(desensitization.type()))
-                    return new DesensitizationSerialize(desensitization.startInclude(), desensitization.endExclude());
+                if (desensitization.type().equals(DefaultSensitiveRule.CUSTOM))
+                    return new DesensitizationSerialize(desensitization.retainPrefixCount(),
+                            desensitization.retainSuffixCount(),
+                            desensitization.replaceChar());
                 else
                     return new DesensitizationSerialize(desensitization.type());
             }
