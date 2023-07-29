@@ -48,7 +48,7 @@ public enum DefaultSensitiveRule implements SensitiveRule {
     /**
      * 密码
      */
-    PASSWORD("password", "", 0, 0),
+    PASSWORD("password", "((?i)password|pass|passwd|secret|key|credential|token)\\s*(?:((?i)is)|[:：=<>]+)\\s*(\\S+)", 0, 0),
     /**
      * 住址类
      */
