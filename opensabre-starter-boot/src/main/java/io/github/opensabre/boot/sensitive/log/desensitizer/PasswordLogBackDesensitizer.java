@@ -1,7 +1,6 @@
 package io.github.opensabre.boot.sensitive.log.desensitizer;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
-import cn.hutool.core.text.CharSequenceUtil;
 import io.github.opensabre.boot.sensitive.rule.DefaultSensitiveRule;
 import io.github.opensabre.boot.sensitive.rule.SensitiveRule;
 
@@ -44,8 +43,7 @@ public class PasswordLogBackDesensitizer extends AbstractLogBackDesensitizer {
         Matcher matcher = sensitiveRule.pattern().matcher(originStr);
         while (matcher.find()) {
             String passwd = matcher.group(3);
-            String replacement = CharSequenceUtil.replace(passwd, sensitiveRule.retainPrefixCount(), passwd.length() - sensitiveRule.retainSuffixCount(), sensitiveRule.replaceChar());
-            message.set(message.get().replaceAll(passwd, replacement));
+            message.set(message.get().replaceAll(passwd, sensitiveRule.replace(passwd)));
         }
         return message.get();
     }
