@@ -1,17 +1,19 @@
 package io.github.opensabre.boot.sensitive.log.desensitizer;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
-import com.google.common.collect.Sets;
+import cn.hutool.core.text.CharSequenceUtil;
 import io.github.opensabre.boot.sensitive.log.LogBackCoreConverter;
+import io.github.opensabre.boot.sensitive.rule.DefaultSensitiveRule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * 正则脱敏器
@@ -25,28 +27,30 @@ import java.util.regex.Pattern;
 @ConditionalOnBean({LogBackCoreConverter.class})
 public class RegxLogBackDesensitizer extends AbstractLogBackDesensitizer {
 
-    public static final Pattern idCardPattern = Pattern.compile("(\\d{6})(19|20\\d{9})([Xx])");
-    public static final Pattern bankCardPattern = Pattern.compile("([3-6]\\d{3})(\\d{8,12})(\\d{4})");
-    public static final Pattern EMAIL_PATTERN = Pattern.compile("\\w[-\\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\\.)+[A-Za-z]{2,14}");
-    public static final Pattern mobilePattern = Pattern.compile("(13[0-9]|14[01456789]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])(\\d{8})");
-    public static final Pattern namePattern = Pattern.compile("([^\\u4e00-\\u9fa5])([\\u4e00-\\u9fa5])([\\u4e00-\\u9fa5]{1,3})([^\\u4e00-\\u9fa5])");
+    public final Set<DefaultSensitiveRule> sensitiveRules;
 
-    public static final Set<Pattern> patterns = Sets.newHashSet(namePattern, bankCardPattern, mobilePattern, idCardPattern, EMAIL_PATTERN);
+    public RegxLogBackDesensitizer() {
+        this.sensitiveRules = Arrays.stream(DefaultSensitiveRule.values())
+                .filter(rule -> !rule.pattern().pattern().equals("\\*"))
+                .filter(rule -> !rule.equals(DefaultSensitiveRule.PASSWORD))
+                .collect(Collectors.toSet());
+    }
 
     @Override
     public boolean support(ILoggingEvent event) {
         // 任意匹配即需要脱敏
-        return patterns.stream().anyMatch(pattern -> pattern.matcher(event.getFormattedMessage()).find());
+        return sensitiveRules.stream()
+                .anyMatch(sensitiveRule -> sensitiveRule.pattern().matcher(event.getFormattedMessage()).find());
     }
 
     @Override
     public String desensitizing(ILoggingEvent event, String originStr) {
         AtomicReference<String> message = new AtomicReference<>(originStr);
-        patterns.forEach(pattern -> {
-            Matcher matcher = pattern.matcher(originStr);
+        sensitiveRules.forEach(sensitiveRule -> {
+            Matcher matcher = sensitiveRule.pattern().matcher(originStr);
             while (matcher.find()) {
                 String matchStr = matcher.group();
-                message.set(message.get().replaceAll(matchStr, matchStr.replaceAll(".", "*")));
+                message.set(message.get().replaceAll(matchStr, sensitiveRule.replace(matchStr)));
             }
         });
         return message.get();

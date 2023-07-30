@@ -18,9 +18,6 @@ public class CustomSensitiveStrategy implements SensitiveStrategy {
      * @return 脱敏后的字符
      */
     public String desensitizing(SensitiveRule type, String str) {
-        return CharSequenceUtil.replace(str,
-                sensitiveRule.retainPrefixCount(),
-                str.length() - sensitiveRule.retainSuffixCount(),
-                sensitiveRule.replaceChar());
+        return sensitiveRule.replace(str);
     }
 }

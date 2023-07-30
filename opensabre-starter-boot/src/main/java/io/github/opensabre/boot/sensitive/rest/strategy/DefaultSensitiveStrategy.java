@@ -1,6 +1,5 @@
 package io.github.opensabre.boot.sensitive.rest.strategy;
 
-import cn.hutool.core.text.CharSequenceUtil;
 import io.github.opensabre.boot.sensitive.rule.DefaultSensitiveRule;
 import io.github.opensabre.boot.sensitive.rule.SensitiveRule;
 
@@ -20,9 +19,6 @@ public class DefaultSensitiveStrategy implements SensitiveStrategy {
         DefaultSensitiveRule sensitiveRule = Arrays.stream(values()).sequential()
                 .filter(rule -> rule.equals(type))
                 .findFirst().orElse(DefaultSensitiveRule.CUSTOM);
-        return CharSequenceUtil.replace(str,
-                sensitiveRule.retainPrefixCount(),
-                str.length() - sensitiveRule.retainSuffixCount(),
-                sensitiveRule.replaceChar());
+        return sensitiveRule.replace(str);
     }
 }

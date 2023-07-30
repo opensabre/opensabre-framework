@@ -14,13 +14,13 @@ public enum DefaultSensitiveRule implements SensitiveRule {
      */
     CUSTOM("custom", 0, 0),
     /**
-     * 姓名类脱敏策略
-     */
-    NAME("name", "([^\\u4e00-\\u9fa5])([\\u4e00-\\u9fa5])([\\u4e00-\\u9fa5]{1,3})([^\\u4e00-\\u9fa5])", 1, 1),
-    /**
      * 账号类脱敏策略
      */
-    ACCOUNT_NO("accountNo", "", 3, 2),
+    ACCOUNT_NO("accountNo", 3, 2),
+    /**
+     * 姓名类脱敏策略
+     */
+    NAME("name", "([^\\u4e00-\\u9fa5])([\\u4e00-\\u9fa5])([\\u4e00-\\u9fa5]{1,3})([^\\u4e00-\\u9fa5])", 1, 0),
     /**
      * 身份证号类脱敏策略
      */
@@ -28,11 +28,11 @@ public enum DefaultSensitiveRule implements SensitiveRule {
     /**
      * 银行卡号
      */
-    BANK_CARD("bank_card", "([3-6]\\d{3})(\\d{8,12})(\\d{4})", 3, 4),
+    BANK_CARD("bank_card", "([3-6]\\d{3})(\\d{8,12})(\\d{4})", 4, 3),
     /**
      * 车牌号
      */
-    CAR_LICENSE("car_license", "", 3, 4),
+    CAR_LICENSE("car_license", "([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}(([0-9]{5}[DF])|(DF[0-9]{4})))|([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳]{1})", 3, 4),
     /**
      * 邮箱类脱敏策略
      */
@@ -44,7 +44,7 @@ public enum DefaultSensitiveRule implements SensitiveRule {
     /**
      * 中国固定电话
      */
-    PHONE("phone", "", 3, 4),
+    PHONE("phone", "^(0[1-9]\\d{2})(-)\\d{7,8}$", 3, 4),
     /**
      * 密码
      */
@@ -52,7 +52,7 @@ public enum DefaultSensitiveRule implements SensitiveRule {
     /**
      * 住址类
      */
-    ADDRESS("address", "", 3, 4);
+    ADDRESS("address", "([\\u4e00-\\u9fa5]{2,5}[省|市|自治区|行政区])([\\u4e00-\\u9fa5]{2,}[市|地区|自治州|行政单位|县])([\\u4e00-\\u9fa5]{2,}[市|区|市辖区|县|旗|镇|岛|海域])([\\u4e00-\\u9fa5]+)", 3, 4);
 
     private final String category;
 

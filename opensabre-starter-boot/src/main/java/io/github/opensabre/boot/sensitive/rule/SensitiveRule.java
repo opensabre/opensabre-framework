@@ -1,6 +1,8 @@
 package io.github.opensabre.boot.sensitive.rule;
 
 
+import cn.hutool.core.text.CharSequenceUtil;
+
 import java.util.regex.Pattern;
 
 /**
@@ -53,5 +55,18 @@ public interface SensitiveRule {
      */
     default char replaceChar() {
         return '*';
+    }
+
+    /**
+     * 原始字符串 替换
+     *
+     * @param originStr 原始字符串
+     * @return 替换后的字符串
+     */
+    default String replace(String originStr) {
+        return CharSequenceUtil.replace(originStr,
+                this.retainPrefixCount(),
+                originStr.length() - this.retainSuffixCount(),
+                this.replaceChar());
     }
 }
