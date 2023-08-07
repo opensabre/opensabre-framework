@@ -7,12 +7,14 @@ import io.github.opensabre.boot.sensitive.log.desensitizer.RegxLogBackDesensitiz
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 
 /**
  * 初使化脱敏配置
  */
 @AutoConfiguration
+@ConditionalOnProperty(value = "opensabre.sensitive.log.enabled", havingValue = "true")
 public class OpensabreSensitiveConfig {
 
     @Bean
