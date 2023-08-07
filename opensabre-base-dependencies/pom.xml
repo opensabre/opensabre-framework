@@ -43,6 +43,7 @@
         <guava.version>31.1-jre</guava.version>
         <jackson-databind.version>2.13.4.2</jackson-databind.version>
         <jackson-annotations.version>2.13.4</jackson-annotations.version>
+        <jasypt-springboot.version>3.0.5</jasypt-springboot.version>
         <!--  测试   -->
         <junit-jupiter.version>5.9.1</junit-jupiter.version>
         <spring-test.version>5.3.23</spring-test.version>
@@ -156,6 +157,11 @@
                 <groupId>io.github.opensabre</groupId>
                 <artifactId>opensabre-starter-eda</artifactId>
                 <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.ulisesbocchio</groupId>
+                <artifactId>jasypt-spring-boot-starter</artifactId>
+                <version>${jasypt-springboot.version}</version>
             </dependency>
             <!--使用 lombok 简化 Java 代码-->
             <dependency>
