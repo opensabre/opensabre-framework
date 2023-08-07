@@ -21,6 +21,10 @@ spring:
 # 优雅停机
 server:
   shutdown: graceful
+# 配置项加密密钥默认配置
+jasypt:
+  encryptor:
+    password: ${JASYPT_ENCRYPTOR_PASSWORD:Pa55w0rd@opensabre}
 # opensabre framework配置
 opensabre:
   sensitive:
@@ -41,4 +45,3 @@ logging:
   file:
     path: logs/
   config: classpath:logback-opensabre.xml
-
