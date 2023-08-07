@@ -13,13 +13,13 @@ public class JasyptTest {
         //加密配置
         EnvironmentStringPBEConfig config = new EnvironmentStringPBEConfig();
         //算法类型
-        config.setAlgorithm("PBEWithMD5AndDES");
+        config.setAlgorithm("PBEWITHHMACSHA512ANDAES_256");
         //生成秘钥的公钥
-        config.setPassword("PEB123@321BEP");
+        config.setPassword("Pa55w0rd@opensabre");
         //应用配置
         encryptor.setConfig(config);
         //加密
-        String ciphertext = encryptor.encrypt("123456");
+        String ciphertext = encryptor.decrypt("3iIE/7wbUTBB0g9WuUHIFbduqiLHafNVnB+Oo+SP6uFGntypXzyZsd1SPlwJchgv");
         System.out.println(ciphertext);
     }
 }
