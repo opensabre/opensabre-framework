@@ -1,14 +1,16 @@
 package io.github.opensabre.boot.sensitive.log.desensitizer;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
-import cn.hutool.core.text.CharSequenceUtil;
 import io.github.opensabre.boot.sensitive.log.LogBackCoreConverter;
 import io.github.opensabre.boot.sensitive.rule.DefaultSensitiveRule;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
@@ -27,12 +29,15 @@ import java.util.stream.Collectors;
 @ConditionalOnBean({LogBackCoreConverter.class})
 public class RegxLogBackDesensitizer extends AbstractLogBackDesensitizer {
 
-    public final Set<DefaultSensitiveRule> sensitiveRules;
+    @Value("${opensabre.sensitive.log.rules}")
+    private String sensitiveRuleConfig;
 
-    public RegxLogBackDesensitizer() {
+    public Set<DefaultSensitiveRule> sensitiveRules;
+
+    @PostConstruct
+    private void init() {
         this.sensitiveRules = Arrays.stream(DefaultSensitiveRule.values())
-                .filter(rule -> !rule.pattern().pattern().equals("\\*"))
-                .filter(rule -> !rule.equals(DefaultSensitiveRule.PASSWORD))
+                .filter(rule -> StringUtils.contains(sensitiveRuleConfig, rule.category()))
                 .collect(Collectors.toSet());
     }
 
