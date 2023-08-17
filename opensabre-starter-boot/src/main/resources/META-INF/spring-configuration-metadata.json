@@ -16,6 +16,11 @@
       "name": "opensabre.sensitive.log.enabled",
       "type": "java.lang.Boolean",
       "description": "Opensabre Application Sensitive log Enabled, Default is 'true' ."
+    },
+    {
+      "name": "opensabre.sensitive.log.rules",
+      "type": "java.lang.String",
+      "description": "Opensabre Application Sensitive log rules, Default is 'mobile,idCard,phone' ."
     }
   ]
 }

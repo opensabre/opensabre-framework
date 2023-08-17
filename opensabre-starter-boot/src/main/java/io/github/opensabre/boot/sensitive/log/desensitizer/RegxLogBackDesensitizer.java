@@ -24,9 +24,6 @@ import java.util.stream.Collectors;
  * @author zhoutaoo
  */
 @Slf4j
-@Component
-@ConditionalOnMissingBean
-@ConditionalOnBean({LogBackCoreConverter.class})
 public class RegxLogBackDesensitizer extends AbstractLogBackDesensitizer {
 
     @Value("${opensabre.sensitive.log.rules}")
