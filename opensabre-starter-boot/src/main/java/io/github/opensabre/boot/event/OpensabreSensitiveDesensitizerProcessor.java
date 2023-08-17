@@ -5,14 +5,10 @@ import io.github.opensabre.boot.sensitive.log.strategy.DefaultDesensitizerStrate
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
 @Slf4j
-@Component
-@ConditionalOnProperty(value = "opensabre.sensitive.log.enabled", havingValue = "true")
 public class OpensabreSensitiveDesensitizerProcessor implements BeanPostProcessor {
 
     @Resource

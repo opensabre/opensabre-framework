@@ -7,6 +7,8 @@ import io.github.opensabre.boot.sensitive.log.desensitizer.RegxLogBackDesensitiz
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 
@@ -27,6 +29,7 @@ public class OpensabreSensitiveConfig {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public LogBackDesensitizer regxLogBackDesensitizer() {
         return new RegxLogBackDesensitizer();
     }

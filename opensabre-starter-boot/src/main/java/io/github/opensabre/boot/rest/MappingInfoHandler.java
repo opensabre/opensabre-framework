@@ -1,7 +1,6 @@
 package io.github.opensabre.boot.rest;
 
 import io.github.opensabre.boot.entity.RestMappingInfo;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
@@ -18,7 +17,6 @@ import java.util.stream.Collectors;
  *
  * @author zhoutaoo
  */
-@Component
 public class MappingInfoHandler {
     /**
      * RequestMappingHandlerMapping类，spring web的Rest注册管理类

@@ -14,9 +14,6 @@ import org.springframework.stereotype.Component;
  * @author zhoutaoo
  */
 @Slf4j
-@Component
-@ConditionalOnMissingBean
-@ConditionalOnBean(LogBackCoreConverter.class)
 public class BaseLogBackDesensitizer extends AbstractLogBackDesensitizer {
 
     @Override
