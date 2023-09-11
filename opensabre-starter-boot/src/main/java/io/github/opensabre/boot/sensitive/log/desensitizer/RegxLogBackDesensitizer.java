@@ -1,17 +1,15 @@
 package io.github.opensabre.boot.sensitive.log.desensitizer;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
-import io.github.opensabre.boot.sensitive.log.LogBackCoreConverter;
 import io.github.opensabre.boot.sensitive.rule.DefaultSensitiveRule;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
@@ -33,9 +31,13 @@ public class RegxLogBackDesensitizer extends AbstractLogBackDesensitizer {
 
     @PostConstruct
     private void init() {
-        this.sensitiveRules = Arrays.stream(DefaultSensitiveRule.values())
+        Map<String, DefaultSensitiveRule> sensitiveRuleMap = Arrays.stream(DefaultSensitiveRule.values())
                 .filter(rule -> StringUtils.contains(sensitiveRuleConfig, rule.category()))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toMap(DefaultSensitiveRule::category, rule -> rule));
+        // sensitiveRules Set按sensitiveRuleConfig顺序放置，越前优先级越高，越早匹配
+        this.sensitiveRules = Arrays.stream(StringUtils.split(sensitiveRuleConfig, ","))
+                .map(sensitiveRuleMap::get)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     @Override
