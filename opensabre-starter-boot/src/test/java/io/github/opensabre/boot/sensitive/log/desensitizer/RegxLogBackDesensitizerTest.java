@@ -128,8 +128,20 @@ class RegxLogBackDesensitizerTest {
     }
 
     @Test
+    void desensitizingAddressTW() {
+        String desensitizing = regxLogBackDesensitizer.desensitizing(new LoggingEvent(), "中国台湾省台北市新竹县桃源村5号天下花园1幢103室");
+        assertEquals("中国********************103室", desensitizing);
+    }
+
+    @Test
     void desensitizingCarLicense() {
         String desensitizing = regxLogBackDesensitizer.desensitizing(new LoggingEvent(), "粤AA12345");
         assertEquals("粤A****45", desensitizing);
+    }
+
+    @Test
+    void desensitizingCarLicenseBus() {
+        String desensitizing = regxLogBackDesensitizer.desensitizing(new LoggingEvent(), "沪FE0708");
+        assertEquals("沪F***08", desensitizing);
     }
 }
