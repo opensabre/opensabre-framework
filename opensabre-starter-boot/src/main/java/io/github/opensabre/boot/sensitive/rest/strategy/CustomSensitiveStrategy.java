@@ -1,21 +1,14 @@
 package io.github.opensabre.boot.sensitive.rest.strategy;
 
 import cn.hutool.core.text.CharSequenceUtil;
-import io.github.opensabre.boot.sensitive.rest.DesensitizationTypeEnum;
+import io.github.opensabre.boot.sensitive.rule.SensitiveRule;
 
 public class CustomSensitiveStrategy implements SensitiveStrategy {
-    /**
-     * 开始掩码位置
-     */
-    private Integer startInclude;
-    /**
-     * 掩码结束位置
-     */
-    private Integer endExclude;
 
-    public CustomSensitiveStrategy(Integer startInclude, Integer endExclude) {
-        this.startInclude = startInclude;
-        this.endExclude = endExclude;
+    private final SensitiveRule sensitiveRule;
+
+    public CustomSensitiveStrategy(SensitiveRule sensitiveRule) {
+        this.sensitiveRule = sensitiveRule;
     }
 
     /**
@@ -24,7 +17,7 @@ public class CustomSensitiveStrategy implements SensitiveStrategy {
      * @param str 原字符
      * @return 脱敏后的字符
      */
-    public String desensitizing(DesensitizationTypeEnum type, String str) {
-        return CharSequenceUtil.hide(str, startInclude, endExclude);
+    public String desensitizing(SensitiveRule type, String str) {
+        return sensitiveRule.replace(str);
     }
 }

@@ -29,7 +29,7 @@ jasypt:
 opensabre:
   sensitive:
     log:
-      enabled: false # 日志脱敏开关，默认关闭
+      enabled: true # 日志脱敏开关，默认关闭
       rules: mobile,idCard,phone
   rest:
     result:

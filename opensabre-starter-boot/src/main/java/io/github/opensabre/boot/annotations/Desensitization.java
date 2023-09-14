@@ -3,7 +3,7 @@ package io.github.opensabre.boot.annotations;
 import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.github.opensabre.boot.sensitive.rest.DesensitizationSerialize;
-import io.github.opensabre.boot.sensitive.rest.DesensitizationTypeEnum;
+import io.github.opensabre.boot.sensitive.rule.DefaultSensitiveRule;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -15,18 +15,24 @@ import java.lang.annotation.Target;
 @JacksonAnnotationsInside
 @JsonSerialize(using = DesensitizationSerialize.class)
 public @interface Desensitization {
-    /**
-     * 脱敏数据类型，只有在CUSTOM的时候，startInclude和endExclude生效
-     */
-    DesensitizationTypeEnum type() default DesensitizationTypeEnum.CUSTOM;
 
     /**
-     * 开始位置（包含）
+     * 脱敏数据类型，只有在CUSTOM的时候，retainPrefixCount和retainSuffixCount生效
      */
-    int startInclude() default 0;
+    DefaultSensitiveRule type() default DefaultSensitiveRule.CUSTOM;
 
     /**
-     * 结束位置（不包含）
+     * 保留前缀个数
      */
-    int endExclude() default 0;
+    int retainPrefixCount() default 0;
+
+    /**
+     * 保留后缀个数
+     */
+    int retainSuffixCount() default 0;
+
+    /**
+     * 掩码符号
+     */
+    char replaceChar() default '*';
 }
