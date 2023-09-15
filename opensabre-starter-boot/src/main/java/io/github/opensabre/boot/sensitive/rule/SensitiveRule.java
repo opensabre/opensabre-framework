@@ -14,7 +14,6 @@ public interface SensitiveRule {
 
     /**
      * 类别
-     * <br/>
      * 如: 类别[电话]，就包含mobile phone telephone等
      *
      * @return 保留前缀个数
@@ -29,8 +28,8 @@ public interface SensitiveRule {
     Pattern pattern();
 
     /**
-     * 保留前缀个数 (需满足 >= 0个)
-     * <br/>
+     * 保留前缀个数 (需满足 大于等于 0个)
+     * <p>
      * 如: 538261, 保留前缀个数为2的话， 那么就是 53
      *
      * @return 保留前缀个数
@@ -38,8 +37,8 @@ public interface SensitiveRule {
     int retainPrefixCount();
 
     /**
-     * 保留后缀个数 (需满足 >= 0个)
-     * <br/>
+     * 保留后缀个数 (需满足 大于等于 0个)
+     * <p>
      * 如: 123456, 保留后缀个数为2的话， 那么就是 56
      *
      * @return 保留后缀个数
@@ -48,7 +47,7 @@ public interface SensitiveRule {
 
     /**
      * 用于替代明文的 密文字符
-     * <br/>
+     * <p>
      * 如: 对123456使用*进行前2后2的脱敏, 那么就是 12**56
      *
      * @return 用于替代明文的 密文字符，默认*
