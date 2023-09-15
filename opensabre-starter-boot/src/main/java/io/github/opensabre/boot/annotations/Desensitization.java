@@ -18,21 +18,23 @@ public @interface Desensitization {
 
     /**
      * 脱敏数据类型，只有在CUSTOM的时候，retainPrefixCount和retainSuffixCount生效
+     *
+     * @return 脱敏器类型 type
      */
     DefaultSensitiveRule type() default DefaultSensitiveRule.CUSTOM;
 
     /**
-     * 保留前缀个数
+     * @return 保留前缀个数
      */
     int retainPrefixCount() default 0;
 
     /**
-     * 保留后缀个数
+     * @return 保留后缀个数
      */
     int retainSuffixCount() default 0;
 
     /**
-     * 掩码符号
+     * @return 掩码符号
      */
     char replaceChar() default '*';
 }

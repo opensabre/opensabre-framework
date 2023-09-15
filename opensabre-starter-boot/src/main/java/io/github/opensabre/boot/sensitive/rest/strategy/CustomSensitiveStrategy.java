@@ -1,12 +1,17 @@
 package io.github.opensabre.boot.sensitive.rest.strategy;
 
-import cn.hutool.core.text.CharSequenceUtil;
 import io.github.opensabre.boot.sensitive.rule.SensitiveRule;
 
+/**
+ * 自定义脱敏策略
+ */
 public class CustomSensitiveStrategy implements SensitiveStrategy {
 
     private final SensitiveRule sensitiveRule;
 
+    /**
+     * @param sensitiveRule 脱敏规则
+     */
     public CustomSensitiveStrategy(SensitiveRule sensitiveRule) {
         this.sensitiveRule = sensitiveRule;
     }

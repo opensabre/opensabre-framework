@@ -7,6 +7,9 @@ import java.util.Arrays;
 
 import static io.github.opensabre.boot.sensitive.rule.DefaultSensitiveRule.values;
 
+/**
+ * 默认的脱敏策略
+ */
 public class DefaultSensitiveStrategy implements SensitiveStrategy {
 
     /**

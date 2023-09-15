@@ -19,7 +19,9 @@ public interface LogBackDesensitizer {
     /**
      * 脱敏接口定义
      *
-     * @param event 事件
+     * @param event     事件
+     * @param originStr 原始字串
+     * @return 脱敏后的字串
      */
     String desensitize(final ILoggingEvent event, String originStr);
 }
