@@ -22,6 +22,9 @@ public class LogBackCoreConverter extends MessageConverter {
      */
     private static DesensitizerStrategy desensitizerStrategy;
 
+    /**
+     * 默认构造器，初使化默认脱敏策略
+     */
     public LogBackCoreConverter() {
         logBackCoreConverter = this;
         if (desensitizerStrategy == null)
@@ -40,7 +43,7 @@ public class LogBackCoreConverter extends MessageConverter {
     /**
      * 获取脱敏器
      *
-     * @return
+     * @return 获取脱敏器
      */
     public DesensitizerStrategy getDesensitizerStrategy() {
         return desensitizerStrategy;

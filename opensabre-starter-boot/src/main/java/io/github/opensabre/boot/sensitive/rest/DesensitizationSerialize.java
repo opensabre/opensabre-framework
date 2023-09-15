@@ -48,6 +48,7 @@ public class DesensitizationSerialize extends JsonSerializer<String> implements 
      *
      * @param retainPrefixCount 保留前缀个数
      * @param retainSuffixCount 保留后缀个数
+     * @param replaceChar       掩码字符
      */
     public DesensitizationSerialize(int retainPrefixCount, int retainSuffixCount, char replaceChar) {
         CustomSensitiveRule sensitiveRule = new CustomSensitiveRule(retainPrefixCount, retainSuffixCount, replaceChar);
