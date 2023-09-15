@@ -16,8 +16,8 @@ jobs:
       with:
         java-version: 1.11
       # 3.编译打包
-    - name: Build with javadoc
-      run: mvn -B javadoc:javadoc --file pom.xml
-      # 3.编译打包
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+      # 4.验证javadoc
+    - name: Build with javadoc
+      run: mvn -B javadoc:javadoc --file pom.xml
