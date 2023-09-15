@@ -11,7 +11,8 @@ public abstract class AbstractLogBackDesensitizer implements LogBackDesensitizer
     /**
      * 如果实现类支持，再执行脱敏的动作
      *
-     * @param event 日志事件
+     * @param event     日志事件
+     * @param originStr 日志信息
      * @return 脱敏后的字符
      */
     @Override
@@ -24,6 +25,7 @@ public abstract class AbstractLogBackDesensitizer implements LogBackDesensitizer
     /**
      * 脱敏执行
      *
+     * @param event     日志事件
      * @param originStr 日志信息
      * @return 脱敏后的字符
      */
