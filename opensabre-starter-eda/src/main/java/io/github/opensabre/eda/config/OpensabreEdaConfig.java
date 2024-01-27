@@ -3,6 +3,7 @@ package io.github.opensabre.eda.config;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.opensabre.boot.config.YamlPropertyLoaderFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -13,6 +14,7 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * 消息中心配置类
@@ -21,6 +23,7 @@ import org.springframework.context.annotation.Bean;
  */
 @Slf4j
 @AutoConfiguration
+@PropertySource(value = {"classpath:opensabre-eda.yml"}, encoding = "UTF8", factory = YamlPropertyLoaderFactory.class)
 public class OpensabreEdaConfig {
 
     public static final String QUEUE_NAME = "queue-organization";

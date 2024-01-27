@@ -36,5 +36,9 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.github.opensabre</groupId>
+            <artifactId>opensabre-starter-boot</artifactId>
+        </dependency>
     </dependencies>
 </project>

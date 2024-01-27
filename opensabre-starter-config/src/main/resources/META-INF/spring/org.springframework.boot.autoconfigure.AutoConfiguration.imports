@@ -1,2 +1,1 @@
-io.github.opensabre.rpc.openfeign.config.OpensabreFeignConfig
-io.github.opensabre.rpc.openfeign.config.OpensabreLoadBalancerConfig
+io.github.opensabre.config.OpensabreConfig
