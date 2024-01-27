@@ -36,5 +36,9 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.github.opensabre</groupId>
+            <artifactId>opensabre-starter-boot</artifactId>
+        </dependency>
     </dependencies>
 </project>

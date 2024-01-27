@@ -63,7 +63,7 @@
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
 
-        <revision>0.0.7</revision>
+        <revision>0.0.8</revision>
     </properties>
 
     <!--发布仓库的定义-->

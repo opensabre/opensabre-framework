@@ -3,24 +3,24 @@
   ],
   "properties": [
     {
-      "name": "opensabre.rest.result.framework.excludes",
-      "type": "java.lang.String",
-      "description": "Opensabre Framework Restful Unified Response Packet Format Exclusion Package Name, Multiple Package Names Are Separated By ',' ."
-    },
-    {
-      "name": "opensabre.rest.result.excludes",
-      "type": "java.lang.String",
-      "description": "Opensabre Application Restful Unified Response Packet Format Exclusion Package Name, Multiple Package Names Are Separated By ',' ."
-    },
-    {
-      "name": "opensabre.sensitive.log.enabled",
+      "name": "opensabre.persistence.interceptor.pagination.enabled",
       "type": "java.lang.Boolean",
-      "description": "Opensabre Application Sensitive log Enabled, Default is 'true' ."
+      "description": "Opensabre Framework Persistence Mybatis Plugs Interceptor, PaginationInnerInterceptor Enabled, Default Is true ."
     },
     {
-      "name": "opensabre.sensitive.log.rules",
+      "name": "opensabre.persistence.interceptor.pagination.DbType",
       "type": "java.lang.String",
-      "description": "Opensabre Application Sensitive log rules, Default is 'mobile,idCard,phone' ."
+      "description": "Opensabre Framework Persistence Mybatis Plugs Interceptor, PaginationInnerInterceptor DbType Default DbType is mysql ."
+    },
+    {
+      "name": "opensabre.persistence.interceptor.blockattack.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Opensabre Framework Persistence Mybatis Plugs Interceptor, BlockAttackInnerInterceptor Default Is true ."
+    },
+    {
+      "name": "opensabre.persistence.interceptor.illegalsql.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Opensabre Framework Persistence Mybatis Plugs Interceptor, IllegalSQLInnerInterceptor Default Is false ."
     }
   ]
 }
