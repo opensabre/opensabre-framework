@@ -1,0 +1,26 @@
+{
+  "groups": [
+  ],
+  "properties": [
+    {
+      "name": "opensabre.rest.result.framework.excludes",
+      "type": "java.lang.String",
+      "description": "Opensabre Framework Restful Unified Response Packet Format Exclusion Package Name, Multiple Package Names Are Separated By ',' ."
+    },
+    {
+      "name": "opensabre.rest.result.excludes",
+      "type": "java.lang.String",
+      "description": "Opensabre Application Restful Unified Response Packet Format Exclusion Package Name, Multiple Package Names Are Separated By ',' ."
+    },
+    {
+      "name": "opensabre.sensitive.log.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Opensabre Application Sensitive log Enabled, Default is 'true' ."
+    },
+    {
+      "name": "opensabre.sensitive.log.rules",
+      "type": "java.lang.String",
+      "description": "Opensabre Application Sensitive log rules, Default is 'mobile,idCard,phone' ."
+    }
+  ]
+}
