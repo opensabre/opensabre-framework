@@ -6,4 +6,4 @@ spring:
         watch:
           enabled: true
         enabled: true
-        cluster-name: CLUSTER_${CLOUD_AZ:LOCAL}  # 取环境变量AZ做为部分集群名：CLUSTER_SH，无环境变量默认为CLUSTER_LOCAL代表本地开发实例
+        cluster-name: CLUSTER-${CLOUD_AZ:LOCAL}  # 取环境变量AZ做为部分集群名：CLUSTER-SH，无环境变量默认为CLUSTER-LOCAL代表本地开发实例
