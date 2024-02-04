@@ -4,6 +4,7 @@ import io.github.opensabre.common.core.entity.vo.Result;
 import io.github.opensabre.common.core.exception.BaseException;
 import io.github.opensabre.common.core.exception.SystemErrorType;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartException;
  * 默认全局异常处理类
  */
 @Slf4j
+@Order
 @RestControllerAdvice
 public class DefaultGlobalExceptionHandlerAdvice {
 

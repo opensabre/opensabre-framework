@@ -1,4 +1,6 @@
 feign:
+  circuitbreaker:
+    enabled: true
   sentinel:
     enabled: true
   httpclient:
@@ -14,7 +16,7 @@ feign:
       default:
         connectTimeout: 5000
         readTimeout: 10000
-        loggerLevel: full
+        loggerLevel: FULL
 spring:
   cloud:
     sentinel:
