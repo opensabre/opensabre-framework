@@ -16,7 +16,7 @@ feign:
       default:
         connectTimeout: 5000
         readTimeout: 10000
-        loggerLevel: FULL
+        loggerLevel: BASIC
 spring:
   cloud:
     sentinel:
