@@ -3,11 +3,13 @@ package io.github.opensabre.persistence.exception;
 import io.github.opensabre.common.core.entity.vo.Result;
 import io.github.opensabre.common.core.exception.SystemErrorType;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.Order;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
+@Order(100)
 @RestControllerAdvice
 public class PersistenceExceptionHandlerAdvice {
 
