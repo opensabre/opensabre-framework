@@ -23,37 +23,37 @@ public class SentinelExceptionHandlerAdvice {
 
     @ExceptionHandler(BlockException.class)
     public Result blockException(BlockException e) {
-        log.error("block exception:{}", e.getMessage());
+        log.error("block exception:{}", e.getRule());
         return Result.fail(SystemErrorType.SYSTEM_BUSY);
     }
 
     @ExceptionHandler(FlowException.class)
     public Result flowException(FlowException e) {
-        log.error("flow exception:{}", e.getMessage());
+        log.error("flow exception:{}", e.getRule());
         return Result.fail(SystemErrorType.SYSTEM_BUSY);
     }
 
     @ExceptionHandler(DegradeException.class)
     public Result degradeException(DegradeException e) {
-        log.error("degrade exception:{}", e.getMessage());
+        log.error("degrade exception:{}", e.getRule());
         return Result.fail(SystemErrorType.SYSTEM_BUSY);
     }
 
     @ExceptionHandler(ParamFlowException.class)
     public Result paramFlowException(ParamFlowException e) {
-        log.error("param flow exception:{}", e.getMessage());
+        log.error("param flow exception:{}", e.getRule());
         return Result.fail(SystemErrorType.SYSTEM_BUSY);
     }
 
     @ExceptionHandler(SystemBlockException.class)
     public Result systemBlockException(SystemBlockException e) {
-        log.error("system block exception:{}", e.getMessage());
+        log.error("system block exception:{}", e.getRule());
         return Result.fail(SystemErrorType.SYSTEM_BUSY);
     }
 
     @ExceptionHandler(AuthorityException.class)
     public Result authorityException(AuthorityException e) {
-        log.error("authority exception:{}", e.getMessage());
+        log.error("authority exception:{}", e.getRule());
         return Result.fail(SystemErrorType.SYSTEM_BUSY);
     }
 }
