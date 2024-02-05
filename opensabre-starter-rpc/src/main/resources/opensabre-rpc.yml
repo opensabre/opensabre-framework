@@ -16,8 +16,15 @@ feign:
       default:
         connectTimeout: 5000
         readTimeout: 10000
-        loggerLevel: BASIC
+        loggerLevel: basic
 spring:
   cloud:
     sentinel:
       enabled: true
+      datasource:
+        opensabre:
+          nacos:
+            serverAddr: ${REGISTER_HOST:localhost}:${REGISTER_PORT:8848}
+            groupId: DEFAULT_GROUP
+            dataId: ${spring.application.name}-rules
+            ruleType: flow
