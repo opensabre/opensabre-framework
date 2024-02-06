@@ -24,7 +24,7 @@ spring:
       datasource:
         opensabre:
           nacos:
-            serverAddr: ${REGISTER_HOST:localhost}:${REGISTER_PORT:8848}
+            server-addr: ${REGISTER_HOST:localhost}:${REGISTER_PORT:8848}
             groupId: DEFAULT_GROUP
-            dataId: ${spring.application.name}-rules
-            ruleType: flow
+            dataId: ${spring.application.name}-sentinel.json
+            rule-type: flow
