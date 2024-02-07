@@ -10,7 +10,9 @@ import io.github.opensabre.common.core.entity.vo.Result;
 import io.github.opensabre.common.core.exception.SystemErrorType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
@@ -22,18 +24,21 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class SentinelExceptionHandlerAdvice {
 
     @ExceptionHandler(BlockException.class)
+    @ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
     public Result blockException(BlockException e) {
         log.error("block exception:{}", e.getRule());
         return Result.fail(SystemErrorType.SYSTEM_BUSY);
     }
 
     @ExceptionHandler(FlowException.class)
+    @ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
     public Result flowException(FlowException e) {
         log.error("flow exception:{}", e.getRule());
         return Result.fail(SystemErrorType.SYSTEM_BUSY);
     }
 
     @ExceptionHandler(DegradeException.class)
+    @ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
     public Result degradeException(DegradeException e) {
         log.error("degrade exception:{}", e.getRule());
         return Result.fail(SystemErrorType.SYSTEM_BUSY);
