@@ -24,11 +24,11 @@
         <spring-boot-maven-plugin.version>2.7.5</spring-boot-maven-plugin.version>
         <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
         <!--  依赖   -->
-        <spring.boot.version>2.7.5</spring.boot.version>
-        <spring.cloud.version>2021.0.4</spring.cloud.version>
-        <spring.cloud.alibaba.version>2021.0.4.0</spring.cloud.alibaba.version>
-        <spring-boot-starter-data-redis.version>2.7.5</spring-boot-starter-data-redis.version>
-        <jetcache-starter-redis.version>2.7.3</jetcache-starter-redis.version>
+        <spring.boot.version>2.7.18</spring.boot.version>
+        <spring.cloud.version>2021.0.9</spring.cloud.version>
+        <spring.cloud.alibaba.version>2021.0.5.0</spring.cloud.alibaba.version>
+        <spring-boot-starter-data-redis.version>2.7.18</spring-boot-starter-data-redis.version>
+        <jetcache-starter-redis.version>2.7.5</jetcache-starter-redis.version>
         <springdoc-openapi-ui.version>1.6.12</springdoc-openapi-ui.version>
         <swagger-annotations.version>2.2.4</swagger-annotations.version>
         <mysql-connector-j.version>8.0.31</mysql-connector-j.version>
@@ -38,16 +38,16 @@
         <commons-pool2.version>2.11.1</commons-pool2.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <hutool.version>5.8.18</hutool.version>
-        <spring-webmvc.version>5.3.23</spring-webmvc.version>
+        <spring-webmvc.version>5.3.31</spring-webmvc.version>
         <feign-interceptors>1.1.2</feign-interceptors>
         <guava.version>31.1-jre</guava.version>
-        <jackson-databind.version>2.13.4.2</jackson-databind.version>
-        <jackson-annotations.version>2.13.4</jackson-annotations.version>
+        <jackson-databind.version>2.13.5</jackson-databind.version>
+        <jackson-annotations.version>2.13.5</jackson-annotations.version>
         <jasypt-springboot.version>3.0.5</jasypt-springboot.version>
         <!--  测试   -->
         <junit-jupiter.version>5.9.1</junit-jupiter.version>
-        <spring-test.version>5.3.23</spring-test.version>
-        <spring-boot-starter-test.version>2.7.5</spring-boot-starter-test.version>
+        <spring-test.version>5.3.31</spring-test.version>
+        <spring-boot-starter-test.version>2.7.18</spring-boot-starter-test.version>
         <httpclient5.version>5.2.1</httpclient5.version>
     </properties>
 

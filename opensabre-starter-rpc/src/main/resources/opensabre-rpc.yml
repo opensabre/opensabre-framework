@@ -1,0 +1,30 @@
+feign:
+  circuitbreaker:
+    enabled: true
+  sentinel:
+    enabled: true
+  httpclient:
+    hc5:
+      enabled: true
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 10000
+        loggerLevel: basic
+spring:
+  cloud:
+    sentinel:
+      enabled: true
+      datasource:
+        opensabre:
+          nacos:
+            server-addr: ${REGISTER_HOST:localhost}:${REGISTER_PORT:8848}
+            groupId: DEFAULT_GROUP
+            dataId: ${spring.application.name}-sentinel.json
+            rule-type: flow

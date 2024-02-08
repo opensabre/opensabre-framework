@@ -1,10 +1,10 @@
-package io.github.opensabre.rpc.openfeign.config;
+package io.github.opensabre.register.config;
 
 import io.github.opensabre.boot.config.YamlPropertyLoaderFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.PropertySource;
 
 @AutoConfiguration
-@PropertySource(value = {"classpath:opensabre-rpc.yml"}, encoding = "UTF8", factory = YamlPropertyLoaderFactory.class)
-public class OpensabreFeignConfig {
+@PropertySource(value = {"classpath:opensabre-register.yml"}, encoding = "UTF8", factory = YamlPropertyLoaderFactory.class)
+public class OpensabreDiscoveryConfiguration {
 }

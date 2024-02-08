@@ -1,0 +1,26 @@
+{
+  "groups": [
+  ],
+  "properties": [
+    {
+      "name": "opensabre.persistence.interceptor.pagination.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Opensabre Framework Persistence Mybatis Plugs Interceptor, PaginationInnerInterceptor Enabled, Default Is true ."
+    },
+    {
+      "name": "opensabre.persistence.interceptor.pagination.DbType",
+      "type": "java.lang.String",
+      "description": "Opensabre Framework Persistence Mybatis Plugs Interceptor, PaginationInnerInterceptor DbType Default DbType is mysql ."
+    },
+    {
+      "name": "opensabre.persistence.interceptor.blockattack.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Opensabre Framework Persistence Mybatis Plugs Interceptor, BlockAttackInnerInterceptor Default Is true ."
+    },
+    {
+      "name": "opensabre.persistence.interceptor.illegalsql.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Opensabre Framework Persistence Mybatis Plugs Interceptor, IllegalSQLInnerInterceptor Default Is false ."
+    }
+  ]
+}
