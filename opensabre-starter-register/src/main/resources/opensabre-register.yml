@@ -4,6 +4,6 @@ spring:
       discovery:
         server-addr: ${REGISTER_HOST:localhost}:${REGISTER_PORT:8848}
         watch:
-          enabled: true
+          enabled: false
         enabled: true
         cluster-name: CLUSTER-${CLOUD_AZ:LOCAL}  # 取环境变量AZ做为部分集群名：CLUSTER-SH，无环境变量默认为CLUSTER-LOCAL代表本地开发实例

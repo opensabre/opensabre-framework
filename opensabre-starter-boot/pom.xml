@@ -48,8 +48,8 @@
         </dependency>
         <!-- 分布式链路追踪 -->
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-sleuth</artifactId>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-tracing-bridge-otel</artifactId>
         </dependency>
         <!-- 表单校验-->
         <dependency>
@@ -64,7 +64,7 @@
         <!--springdoc - restfull API文档-->
         <dependency>
             <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
         <!--  提示文件生成   -->
         <dependency>
