@@ -2,12 +2,13 @@ package io.github.opensabre.common.web.interceptor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.opensabre.common.core.util.UserContextHolder;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import java.util.Map;
 
 /**

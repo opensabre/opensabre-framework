@@ -6,7 +6,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 /**
  * springboot应用启动完成后，发送Rest注册事件

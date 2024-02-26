@@ -3,11 +3,6 @@ spring:
     bus:
       trace:
         enabled: true
-  sleuth:
-    sampler:
-      probability: 1.0
-  mvc:
-    throw-exception-if-no-handler-found: true
     format:
       date-time: yyyy-MM-dd HH:mm:ss
       date: yyyy-MM-dd
@@ -44,5 +39,5 @@ logging:
     rollingpolicy:
       max-file-size: 1GB
   file:
-    path: logs/
+    path: logs
   config: classpath:logback-spring.xml
