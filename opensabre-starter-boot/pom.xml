@@ -63,8 +63,8 @@
         </dependency>
         <!--springdoc - restfull API文档-->
         <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
         </dependency>
         <!--  提示文件生成   -->
         <dependency>

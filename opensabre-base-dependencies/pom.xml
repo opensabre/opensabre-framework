@@ -29,8 +29,8 @@
         <spring.cloud.version>2023.0.0</spring.cloud.version>
         <spring.cloud.alibaba.version>2021.0.5.0</spring.cloud.alibaba.version>
         <jetcache-starter-redis.version>2.7.5</jetcache-starter-redis.version>
-        <springdoc-openapi-ui.version>2.3.0</springdoc-openapi-ui.version>
-        <swagger-annotations.version>2.2.20</swagger-annotations.version>
+        <knife4j-openapi3.version>4.4.0</knife4j-openapi3.version>
+        <swagger-annotations.version>2.2.19</swagger-annotations.version>
         <mysql-connector-j.version>8.0.31</mysql-connector-j.version>
         <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
         <mybatis-plus-boot-starter.version>3.5.5</mybatis-plus-boot-starter.version>
@@ -112,9 +112,9 @@
             </dependency>
             <!--springdoc - restfull API文档-->
             <dependency>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-                <version>${springdoc-openapi-ui.version}</version>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+                <version>${knife4j-openapi3.version}</version>
             </dependency>
             <!--opensabre 组件-->
             <dependency>
@@ -193,7 +193,7 @@
             <!--Swagger - RESTFULL API文档-->
             <dependency>
                 <groupId>io.swagger.core.v3</groupId>
-                <artifactId>swagger-annotations</artifactId>
+                <artifactId>swagger-annotations-jakarta</artifactId>
                 <version>${swagger-annotations.version}</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
