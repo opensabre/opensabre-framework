@@ -33,7 +33,7 @@ public class Result<T> {
     /**
      * 统一报文中code代码，标明异常类型
      */
-    @Schema(title = "处理结果code", required = true)
+    @Schema(title = "处理结果code", requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     /**
      * 统一报文中提示信息
@@ -43,7 +43,7 @@ public class Result<T> {
     /**
      * 统一报文中报文生成时间
      */
-    @Schema(title = "请求结果生成时间戳", required = true)
+    @Schema(title = "请求结果生成时间戳", requiredMode = Schema.RequiredMode.REQUIRED)
     @JsonFormat(pattern = DatePattern.UTC_MS_PATTERN)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
@@ -51,7 +51,7 @@ public class Result<T> {
     /**
      * 统一报文中数据部分，支持泛型
      */
-    @Schema(title = "处理结果数据信息", required = true)
+    @Schema(title = "处理结果数据信息", requiredMode = Schema.RequiredMode.REQUIRED)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
 
