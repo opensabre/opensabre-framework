@@ -1,0 +1,11 @@
+#==============日志===============#
+logging:
+  level:
+    io.github.opensabre: info
+  logback:
+    rollingpolicy:
+      max-file-size: 1GB
+  file:
+    path: logs
+  pattern:
+    level: '%5p [${spring.application.name},%X{traceId:-},%X{spanId:-}]'

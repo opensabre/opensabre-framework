@@ -28,7 +28,6 @@ public class OpensabreSensitiveConfig {
     }
 
     @Bean
-    @ConditionalOnMissingBean
     public LogBackDesensitizer regxLogBackDesensitizer() {
         return new RegxLogBackDesensitizer();
     }
