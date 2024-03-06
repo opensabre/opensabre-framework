@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MultipartException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 /**
  * 默认全局异常处理类
@@ -54,6 +55,13 @@ public class DefaultGlobalExceptionHandlerAdvice {
     public Result notSupportedMethodException(HttpRequestMethodNotSupportedException ex) {
         log.warn("http request method not supported exception {}", ex.getMessage());
         return Result.fail(SystemErrorType.METHOD_NOT_SUPPORTED);
+    }
+
+    @ExceptionHandler(value = {NoHandlerFoundException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Result noHandlerFoundException(NoHandlerFoundException ex) {
+        log.warn("No static resource exception:{}", ex.getMessage());
+        return Result.fail(SystemErrorType.RESOURCE_NOT_FOUND, ex.getMessage());
     }
 
     @ExceptionHandler(value = {HttpMediaTypeNotSupportedException.class})
