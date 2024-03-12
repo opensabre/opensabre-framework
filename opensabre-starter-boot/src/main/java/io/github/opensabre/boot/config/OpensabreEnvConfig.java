@@ -1,5 +1,7 @@
 package io.github.opensabre.boot.config;
 
+import cn.hutool.core.io.resource.NoResourceException;
+import cn.hutool.setting.dialect.Props;
 import io.github.opensabre.boot.metadata.OpensabreCloud;
 import io.github.opensabre.boot.metadata.OpensabreVersion;
 import lombok.extern.slf4j.Slf4j;
@@ -8,8 +10,14 @@ import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
+import org.springframework.core.env.PropertiesPropertySource;
 
 import java.util.HashMap;
+
+import static io.github.opensabre.boot.metadata.OpensabreCloud.OPENSABRE_CLOUD_AZ;
+import static io.github.opensabre.boot.metadata.OpensabreCloud.OPENSABRE_CLOUD_REGION;
+import static io.github.opensabre.boot.metadata.OpensabreVersion.OPENSABRE_FORMATTED_VERSION;
+import static io.github.opensabre.boot.metadata.OpensabreVersion.OPENSABRE_VERSION;
 
 /**
  * Opensabre环境变更初使化
@@ -17,22 +25,6 @@ import java.util.HashMap;
  */
 @Slf4j
 public class OpensabreEnvConfig implements EnvironmentPostProcessor {
-    /**
-     * Opensabre版本号环境变更Key
-     */
-    public static final String OPENSABRE_VERSION = "opensabre.version";
-    /**
-     * Opensabre完整版本号环境变更Key
-     */
-    public static final String OPENSABRE_FORMATTED_VERSION = "opensabre.formatted-version";
-    /**
-     * Opensabre云部署AZ环境变量Key
-     */
-    public static final String OPENSABRE_CLOUD_AZ = "opensabre.cloud.az";
-    /**
-     * Opensabre云部署REGION环境变量Key
-     */
-    public static final String OPENSABRE_CLOUD_REGION = "opensabre.cloud.region";
 
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
@@ -40,6 +32,7 @@ public class OpensabreEnvConfig implements EnvironmentPostProcessor {
         MutablePropertySources propertySources = environment.getPropertySources();
         propertySources.addFirst(getVersionEnv());
         propertySources.addFirst(getCloudEnv());
+        propertySources.addFirst(getGitProperties());
     }
 
     /**
@@ -65,5 +58,19 @@ public class OpensabreEnvConfig implements EnvironmentPostProcessor {
         propertyMap.put(OPENSABRE_CLOUD_REGION, OpensabreCloud.getCloudRegion());
         return new MapPropertySource("cloud", propertyMap);
     }
-}
 
+    /**
+     * 加载git.properties构建元数据
+     *
+     * @return PropertiesPropertySource
+     */
+    private PropertiesPropertySource getGitProperties() {
+        Props props = new Props();
+        try {
+            props = new Props("git.properties");
+        } catch (NoResourceException exception) {
+            log.warn("load git properties: {}", exception.getMessage());
+        }
+        return new PropertiesPropertySource("application", props.toProperties());
+    }
+}

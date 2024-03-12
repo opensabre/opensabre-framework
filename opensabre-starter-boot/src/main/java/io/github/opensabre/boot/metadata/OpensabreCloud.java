@@ -5,6 +5,14 @@ package io.github.opensabre.boot.metadata;
  */
 public class OpensabreCloud {
     /**
+     * Opensabre云部署AZ环境变量Key
+     */
+    public static final String OPENSABRE_CLOUD_AZ = "opensabre.cloud.az";
+    /**
+     * Opensabre云部署REGION环境变量Key
+     */
+    public static final String OPENSABRE_CLOUD_REGION = "opensabre.cloud.region";
+    /**
      * 云部署时环境变量，代表可用区
      */
     public static final String ENV_CLOUD_AZ = "CLOUD_AZ";
