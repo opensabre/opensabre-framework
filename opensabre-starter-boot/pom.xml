@@ -72,6 +72,10 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-setting</artifactId>
+        </dependency>
         <!--热加载-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
