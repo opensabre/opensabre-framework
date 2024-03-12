@@ -33,17 +33,17 @@ public class Result<T> {
     /**
      * 统一报文中code代码，标明异常类型
      */
-    @Schema(title = "处理结果code", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(title = "处理结果code", description = "处理结果，000000为成功", requiredMode = Schema.RequiredMode.REQUIRED, example="000000")
     private final String code;
     /**
      * 统一报文中提示信息
      */
-    @Schema(title = "处理结果描述信息")
+    @Schema(title = "处理结果描述信息", description = "对code的详细说明和描述", example = "成功")
     private final String mesg;
     /**
      * 统一报文中报文生成时间
      */
-    @Schema(title = "请求结果生成时间戳", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(title = "请求结果生成时间戳", requiredMode = Schema.RequiredMode.REQUIRED, example = "2024-01-01T20:30:00.123Z")
     @JsonFormat(pattern = DatePattern.UTC_MS_PATTERN)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
@@ -51,7 +51,7 @@ public class Result<T> {
     /**
      * 统一报文中数据部分，支持泛型
      */
-    @Schema(title = "处理结果数据信息", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(title = "处理结果数据信息", description = "可能为字符串、数组、对象等", requiredMode = Schema.RequiredMode.REQUIRED, example = "上海市")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
 

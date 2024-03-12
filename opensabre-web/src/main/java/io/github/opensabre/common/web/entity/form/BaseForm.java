@@ -12,6 +12,7 @@ public class BaseForm<P> implements Serializable {
     /**
      * 用户名
      */
+    @Schema(title = "用户名", description = "Form提交时操作人的用户名", requiredMode = Schema.RequiredMode.REQUIRED, example = "admin")
     private String username;
 
     /**
