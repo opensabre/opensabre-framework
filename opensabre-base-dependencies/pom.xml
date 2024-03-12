@@ -24,6 +24,7 @@
         <spring-boot-maven-plugin.version>2.7.5</spring-boot-maven-plugin.version>
         <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+        <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
         <!--  依赖   -->
         <spring.boot.version>3.2.3</spring.boot.version>
         <spring.cloud.version>2023.0.0</spring.cloud.version>
@@ -272,6 +273,83 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven-surefire-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>pl.project13.maven</groupId>
+                    <artifactId>git-commit-id-plugin</artifactId>
+                    <version>${git-commit-id-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>get-the-git-infos</id>
+                            <goals>
+                                <goal>revision</goal>
+                            </goals>
+                            <!-- *NOTE*: 默认是initialize阶段执行，可以修改为其他阶段 -->
+                            <phase>initialize</phase>
+                        </execution>
+                        <execution>
+                            <id>validate-the-git-infos</id>
+                            <goals>
+                                <goal>validateRevision</goal>
+                            </goals>
+                            <!-- *NOTE*: 默认是打包阶段执行，可以修改为其他 -->
+                            <phase>package</phase>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <!-- git文件记录，默认是 ${project.basedir}/.git如果非默认，可以指定，例如： ${project.basedir}/../.git -->
+                        <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+                        <!-- 属性前缀，可以理解为namespace，默认是git, 例如 `${configured-prefix}.commit.id`.更多信息可以参考 (see
+                            https://github.com/git-commit-id/git-commit-id-maven-plugin/issues/137#issuecomment-418144756
+                            for a full example).
+                        -->
+                        <prefix>git</prefix>
+                        <!-- 默认的日期格式，使用方式(e.g. `git.commit.time` and `git.build.time`). -->
+                        <dateFormat>yyyy-MM-dd'T'HH:mm:ssZ</dateFormat>
+                        <!-- 时区(java.util.TimeZone.getDefault().getID()).
+                            *Note*: 指定时区可以如下 `MAVEN_OPTS=-Duser.timezone=UTC mvn clean package`, `mvn clean package -Duser.timezone=UTC`或者使用 Asia/Shanghai 直接指定，该属性会使用在
+                            (e.g. `git.commit.time` and `git.build.time`).
+                        -->
+                        <dateFormatTimeZone>${user.timezone}</dateFormatTimeZone>
+                        <!-- 默认false，构建时打印信息 -->
+                        <verbose>true</verbose>
+                        <!-- 默认false, 如果是true, 会生成properties 文件（填充文件中的属性值），文件配置在 generateGitPropertiesFilename 中， 构建时间使用如下                    -->
+                        <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                        <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+                        <!-- 默认是true，如果打包是pom(e.g. `<packaging>pom</packaging>`)，则运行该插件 -->
+                        <skipPoms>true</skipPoms>
+                        <!-- 默认true，说明：当设置为“true”时，此插件将尝试将生成的属性公开到`System.getProperties()`. 设置为{@code'false'}以避免此曝光。注意通过命令行提供的参数（例如`-Dgit.commit.id=值`)仍然有优先权。 -->
+                        <injectIntoSysProperties>true</injectIntoSysProperties>
+                        <!-- 默认false， 指定在找不到.git目录时插件是否应失败。当设置为“false”并且没有找到.git目录时，插件将跳过执行。 -->
+                        <failOnNoGitDirectory>true</failOnNoGitDirectory>
+                        <!-- 默认7，配置缩写git提交id的长度(`git.commit.id.abbrev`）到长度至少为N。`0'具有特殊含义（签出git/git文档描述-描述.md)对于特殊情况，缩写为0）。最大值为“40”，因为最大SHA-1长度。 -->
+                        <abbrevLength>7</abbrevLength>
+                        <!-- 目前，交换机允许两种不同的选择：1默认情况下，此属性设置为“flat”，并将生成以前已知的财产`git.commit.id`就像以前版本的插件一样。保持默认情况下，它将“flat”保留向后兼容性，不需要进一步的操作最终用户调整。2如果将此开关设置为“full”，则插件将导出以前已知的属性`git.commit.id`作为`git.commit.id.full`因此将生成完全有效的导出机制中的json对象。-->
+                        <commitIdGenerationMode>flat</commitIdGenerationMode>
+                        <!-- 可以用作非常强大的版本控制助手, 可以参考https://git-scm.com/docs/git-describe -->
+                        <gitDescribe>
+                            <!-- 默认false， 如果true，则不使用该配置 -->
+                            <skip>false</skip>
+                            <!--  默认true，在某些情况下，在提交附近找不到标记（例如，通常在执行浅克隆）。如果将其设置为“true”，并且未找到标记，则此属性将改为回退到提交的id（当“true”时，此属性不会变为空）-->
+                            <always>true</always>
+                            <!-- 在describe输出中，哈希的对象id总是缩写为N个字母（默认为7）-->
+                            <abbrev>7</abbrev>
+                            <!-- Default (optional): -dirty 在处于“脏状态”（未提交）的存储库上运行“描述”时更改），说明输出将包含一个附加后缀 -->
+                            <dirty>-dirty</dirty>
+                        </gitDescribe>
+                        <!-- 附加的验证实用程序，可用于验证项目属性是否设置 -->
+                        <validationProperties>
+                            <validationProperty>
+                                <!-- 用于识别验证的描述性名称,不匹配（将显示在错误消息中）-->
+                                <name>validating project version</name>
+                                <!-- 需要验证的值*注意*：为了能够验证在pom本身您可能需要设置配置`<injectAllReactorProjects>true</injectAllReactorProjects>`。 -->
+                                <value>${project.version}</value>
+                                <!-- the expected value -->
+                                <shouldMatchTo><![CDATA[^.*(?<!-SNAPSHOT)$]]></shouldMatchTo>
+                            </validationProperty>
+                            <!-- the next validationProperty you would like to validate -->
+                        </validationProperties>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

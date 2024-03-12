@@ -3,6 +3,7 @@ package io.github.opensabre.common.web.exception;
 import io.github.opensabre.common.core.entity.vo.Result;
 import io.github.opensabre.common.core.exception.BaseException;
 import io.github.opensabre.common.core.exception.SystemErrorType;
+import jakarta.servlet.ServletException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 /**
  * 默认全局异常处理类
@@ -57,9 +59,9 @@ public class DefaultGlobalExceptionHandlerAdvice {
         return Result.fail(SystemErrorType.METHOD_NOT_SUPPORTED);
     }
 
-    @ExceptionHandler(value = {NoHandlerFoundException.class})
+    @ExceptionHandler(value = {NoHandlerFoundException.class, NoResourceFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Result noHandlerFoundException(NoHandlerFoundException ex) {
+    public Result noHandlerFoundException(ServletException ex) {
         log.warn("No static resource exception:{}", ex.getMessage());
         return Result.fail(SystemErrorType.RESOURCE_NOT_FOUND, ex.getMessage());
     }
