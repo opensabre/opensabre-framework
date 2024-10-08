@@ -16,6 +16,10 @@ public enum SystemErrorType implements ErrorType {
      */
     SYSTEM_BUSY("000001", "系统繁忙,请稍候再试"),
     /**
+     * 未找到该资源
+     */
+    RESOURCE_NOT_FOUND("000404", "资源未找到"),
+    /**
      * 网关转发时未找到该服务
      */
     GATEWAY_NOT_FOUND_SERVICE("010404", "服务未找到"),

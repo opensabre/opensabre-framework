@@ -6,7 +6,9 @@ import io.github.opensabre.boot.metadata.OpensabreVersion;
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.github.opensabre.boot.config.OpensabreEnvConfig.*;
+import static io.github.opensabre.boot.metadata.OpensabreCloud.OPENSABRE_CLOUD_AZ;
+import static io.github.opensabre.boot.metadata.OpensabreCloud.OPENSABRE_CLOUD_REGION;
+import static io.github.opensabre.boot.metadata.OpensabreVersion.OPENSABRE_VERSION;
 
 /**
  * 应用元数据类

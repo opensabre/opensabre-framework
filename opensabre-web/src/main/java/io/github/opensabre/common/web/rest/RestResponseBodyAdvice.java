@@ -2,6 +2,7 @@ package io.github.opensabre.common.web.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.opensabre.common.core.entity.vo.Result;
+import jakarta.validation.constraints.NotNull;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
-import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 /**
  * Rest统一返回报文封装，在rest方法返回后送给客户端前执行
@@ -71,7 +72,7 @@ public class RestResponseBodyAdvice implements ResponseBodyAdvice<Object> {
             return body;
         }
         // 如果是String，将Result转为json string
-        if (body instanceof String) {
+        if (Objects.isNull(body) || body instanceof String) {
             return new ObjectMapper().writeValueAsString(Result.success(body));
         }
         return Result.success(body);

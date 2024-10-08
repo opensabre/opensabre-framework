@@ -67,7 +67,7 @@
         <!--Swagger - RESTFULL API文档-->
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
-            <artifactId>swagger-annotations</artifactId>
+            <artifactId>swagger-annotations-jakarta</artifactId>
         </dependency>
         <!--使用 lombok 简化 Java 代码-->
         <dependency>
@@ -121,8 +121,8 @@
         </dependency>
         <!--开发相关-->
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
         <!--测试框架-->

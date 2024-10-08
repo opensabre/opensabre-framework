@@ -47,13 +47,12 @@
             <charset>UTF-8</charset>
         </encoder>
         <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- 日志归档 -->
             <fileNamePattern>${log.path}/opensabre-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>100MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-            <!--日志文档保留天数-->
+            <!-- 日志文件大小 -->
+            <maxFileSize>100MB</maxFileSize>
+            <!-- 日志文档保留天数 -->
             <maxHistory>15</maxHistory>
         </rollingPolicy>
     </appender>

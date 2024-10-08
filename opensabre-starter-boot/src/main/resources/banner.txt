@@ -9,5 +9,5 @@ ${AnsiColor.CYAN}${AnsiStyle.BOLD}
 ::  Java                 ::   (v${java.version})
 ::  Spring Boot          ::  ${spring-boot.formatted-version}
 ::  Opensabre            ::  ${opensabre.formatted-version}
-::  Application          ::  ${application.formatted-version}
+::  Application          ::   (v${git.build.version})
 ${AnsiStyle.NORMAL}

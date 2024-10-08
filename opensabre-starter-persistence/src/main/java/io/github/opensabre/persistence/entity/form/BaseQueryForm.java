@@ -15,10 +15,12 @@ public class BaseQueryForm<P extends BaseParam> extends BaseForm {
     /**
      * 分页查询的参数，当前页数
      */
+    @Schema(title = "当前页数", description = "分页查询的参数，当前页数", requiredMode = Schema.RequiredMode.REQUIRED, defaultValue = "1")
     private long current = 1;
     /**
      * 分页查询的参数，当前页面每页显示的数量
      */
+    @Schema(title = "每页数量", description = "分页查询的参数，当前页面每页显示的数量", requiredMode = Schema.RequiredMode.REQUIRED, defaultValue = "10")
     private long size = 10;
 
     /**
