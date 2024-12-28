@@ -8,4 +8,4 @@ logging:
   file:
     path: logs
   pattern:
-    level: '%5p [${spring.application.name},%X{traceId:-},%X{spanId:-}]'
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-},%X{parentId:-}]'
