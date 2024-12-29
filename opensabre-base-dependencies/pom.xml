@@ -17,7 +17,7 @@
         <dockerhub.repository>opensabre</dockerhub.repository>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <!--  编译   -->
+        <!--  编译  -->
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <lombok.version>1.18.30</lombok.version>
@@ -25,7 +25,7 @@
         <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
         <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
-        <!--  依赖   -->
+        <!--  依赖  -->
         <spring.boot.version>3.4.1</spring.boot.version>
         <spring.cloud.version>2024.0.0</spring.cloud.version>
         <spring.cloud.alibaba.version>2023.0.3.2</spring.cloud.alibaba.version>
@@ -40,9 +40,9 @@
         <feign-interceptors>1.1.2</feign-interceptors>
         <guava.version>31.1-jre</guava.version>
         <jasypt-springboot.version>3.0.5</jasypt-springboot.version>
-        <!--  测试   -->
+        <!--  测试  -->
         <junit-jupiter.version>5.11.4</junit-jupiter.version>
-        <httpclient5.version>5.2.3</httpclient5.version>
+        <httpclient5.version>5.3.1</httpclient5.version>
     </properties>
 
     <!-- 依赖管理定义 -->
