@@ -34,7 +34,7 @@
         <swagger-annotations.version>2.2.19</swagger-annotations.version>
         <mysql-connector-j.version>8.0.31</mysql-connector-j.version>
         <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
-        <mybatis-plus-boot-starter.version>3.5.9</mybatis-plus-boot-starter.version>
+        <mybatis-plus-boot-starter.version>3.5.5</mybatis-plus-boot-starter.version>
         <mybatis-spring.version>3.0.4</mybatis-spring.version>
         <hutool.version>5.8.35</hutool.version>
         <feign-interceptors>1.1.2</feign-interceptors>
