@@ -18,7 +18,7 @@ stages:
       - step: build@maven
         name: build_maven
         displayName: Maven 构建
-        jdkVersion: 8
+        jdkVersion: '17'
         mavenVersion: 3.9.6
         commands:
           - mvn -B clean package -Dmaven.test.skip=true
