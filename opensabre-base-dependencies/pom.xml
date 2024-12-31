@@ -38,7 +38,7 @@
         <mybatis-spring.version>3.0.4</mybatis-spring.version>
         <hutool.version>5.8.35</hutool.version>
         <feign-interceptors>1.1.2</feign-interceptors>
-        <guava.version>31.1-jre</guava.version>
+        <guava.version>33.4.0-jre</guava.version>
         <jasypt-springboot.version>3.0.5</jasypt-springboot.version>
         <!--  测试  -->
         <junit-jupiter.version>5.11.4</junit-jupiter.version>
