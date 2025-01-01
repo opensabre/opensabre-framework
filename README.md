@@ -1,4 +1,4 @@
-💪Opensabre是基于SpringCloud2021的微服务开发平台，整合了Spring Security、Springcloud Alibaba等组件。
+💪Opensabre是基于SpringCloud2023的微服务开发平台，整合了Spring Security、Springcloud Alibaba等组件。
 
 包含了基础的RBAC权限管理、授权认证、网关管理、服务治理、审计日志等系统管理基础应用。
 
