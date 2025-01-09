@@ -45,6 +45,11 @@
             <groupId>io.github.openfeign</groupId>
             <artifactId>feign-hc5</artifactId>
         </dependency>
+        <!--feign-micrometer 5-->
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-micrometer</artifactId>
+        </dependency>
         <!--服务调用熔断降级-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

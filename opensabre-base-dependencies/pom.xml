@@ -29,15 +29,19 @@
         <spring.boot.version>3.4.1</spring.boot.version>
         <spring.cloud.version>2024.0.0</spring.cloud.version>
         <spring.cloud.alibaba.version>2023.0.3.2</spring.cloud.alibaba.version>
-        <jetcache-starter-redis.version>2.7.7</jetcache-starter-redis.version>
+        <!--swagger文档相关-->
         <knife4j-openapi3.version>4.5.0</knife4j-openapi3.version>
-        <swagger-annotations.version>2.2.19</swagger-annotations.version>
+        <swagger-annotations.version>2.2.25</swagger-annotations.version>
+        <!--数据库相关-->
         <mysql-connector-j.version>8.2.0</mysql-connector-j.version>
-        <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
         <mybatis-plus-boot-starter.version>3.5.5</mybatis-plus-boot-starter.version>
         <mybatis-spring.version>3.0.4</mybatis-spring.version>
-        <hutool.version>5.8.35</hutool.version>
+        <!--中间件-->
+        <jetcache-starter-redis.version>2.7.7</jetcache-starter-redis.version>
+        <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
         <feign-interceptors>1.1.2</feign-interceptors>
+        <!--工具-->
+        <hutool.version>5.8.35</hutool.version>
         <guava.version>33.4.0-jre</guava.version>
         <jasypt-springboot.version>3.0.5</jasypt-springboot.version>
         <!--  测试  -->
