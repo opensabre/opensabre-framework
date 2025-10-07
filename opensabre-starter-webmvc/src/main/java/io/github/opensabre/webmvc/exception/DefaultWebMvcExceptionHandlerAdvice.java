@@ -1,7 +1,6 @@
-package io.github.opensabre.common.web.exception;
+package io.github.opensabre.webmvc.exception;
 
 import io.github.opensabre.common.core.entity.vo.Result;
-import io.github.opensabre.common.core.exception.BaseException;
 import io.github.opensabre.common.core.exception.SystemErrorType;
 import jakarta.servlet.ServletException;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +25,7 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 @Slf4j
 @Order
 @RestControllerAdvice
-public class DefaultGlobalExceptionHandlerAdvice {
+public class DefaultWebMvcExceptionHandlerAdvice {
 
     @ExceptionHandler(value = {MissingServletRequestParameterException.class})
     public Result<?> missingServletRequestParameterException(MissingServletRequestParameterException ex) {
@@ -71,18 +70,5 @@ public class DefaultGlobalExceptionHandlerAdvice {
     public Result<?> notSupportedMethodException(HttpMediaTypeNotSupportedException ex) {
         log.warn("http request media not supported exception {}", ex.getMessage());
         return Result.fail(SystemErrorType.METHOD_NOT_SUPPORTED);
-    }
-
-    @ExceptionHandler(value = {BaseException.class})
-    public Result<?> baseException(BaseException ex) {
-        log.error("base exception:{}", ex.getMessage());
-        return Result.fail(ex.getErrorType());
-    }
-
-    @ExceptionHandler(value = {Exception.class, Throwable.class})
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Result<?> exception(Throwable ex) {
-        log.error("exception: ", ex);
-        return Result.fail();
     }
 }
