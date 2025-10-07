@@ -17,33 +17,36 @@
         <dockerhub.repository>opensabre</dockerhub.repository>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <!--  编译   -->
+        <!--  编译  -->
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <lombok.version>1.18.30</lombok.version>
-        <spring-boot-maven-plugin.version>3.2.3</spring-boot-maven-plugin.version>
+        <spring-boot-maven-plugin.version>3.4.1</spring-boot-maven-plugin.version>
         <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
         <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
-        <!--  依赖   -->
-        <spring.boot.version>3.2.3</spring.boot.version>
-        <spring.cloud.version>2023.0.0</spring.cloud.version>
-        <spring.cloud.alibaba.version>2023.0.0.0-RC1</spring.cloud.alibaba.version>
-        <jetcache-starter-redis.version>2.7.5</jetcache-starter-redis.version>
-        <knife4j-openapi3.version>4.4.0</knife4j-openapi3.version>
-        <swagger-annotations.version>2.2.19</swagger-annotations.version>
-        <mysql-connector-j.version>8.0.31</mysql-connector-j.version>
-        <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
+        <!--  依赖  -->
+        <spring.boot.version>3.4.1</spring.boot.version>
+        <spring.cloud.version>2024.0.0</spring.cloud.version>
+        <spring.cloud.alibaba.version>2023.0.3.2</spring.cloud.alibaba.version>
+        <!--swagger文档相关-->
+        <knife4j-openapi3.version>4.5.0</knife4j-openapi3.version>
+        <swagger-annotations.version>2.2.25</swagger-annotations.version>
+        <!--数据库相关-->
+        <mysql-connector-j.version>8.2.0</mysql-connector-j.version>
         <mybatis-plus-boot-starter.version>3.5.5</mybatis-plus-boot-starter.version>
-        <mybatis-spring.version>3.0.3</mybatis-spring.version>
-        <hutool.version>5.8.18</hutool.version>
+        <mybatis-spring.version>3.0.4</mybatis-spring.version>
+        <!--中间件-->
+        <jetcache-starter-redis.version>2.7.7</jetcache-starter-redis.version>
+        <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
         <feign-interceptors>1.1.2</feign-interceptors>
-        <guava.version>31.1-jre</guava.version>
+        <!--工具-->
+        <hutool.version>5.8.35</hutool.version>
+        <guava.version>33.4.0-jre</guava.version>
         <jasypt-springboot.version>3.0.5</jasypt-springboot.version>
-        <!--  测试   -->
-        <junit-jupiter.version>5.9.1</junit-jupiter.version>
-        <spring-test.version>5.3.31</spring-test.version>
-        <httpclient5.version>5.2.3</httpclient5.version>
+        <!--  测试  -->
+        <junit-jupiter.version>5.11.4</junit-jupiter.version>
+        <httpclient5.version>5.3.1</httpclient5.version>
     </properties>
 
     <!-- 依赖管理定义 -->
@@ -116,6 +119,12 @@
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
                 <version>${knife4j-openapi3.version}</version>
+            </dependency>
+            <!--Swagger - RESTFULL API文档-->
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations-jakarta</artifactId>
+                <version>${swagger-annotations.version}</version>
             </dependency>
             <!--opensabre 组件-->
             <dependency>
@@ -318,23 +327,23 @@
                         <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
                         <!-- 默认是true，如果打包是pom(e.g. `<packaging>pom</packaging>`)，则运行该插件 -->
                         <skipPoms>true</skipPoms>
-                        <!-- 默认true，说明：当设置为“true”时，此插件将尝试将生成的属性公开到`System.getProperties()`. 设置为{@code'false'}以避免此曝光。注意通过命令行提供的参数（例如`-Dgit.commit.id=值`)仍然有优先权。 -->
+                        <!-- 默认true，说明：当设置为"true"时，此插件将尝试将生成的属性公开到`System.getProperties()`. 设置为{@code'false'}以避免此曝光。注意通过命令行提供的参数（例如`-Dgit.commit.id=值`)仍然有优先权。 -->
                         <injectIntoSysProperties>true</injectIntoSysProperties>
-                        <!-- 默认false， 指定在找不到.git目录时插件是否应失败。当设置为“false”并且没有找到.git目录时，插件将跳过执行。 -->
+                        <!-- 默认false， 指定在找不到.git目录时插件是否应失败。当设置为"false"并且没有找到.git目录时，插件将跳过执行。 -->
                         <failOnNoGitDirectory>true</failOnNoGitDirectory>
-                        <!-- 默认7，配置缩写git提交id的长度(`git.commit.id.abbrev`）到长度至少为N。`0'具有特殊含义（签出git/git文档描述-描述.md)对于特殊情况，缩写为0）。最大值为“40”，因为最大SHA-1长度。 -->
+                        <!-- 默认7，配置缩写git提交id的长度(`git.commit.id.abbrev`）到长度至少为N。`0'具有特殊含义（签出git/git文档描述-描述.md)对于特殊情况，缩写为0）。最大值为"40"，因为最大SHA-1长度。 -->
                         <abbrevLength>7</abbrevLength>
-                        <!-- 目前，交换机允许两种不同的选择：1默认情况下，此属性设置为“flat”，并将生成以前已知的财产`git.commit.id`就像以前版本的插件一样。保持默认情况下，它将“flat”保留向后兼容性，不需要进一步的操作最终用户调整。2如果将此开关设置为“full”，则插件将导出以前已知的属性`git.commit.id`作为`git.commit.id.full`因此将生成完全有效的导出机制中的json对象。-->
+                        <!-- 目前，交换机允许两种不同的选择：1默认情况下，此属性设置为"flat"，并将生成以前已知的财产`git.commit.id`就像以前版本的插件一样。保持默认情况下，它将"flat"保留向后兼容性，不需要进一步的操作最终用户调整。2如果将此开关设置为"full"，则插件将导出以前已知的属性`git.commit.id`作为`git.commit.id.full`因此将生成完全有效的导出机制中的json对��。-->
                         <commitIdGenerationMode>flat</commitIdGenerationMode>
                         <!-- 可以用作非常强大的版本控制助手, 可以参考https://git-scm.com/docs/git-describe -->
                         <gitDescribe>
                             <!-- 默认false， 如果true，则不使用该配置 -->
                             <skip>false</skip>
-                            <!--  默认true，在某些情况下，在提交附近找不到标记（例如，通常在执行浅克隆）。如果将其设置为“true”，并且未找到标记，则此属性将改为回退到提交的id（当“true”时，此属性不会变为空）-->
+                            <!--  默认true，在某些情况下，在提交附近找不到标记（例如，通常在执行浅克隆）。如果将其设置为"true"，并且未找到标记，则此属性将改为回退到提交的id（当"true"时，此属性不会变为空）-->
                             <always>true</always>
                             <!-- 在describe输出中，哈希的对象id总是缩写为N个字母（默认为7）-->
                             <abbrev>7</abbrev>
-                            <!-- Default (optional): -dirty 在处于“脏状态”（未提交）的存储库上运行“描述”时更改），说明输出将包含一个附加后缀 -->
+                            <!-- Default (optional): -dirty 在处于"脏状态"（未提交）的存储库上运行"描述"时更改），说明输出将包含一个附加后缀 -->
                             <dirty>-dirty</dirty>
                         </gitDescribe>
                         <!-- 附加的验证实用程序，可用于验证项目属性是否设置 -->
