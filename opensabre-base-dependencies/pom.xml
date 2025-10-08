@@ -44,6 +44,7 @@
         <hutool.version>5.8.35</hutool.version>
         <guava.version>33.4.0-jre</guava.version>
         <jasypt-springboot.version>3.0.5</jasypt-springboot.version>
+        <jib-maven-plugin.version>3.4.6</jib-maven-plugin.version>
         <!--  测试  -->
         <junit-jupiter.version>5.11.4</junit-jupiter.version>
         <httpclient5.version>5.3.1</httpclient5.version>
@@ -274,6 +275,32 @@
                             <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                         </buildArgs>
                         <dockerfile>src/main/docker/Dockerfile</dockerfile>
+                    </configuration>
+                </plugin>
+                <!-- Jib Maven插件 -->
+                <plugin>
+                    <groupId>com.google.cloud.tools</groupId>
+                    <artifactId>jib-maven-plugin</artifactId>
+                    <version>${jib-maven-plugin.version}</version>
+                    <configuration>
+                        <!-- 基础镜像 -->
+                        <from>
+                            <image>docker.1ms.run/eclipse-temurin:21-jre-alpine</image>
+                        </from>
+                        <!-- 目标镜像 -->
+                        <to>
+                            <image>opensabre/${project.artifactId}:${project.version}</image>
+                        </to>
+                        <!-- 容器配置 -->
+                        <container>
+                            <user>1001</user>
+                            <workingDirectory>/app</workingDirectory>
+                            <ports>
+                                <port>8000</port>
+                            </ports>
+                            <jvmFlags>-XX:+UseContainerSupport</jvmFlags>
+                            <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
+                        </container>
                     </configuration>
                 </plugin>
                 <!--测试案例-->

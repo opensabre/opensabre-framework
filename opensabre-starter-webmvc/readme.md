@@ -1,0 +1,28 @@
+WEBMVC公共包
+----------
+
+## 简介
+
+主要封装spring-webmvc WEB开发用到的通用公共类、工具类，如公共web拦截器、web统一异常定义等。
+
+## 使用
+
+进入应用目录
+
+安装命令：`mvn install`
+
+## 使用指南
+
+### 应用引入
+
+需要将编译生成的jar包安装到本地maven类进入引用使用。
+
+pom.xml
+
+```
+<dependency>
+    <groupId>io.github.opensabre</groupId>
+    <artifactId>opensabre-starter-webmvc</artifactId>
+    <version>0.1.1</version>
+</dependency>
+```
