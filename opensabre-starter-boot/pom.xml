@@ -13,6 +13,9 @@
     <artifactId>opensabre-starter-boot</artifactId>
     <packaging>jar</packaging>
 
+    <name>opensabre-starter-boot</name>
+    <description>Opensabre Boot Starter</description>
+
     <properties>
         <logback-core.version>1.5.13</logback-core.version>
         <springdoc-openapi-starter.version>2.7.0</springdoc-openapi-starter.version>

@@ -13,6 +13,9 @@
     <artifactId>opensabre-starter-eda</artifactId>
     <packaging>jar</packaging>
 
+    <name>opensabre-starter-eda</name>
+    <description>Opensabre Boot Eda</description>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
