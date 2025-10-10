@@ -60,21 +60,23 @@
         <maven-source-plugin.version>3.1.0</maven-source-plugin.version>
         <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
-        <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+        <central-publishing-maven-plugin.version>0.9.0</central-publishing-maven-plugin.version>
 
         <revision>0.1.1</revision>
     </properties>
 
-    <!--发布仓库的定义-->
+    <!-- 发布配置 -->
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <name>OSS Sonatype Snapshots</name>
+            <url>https://central.sonatype.com/content/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
             <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <name>OSS Sonatype Releases</name>
+            <url>https://central.sonatype.com/content/repositories/releases</url>
         </repository>
     </distributionManagement>
 
@@ -85,14 +87,6 @@
             <url>https://repo.spring.io/libs-milestone</url>
             <snapshots>
                 <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>sonatype-nexus-snapshots</id>
-            <name>Sonatype Nexus Snapshots</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-            <snapshots>
-                <enabled>true</enabled>
             </snapshots>
         </repository>
     </repositories>
@@ -187,14 +181,12 @@
                 </plugin>
                 <!--上传jar包插件-->
                 <plugin>
-                    <groupId>org.sonatype.plugins</groupId>
-                    <artifactId>nexus-staging-maven-plugin</artifactId>
-                    <version>${nexus-staging-maven-plugin.version}</version>
+                    <groupId>org.sonatype.central</groupId>
+                    <artifactId>central-publishing-maven-plugin</artifactId>
+                    <version>${central-publishing-maven-plugin.version}</version>
                     <extensions>true</extensions>
                     <configuration>
-                        <serverId>ossrh</serverId>
-                        <nexusUrl>https://ossrh-staging-api.central.sonatype.com</nexusUrl>
-                        <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                        <publishingServerId>ossrh</publishingServerId>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -275,8 +267,8 @@
                     </plugin>
                     <!-- 发布包到nexus插件-->
                     <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
                     </plugin>
                 </plugins>
             </build>

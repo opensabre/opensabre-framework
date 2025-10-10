@@ -13,6 +13,9 @@
     <artifactId>opensabre-starter-register</artifactId>
     <packaging>jar</packaging>
 
+    <name>opensabre-starter-register</name>
+    <description>Opensabre Boot Register</description>
+
     <dependencyManagement>
         <dependencies>
             <dependency>

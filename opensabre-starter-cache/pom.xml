@@ -13,6 +13,9 @@
     <artifactId>opensabre-starter-cache</artifactId>
     <packaging>jar</packaging>
 
+    <name>opensabre-starter-cache</name>
+    <description>Opensabre Boot Cache</description>
+
     <dependencyManagement>
         <dependencies>
             <dependency>

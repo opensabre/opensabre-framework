@@ -13,6 +13,9 @@
     <artifactId>opensabre-base-dependencies</artifactId>
     <packaging>pom</packaging>
 
+    <name>opensabre-base-dependencies</name>
+    <description>Base Dependencies</description>
+
     <properties>
         <dockerhub.repository>opensabre</dockerhub.repository>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

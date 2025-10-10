@@ -13,6 +13,9 @@
     <artifactId>opensabre-starter-rpc</artifactId>
     <packaging>jar</packaging>
 
+    <name>opensabre-starter-rpc</name>
+    <description>Opensabre Boot Rpc</description>
+
     <dependencyManagement>
         <dependencies>
             <dependency>

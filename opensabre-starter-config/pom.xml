@@ -13,6 +13,9 @@
     <artifactId>opensabre-starter-config</artifactId>
     <packaging>jar</packaging>
 
+    <name>opensabre-starter-config</name>
+    <description>Opensabre Boot Config</description>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
