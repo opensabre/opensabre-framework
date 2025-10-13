@@ -99,7 +99,6 @@
                 <groupId>jakarta.servlet</groupId>
                 <artifactId>jakarta.servlet-api</artifactId>
                 <version>${jakarta.servlet-api.version}</version>
-                <scope>provided</scope>
             </dependency>
             <!--  负载组件 -->
             <dependency>
@@ -288,11 +287,19 @@
                     <configuration>
                         <!-- 基础镜像 -->
                         <from>
-                            <image>docker.1ms.run/eclipse-temurin:21-jre-alpine</image>
+                            <image>eclipse-temurin:21-jre-alpine</image>
                         </from>
                         <!-- 目标镜像 -->
                         <to>
-                            <image>opensabre/${project.artifactId}:${project.version}</image>
+                            <image>${REGISTRY_URL}/${project.artifactId}:${project.version}</image>
+                            <auth>
+                                <username>${secret.id}</username>
+                                <password>${secret.key}</password>
+                            </auth>
+                            <tags>
+                                <tag>latest</tag>
+                                <tag>${project.version}</tag>
+                            </tags>
                         </to>
                         <!-- 容器配置 -->
                         <container>
