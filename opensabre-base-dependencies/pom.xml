@@ -279,7 +279,28 @@
                     <groupId>com.google.cloud.tools</groupId>
                     <artifactId>jib-maven-plugin</artifactId>
                     <version>${jib-maven-plugin.version}</version>
+                    <dependencies>
+                        <!-- 添加所有权扩展 -->
+                        <dependency>
+                            <groupId>com.google.cloud.tools</groupId>
+                            <artifactId>jib-ownership-extension-maven</artifactId>
+                            <version>0.1.0</version>
+                        </dependency>
+                    </dependencies>
                     <configuration>
+                        <pluginExtensions>
+                            <pluginExtension>
+                                <implementation>com.google.cloud.tools.jib.maven.extension.ownership.JibOwnershipExtension</implementation>
+                                <configuration implementation="com.google.cloud.tools.jib.maven.extension.ownership.Configuration">
+                                    <rules>
+                                        <rule>
+                                            <glob>/app/logs/**</glob>
+                                            <ownership>1001</ownership>
+                                        </rule>
+                                    </rules>
+                                </configuration>
+                            </pluginExtension>
+                        </pluginExtensions>
                         <!-- 基础镜像 -->
                         <from>
                             <image>eclipse-temurin:21-jre-alpine</image>
@@ -300,6 +321,9 @@
                         <container>
                             <user>1001</user>
                             <workingDirectory>/app</workingDirectory>
+                            <volumes>
+                                <volume>/app/logs</volume>
+                            </volumes>
                             <!-- 设置环境变量 -->
                             <environment>
                                 <!-- 设置时区 -->
