@@ -50,7 +50,7 @@
         <jib-maven-plugin.version>3.4.6</jib-maven-plugin.version>
         <!--  测试  -->
         <junit-jupiter.version>5.11.4</junit-jupiter.version>
-        <httpclient5.version>5.3.1</httpclient5.version>
+        <httpclient5.version>5.4.1</httpclient5.version>
     </properties>
 
     <!-- 依赖管理定义 -->
@@ -305,9 +305,11 @@
                         <container>
                             <user>1001</user>
                             <workingDirectory>/app</workingDirectory>
-                            <ports>
-                                <port>8000</port>
-                            </ports>
+                            <!-- 设置环境变量 -->
+                            <environment>
+                                <!-- 设置时区 -->
+                                <TZ>Asia/Shanghai</TZ>
+                            </environment>
                             <jvmFlags>-XX:+UseContainerSupport</jvmFlags>
                             <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
                         </container>
