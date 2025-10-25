@@ -50,7 +50,7 @@
         <jib-maven-plugin.version>3.4.6</jib-maven-plugin.version>
         <!--  测试  -->
         <junit-jupiter.version>5.11.4</junit-jupiter.version>
-        <httpclient5.version>5.3.1</httpclient5.version>
+        <httpclient5.version>5.4.1</httpclient5.version>
     </properties>
 
     <!-- 依赖管理定义 -->
@@ -99,7 +99,6 @@
                 <groupId>jakarta.servlet</groupId>
                 <artifactId>jakarta.servlet-api</artifactId>
                 <version>${jakarta.servlet-api.version}</version>
-                <scope>provided</scope>
             </dependency>
             <!--  负载组件 -->
             <dependency>
@@ -108,11 +107,6 @@
                 <version>${feign-interceptors}</version>
             </dependency>
             <!-- 服务调用负载 -->
-            <dependency>
-                <groupId>org.apache.httpcomponents.core5</groupId>
-                <artifactId>httpcore5</artifactId>
-                <version>${httpclient5.version}</version>
-            </dependency>
             <dependency>
                 <groupId>org.apache.httpcomponents.client5</groupId>
                 <artifactId>httpclient5</artifactId>
@@ -285,22 +279,56 @@
                     <groupId>com.google.cloud.tools</groupId>
                     <artifactId>jib-maven-plugin</artifactId>
                     <version>${jib-maven-plugin.version}</version>
+                    <dependencies>
+                        <!-- 添加所有权扩展 -->
+                        <dependency>
+                            <groupId>com.google.cloud.tools</groupId>
+                            <artifactId>jib-ownership-extension-maven</artifactId>
+                            <version>0.1.0</version>
+                        </dependency>
+                    </dependencies>
                     <configuration>
+                        <pluginExtensions>
+                            <pluginExtension>
+                                <implementation>com.google.cloud.tools.jib.maven.extension.ownership.JibOwnershipExtension</implementation>
+                                <configuration implementation="com.google.cloud.tools.jib.maven.extension.ownership.Configuration">
+                                    <rules>
+                                        <rule>
+                                            <glob>/app/logs/**</glob>
+                                            <ownership>1001</ownership>
+                                        </rule>
+                                    </rules>
+                                </configuration>
+                            </pluginExtension>
+                        </pluginExtensions>
                         <!-- 基础镜像 -->
                         <from>
-                            <image>docker.1ms.run/eclipse-temurin:21-jre-alpine</image>
+                            <image>eclipse-temurin:21-jre-alpine</image>
                         </from>
                         <!-- 目标镜像 -->
                         <to>
-                            <image>opensabre/${project.artifactId}:${project.version}</image>
+                            <image>${REGISTRY_URL}/${project.artifactId}:${project.version}</image>
+                            <auth>
+                                <username>${secret.id}</username>
+                                <password>${secret.key}</password>
+                            </auth>
+                            <tags>
+                                <tag>latest</tag>
+                                <tag>${project.version}</tag>
+                            </tags>
                         </to>
                         <!-- 容器配置 -->
                         <container>
                             <user>1001</user>
                             <workingDirectory>/app</workingDirectory>
-                            <ports>
-                                <port>8000</port>
-                            </ports>
+                            <volumes>
+                                <volume>/app/logs</volume>
+                            </volumes>
+                            <!-- 设置环境变量 -->
+                            <environment>
+                                <!-- 设置时区 -->
+                                <TZ>Asia/Shanghai</TZ>
+                            </environment>
                             <jvmFlags>-XX:+UseContainerSupport</jvmFlags>
                             <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
                         </container>
