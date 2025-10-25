@@ -63,7 +63,7 @@ public class AuditAspect {
             // 构建审计日志
             long executionTime = System.currentTimeMillis() - startTime;
             AuditInfo auditinfo = buildAuditInfo(joinPoint.getArgs(), audit, result, exception, executionTime);
-            auditinfo.setKey(keyValue);
+            auditinfo.setTargetKey(keyValue);
             // 事件通知
             AuditEvent auditEvent = new AuditEvent(auditinfo);
             context.publishEvent(auditEvent);

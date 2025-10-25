@@ -81,7 +81,7 @@ public class AuditInfo {
     private Long executionTime;
 
     /**
-     * 操作目标ID
+     * 操作目标key
      */
-    private String key;
+    private String targetKey;
 }
