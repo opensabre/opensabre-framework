@@ -7,15 +7,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.MethodParameter;
 import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.multipart.MultipartException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class DefaultGlobalExceptionHandlerAdviceTest {
 
@@ -43,9 +40,8 @@ public class DefaultGlobalExceptionHandlerAdviceTest {
     public void testServiceException() throws NoSuchMethodException {
         //准备数据
         MethodParameter methodParameter = new MethodParameter(Object.class.getMethod("toString"), -1);
-        BindingResult bindingResult = mock(BindException.class);
-        FieldError fieldError = new FieldError("test", "test", "testmessage");
-        when(bindingResult.getFieldError()).thenReturn(fieldError);
+        BindException bindingResult = new BindException(new Object(), "test");
+        bindingResult.addError(new FieldError("test", "test", "testmessage"));
         MethodArgumentNotValidException exception = new MethodArgumentNotValidException(methodParameter, bindingResult);
         //调用
         Result result = defaultGlobalExceptionHandlerAdvice.argumentInvalidException(exception);
