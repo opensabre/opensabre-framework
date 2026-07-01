@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Opensabre is a microservices development platform based on Spring Cloud 2023, integrating Spring Security, Spring Cloud Alibaba, and other components. It provides foundational RBAC permission management, authorization authentication, gateway management, service governance, audit logging, and other system management applications.
 
-**Current Version**: 0.3.0
+**Current Version**: 0.4.0
 
 This is the framework layer of the Opensabre monorepo - it provides reusable starter modules that are published to Maven Central and consumed by application services (base-organization, base-authorization, base-sysadmin, etc.).
 

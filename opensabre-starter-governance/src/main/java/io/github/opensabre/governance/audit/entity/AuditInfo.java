@@ -1,10 +1,12 @@
-package io.github.opensabre.boot.entity;
+package io.github.opensabre.governance.audit.entity;
 
-import lombok.*;
+import io.github.opensabre.governance.audit.annotations.OperationType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
-import io.github.opensabre.boot.annotations.OperationType;
+import java.util.Date;
 
 /**
  * 审计日志实体
@@ -23,7 +25,7 @@ public class AuditInfo {
     /**
      * 操作时间
      */
-    private LocalDateTime operationTime;
+    private Date operationTime;
 
     /**
      * 操作人用户名

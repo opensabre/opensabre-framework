@@ -1,4 +1,4 @@
-package io.github.opensabre.boot.event;
+package io.github.opensabre.governance.audit.event;
 
 import org.springframework.context.ApplicationEvent;
 

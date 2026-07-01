@@ -10,15 +10,11 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>opensabre-starter-persistence</artifactId>
+    <artifactId>opensabre-starter-governance</artifactId>
     <packaging>jar</packaging>
 
-    <name>opensabre-starter-persistence</name>
-    <description>Opensabre Boot Persistence</description>
-
-    <properties>
-        <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
-    </properties>
+    <name>opensabre-starter-governance</name>
+    <description>Opensabre governance starter for audit and rate limit annotations</description>
 
     <dependencyManagement>
         <dependencies>
@@ -37,40 +33,31 @@
             <groupId>io.github.opensabre</groupId>
             <artifactId>opensabre-starter-boot</artifactId>
         </dependency>
-        <!--使用 lombok 简化 Java 代码-->
+        <dependency>
+            <groupId>io.github.opensabre</groupId>
+            <artifactId>opensabre-starter-rpc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.opensabre</groupId>
+            <artifactId>opensabre-starter-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.github.opensabre</groupId>
-            <artifactId>opensabre-web</artifactId>
-        </dependency>
-        <!--mybatis plus依赖包-->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-extension</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis-spring</artifactId>
-        </dependency>
-        <!--数据库-->
-        <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
-        <!--测试框架-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
