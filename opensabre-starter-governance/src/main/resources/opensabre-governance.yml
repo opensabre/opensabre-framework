@@ -1,0 +1,10 @@
+opensabre:
+  governance:
+    enabled: true
+    sysadmin:
+      service-id: base-sysadmin
+    audit:
+      enabled: true
+    ratelimit:
+      enabled: true
+      fail-open: true

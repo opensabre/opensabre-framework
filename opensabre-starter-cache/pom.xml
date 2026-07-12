@@ -34,19 +34,9 @@
             <groupId>com.alicp.jetcache</groupId>
             <artifactId>jetcache-starter-redis-lettuce</artifactId>
         </dependency>
-        <!--常用json包-->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-        <!--使用 lombok 简化 Java 代码-->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <groupId>com.alicp.jetcache</groupId>
+            <artifactId>jetcache-autoconfigure</artifactId>
         </dependency>
     </dependencies>
 </project>
