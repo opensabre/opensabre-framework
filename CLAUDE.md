@@ -6,6 +6,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Opensabre is a microservices development platform based on Spring Cloud 2023, integrating Spring Security, Spring Cloud Alibaba, and other components. It provides foundational RBAC permission management, authorization authentication, gateway management, service governance, audit logging, and other system management applications.
 
+**Current Version**: 0.3.0
+
+This is the framework layer of the Opensabre monorepo - it provides reusable starter modules that are published to Maven Central and consumed by application services (base-organization, base-authorization, base-sysadmin, etc.).
+
 ## Build and Development Commands
 
 ### Building the Project
@@ -41,6 +45,7 @@ mvn test -Dtest=UserContextHolderTest
 mvn javadoc:javadoc
 
 # Generate flattened POM (for deployment)
+# Note: flattened POM is saved as pom-xml-flattened (not .flattened-pom.xml)
 mvn flatten:flatten
 ```
 
@@ -133,10 +138,20 @@ All REST APIs return `Result<T>` objects with standardized structure:
 - Jib Maven plugin for containerization
 - Base image: `eclipse-temurin:21-jre-alpine`
 
+### Dependency Management
+
+The `opensabre-base-dependencies` module centralizes all dependency version management. When adding new dependencies:
+1. Add version to `opensabre-base-dependencies/pom.xml` properties
+2. Add dependency with version reference to `<dependencyManagement>` section
+3. Do NOT specify versions in individual module `pom.xml` files - they inherit from the BOM
+
 ### Maven Central Publishing
 - Uses `central-publishing-maven-plugin`
-- Requires `deploy` profile activation
+- Requires `deploy` profile activation: `mvn clean deploy -Pdeploy`
 - Automatic source and JavaDoc packaging
+- GPG signing required (configure in `~/.m2/settings.xml` or via Maven settings)
+- Snapshots published to: `https://central.sonatype.com/content/repositories/snapshots`
+- Releases published to: `https://central.sonatype.com/content/repositories/releases`
 
 ## Testing Strategy
 
@@ -144,3 +159,55 @@ All REST APIs return `Result<T>` objects with standardized structure:
 - Integration tests for configuration validation
 - Test utilities in `opensabre-test` module
 - Use `@AutoConfiguration` for testing configuration classes
+
+## Audit Logging
+
+For comprehensive audit logging documentation, see `opensabre-starter-boot/AUDIT_LOGGING_GUIDE.md`.
+
+### Enabling Audit Logging
+
+Add `@EnabledAudit` to your main application class:
+
+```java
+@EnabledAudit
+@SpringBootApplication
+public class OrganizationApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(OrganizationApplication.class, args);
+    }
+}
+```
+
+### Using Method-Level Audit
+
+Add `@Audit` annotation to controller methods:
+
+```java
+@Audit(
+    operationType = OperationType.CREATE,
+    description = "新增用户",
+    module = "USER",
+    response = true,
+    key = "#userForm.username"  // SpEL expression
+)
+@PostMapping
+public boolean add(@RequestBody UserForm userForm) {
+    return userService.add(userForm);
+}
+```
+
+### Operation Types
+
+`OperationType` enum: `CREATE`, `UPDATE`, `DELETE`, `QUERY`, `LOGIN`, `LOGOUT`, `SCAN`, `EXPORT`, `IMPORT`, `DOWNLOAD`, `UPLOAD`
+
+### AutoConfiguration Registration
+
+Each starter module uses Spring Boot's new auto-configuration format via `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`. Legacy `spring.factories` files may exist for `EnvironmentPostProcessor` registrations.
+
+Example pattern:
+```
+io.github.opensabre.boot.config.OpensabreBootConfig
+io.github.opensabre.boot.config.OpensabreServiceConfig
+```
+
+**Note**: When modifying auto-configuration classes, ensure the fully-qualified class name is added to the appropriate imports file in `src/main/resources/META-INF/spring/`.

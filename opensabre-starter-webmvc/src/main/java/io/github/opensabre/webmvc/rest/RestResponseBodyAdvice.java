@@ -1,4 +1,4 @@
-package io.github.opensabre.common.web.rest;
+package io.github.opensabre.webmvc.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.opensabre.common.core.entity.vo.Result;
@@ -27,12 +27,12 @@ public class RestResponseBodyAdvice implements ResponseBodyAdvice<Object> {
     /**
      * 框架中不需要包装为Result对象的包名
      */
-    @Value("${opensabre.rest.result.framework.excludes}")
+    @Value("${opensabre.rest.result.framework.excludes:org.springdoc}")
     private String excludeFrameworkPackageStr;
     /**
      * 应用中不需要包装为Result对象的包名
      */
-    @Value("${opensabre.rest.result.excludes}")
+    @Value("${opensabre.rest.result.excludes:}")
     private String excludePackageStr;
 
     @Override

@@ -1,9 +1,9 @@
-WEB公共包
+WEB通用公共包
 ----------
 
 ## 简介
 
-主要封装一些WEB开发用到的通用公共类、工具类，如公共web拦截器、web统一异常定义等。
+主要封装 Web 开发中与 Spring MVC、Spring WebFlux 无关的通用公共类、工具类，如统一返回模型、通用异常定义、基础表单/VO、校验注解和用户上下文等。
 
 ## 使用
 
@@ -22,7 +22,7 @@ pom.xml
 ```
 <dependency>
     <groupId>io.github.opensabre</groupId>
-    <artifactId>common-web</artifactId>
-    <version>0.0.1</version>
+    <artifactId>opensabre-web</artifactId>
+    <version>0.3.0</version>
 </dependency>
 ```

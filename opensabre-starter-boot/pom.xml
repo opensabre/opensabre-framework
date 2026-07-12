@@ -39,15 +39,16 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
         </dependency>
-        <!--web支持 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-undertow</artifactId>
-        </dependency>
         <!--opensabre 常用web组件-->
         <dependency>
             <groupId>io.github.opensabre</groupId>
             <artifactId>opensabre-web</artifactId>
+        </dependency>
+        <!--servlet api支持-->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <scope>provided</scope>
         </dependency>
         <!--自省和监控的集成功能 -->
         <dependency>

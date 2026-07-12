@@ -1,6 +1,7 @@
 package io.github.opensabre.webmvc.interceptor;
 
 import io.github.opensabre.common.core.util.UserContextHolder;
+import io.github.opensabre.webmvc.interceptor.UserInterceptor;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;

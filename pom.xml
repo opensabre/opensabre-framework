@@ -18,6 +18,8 @@
         <module>opensabre-starter-rpc</module>
         <module>opensabre-starter-persistence</module>
         <module>opensabre-starter-eda</module>
+        <module>opensabre-starter-webmvc</module>
+        <module>opensabre-starter-webflux</module>
         <module>opensabre-test</module>
         <module>opensabre-web</module>
     </modules>
@@ -60,10 +62,12 @@
         <maven-source-plugin.version>3.1.0</maven-source-plugin.version>
         <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
         <central-publishing-maven-plugin.version>0.9.0</central-publishing-maven-plugin.version>
+        <lombok.version>1.18.42</lombok.version>
 
-        <revision>0.2.0</revision>
+        <revision>0.3.0</revision>
     </properties>
 
     <!-- 发布配置 -->
@@ -115,6 +119,21 @@
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <parameters>true</parameters>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
                 <!--  junit5测试案例执行插件  -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

@@ -3,6 +3,7 @@ package io.github.opensabre.webmvc.exception;
 import io.github.opensabre.common.core.entity.vo.Result;
 import io.github.opensabre.common.core.exception.SystemErrorType;
 import jakarta.servlet.ServletException;
+import io.github.opensabre.common.core.exception.BaseException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -40,7 +41,7 @@ public class DefaultWebMvcExceptionHandlerAdvice {
     }
 
     @ExceptionHandler(value = {HttpMessageNotReadableException.class, MethodArgumentTypeMismatchException.class})
-    public Result<?> httpMessageConvertException(HttpMessageNotReadableException ex) {
+    public Result<?> httpMessageConvertException(Exception ex) {
         log.warn("http message convert exception:{}", ex.getMessage());
         return Result.fail(SystemErrorType.ARGUMENT_NOT_VALID, "数据解析错误：" + ex.getMessage());
     }
@@ -70,5 +71,18 @@ public class DefaultWebMvcExceptionHandlerAdvice {
     public Result<?> notSupportedMethodException(HttpMediaTypeNotSupportedException ex) {
         log.warn("http request media not supported exception {}", ex.getMessage());
         return Result.fail(SystemErrorType.METHOD_NOT_SUPPORTED);
+    }
+
+    @ExceptionHandler(value = {BaseException.class})
+    public Result<?> baseException(BaseException ex) {
+        log.warn("base exception:{}", ex.getMessage());
+        return Result.fail(ex.getErrorType());
+    }
+
+    @ExceptionHandler(value = {Exception.class, Throwable.class})
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result<?> exception(Throwable ex) {
+        log.error("exception: ", ex);
+        return Result.fail();
     }
 }
