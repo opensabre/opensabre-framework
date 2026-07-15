@@ -13,6 +13,7 @@ import io.github.opensabre.common.core.exception.ErrorType;
 import io.github.opensabre.common.core.exception.SystemErrorType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDateTime;
 
@@ -33,7 +34,7 @@ public class Result<T> {
     /**
      * 统一报文中code代码，标明异常类型
      */
-    @Schema(title = "处理结果code", description = "处理结果，000000为成功", requiredMode = Schema.RequiredMode.REQUIRED, example="000000")
+    @Schema(title = "处理结果code", description = "处理结果，000000为成功", requiredMode = Schema.RequiredMode.REQUIRED, example = "000000")
     private final String code;
     /**
      * 统一报文中提示信息
@@ -76,14 +77,15 @@ public class Result<T> {
     }
 
     /**
-     * 通过ErrorType和data数据构建Result
+     * 通过ErrorType和错误详情构建Result，错误详情会追加到mesg，不写入data。
      *
      * @param errorType 错误类型
-     * @param data      错误数据
+     * @param detail    错误详情
      */
-    public Result(ErrorType errorType, T data) {
-        this(errorType);
-        this.data = data;
+    public Result(ErrorType errorType, String detail) {
+        this.code = errorType.getCode();
+        this.mesg = appendDetail(errorType.getMesg(), detail);
+        this.time = LocalDateTime.now();
     }
 
     /**
@@ -98,6 +100,11 @@ public class Result<T> {
         this.mesg = mesg;
         this.data = data;
         this.time = LocalDateTime.now();
+    }
+
+
+    private static String appendDetail(String mesg, String detail) {
+        return mesg + (StringUtils.isNotBlank(detail) ? "：" + detail : StringUtils.EMPTY);
     }
 
     /**
@@ -129,13 +136,13 @@ public class Result<T> {
     }
 
     /**
-     * 系统异常类并返回结果数据
+     * 系统异常类并返回错误详情
      *
-     * @param data 错误数据对象
+     * @param detail 错误详情
      * @return Result
      */
-    public static Result fail(Object data) {
-        return new Result<>(SystemErrorType.SYSTEM_ERROR, data);
+    public static Result fail(String detail) {
+        return new Result<>(SystemErrorType.SYSTEM_ERROR, detail);
     }
 
     /**
@@ -149,25 +156,25 @@ public class Result<T> {
     }
 
     /**
-     * 系统异常类并返回结果数据
+     * 系统异常类并返回错误详情
      *
-     * @param data          错误数据对象
+     * @param detail        错误详情
      * @param baseException 异常对象
      * @return Result
      */
-    public static Result fail(BaseException baseException, Object data) {
-        return new Result<>(baseException.getErrorType(), data);
+    public static Result fail(BaseException baseException, String detail) {
+        return new Result<>(baseException.getErrorType(), detail);
     }
 
     /**
-     * 系统异常类并返回结果数据
+     * 系统异常类并返回错误详情
      *
      * @param errorType 错误类型
-     * @param data      错误数据
+     * @param detail    错误详情
      * @return Result
      */
-    public static Result fail(ErrorType errorType, Object data) {
-        return new Result<>(errorType, data);
+    public static Result fail(ErrorType errorType, String detail) {
+        return new Result<>(errorType, detail);
     }
 
     /**

@@ -47,7 +47,7 @@
         <hutool.version>5.8.35</hutool.version>
         <guava.version>33.4.0-jre</guava.version>
         <jasypt-springboot.version>3.0.5</jasypt-springboot.version>
-        <jib-maven-plugin.version>3.4.6</jib-maven-plugin.version>
+        <jib-maven-plugin.version>3.5.2</jib-maven-plugin.version>
         <!--  测试  -->
         <junit-jupiter.version>5.11.4</junit-jupiter.version>
         <httpclient5.version>5.4.1</httpclient5.version>

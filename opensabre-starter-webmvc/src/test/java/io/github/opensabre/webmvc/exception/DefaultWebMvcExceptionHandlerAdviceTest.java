@@ -13,6 +13,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.multipart.MultipartException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class DefaultWebMvcExceptionHandlerAdviceTest {
 
@@ -46,7 +47,8 @@ class DefaultWebMvcExceptionHandlerAdviceTest {
         Result<?> result = advice.argumentInvalidException(exception);
 
         assertEquals(SystemErrorType.ARGUMENT_NOT_VALID.getCode(), result.getCode());
-        assertEquals("testmessage", result.getData());
+        assertEquals(SystemErrorType.ARGUMENT_NOT_VALID.getMesg() + "：testmessage", result.getMesg());
+        assertNull(result.getData());
     }
 
     @Test
