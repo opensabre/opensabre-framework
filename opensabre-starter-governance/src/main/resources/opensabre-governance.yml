@@ -5,6 +5,12 @@ opensabre:
       service-id: base-sysadmin
     audit:
       enabled: true
+      async:
+        core-pool-size: 2
+        max-pool-size: 8
+        queue-capacity: 1000
+        thread-name-prefix: audit-event-
+        wait-for-tasks-to-complete-on-shutdown: false
     ratelimit:
       enabled: true
       fail-open: true

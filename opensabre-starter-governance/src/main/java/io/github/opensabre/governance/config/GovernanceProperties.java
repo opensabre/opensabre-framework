@@ -23,6 +23,19 @@ public class GovernanceProperties {
     @Data
     public static class Audit {
         private boolean enabled = true;
+        private Async async = new Async();
+
+        /**
+         * 审计异步线程池配置。
+         */
+        @Data
+        public static class Async {
+            private int corePoolSize = 2;
+            private int maxPoolSize = 8;
+            private int queueCapacity = 1_000;
+            private String threadNamePrefix = "audit-event-";
+            private boolean waitForTasksToCompleteOnShutdown = false;
+        }
     }
 
     @Data
