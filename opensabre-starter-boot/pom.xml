@@ -18,7 +18,6 @@
 
     <properties>
         <logback-core.version>1.5.13</logback-core.version>
-        <springdoc-openapi-starter.version>2.7.0</springdoc-openapi-starter.version>
     </properties>
 
     <dependencyManagement>
@@ -43,12 +42,6 @@
         <dependency>
             <groupId>io.github.opensabre</groupId>
             <artifactId>opensabre-web</artifactId>
-        </dependency>
-        <!--servlet api支持-->
-        <dependency>
-            <groupId>jakarta.servlet</groupId>
-            <artifactId>jakarta.servlet-api</artifactId>
-            <scope>provided</scope>
         </dependency>
         <!--自省和监控的集成功能 -->
         <dependency>
@@ -76,30 +69,10 @@
             <groupId>com.github.ulisesbocchio</groupId>
             <artifactId>jasypt-spring-boot-starter</artifactId>
         </dependency>
-        <!--springdoc - restfull API文档-->
-        <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-configuration-processor</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springdoc</groupId>
-                    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
             <version>${logback-core.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>${springdoc-openapi-starter.version}</version>
         </dependency>
         <!--  提示文件生成   -->
         <dependency>
