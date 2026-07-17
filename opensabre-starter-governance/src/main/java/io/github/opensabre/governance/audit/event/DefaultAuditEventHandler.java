@@ -2,32 +2,35 @@ package io.github.opensabre.governance.audit.event;
 
 import io.github.opensabre.governance.audit.entity.AuditInfo;
 import io.github.opensabre.governance.client.SysadminGovernanceClient;
+import io.github.opensabre.eda.api.EdaEvent;
+import io.github.opensabre.eda.api.EdaEventHandler;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.context.ApplicationListener;
-import org.springframework.scheduling.annotation.Async;
 
 /**
- * 默认 AuditEvent Listener
+ * 默认审计事件处理器。
  */
 @Slf4j
 @RequiredArgsConstructor
-public class DefaultAuditEventHandler implements ApplicationListener<AuditEvent> {
+public class DefaultAuditEventHandler implements EdaEventHandler<AuditInfo> {
+
+    public static final String EVENT_TYPE = "governance.audit.created";
 
     private final ObjectProvider<SysadminGovernanceClient> clientProvider;
 
     @Override
-    @Async("auditTaskExecutor")
-    public void onApplicationEvent(AuditEvent event) {
-        if (!(event.getSource() instanceof AuditInfo auditInfo)) {
-            log.warn("Unsupported audit event source: {}", event.getSource());
-            return;
-        }
+    public String eventType() {
+        return EVENT_TYPE;
+    }
+
+    @Override
+    public void handle(EdaEvent<AuditInfo> event) {
+        AuditInfo auditInfo = event.payload();
         SysadminGovernanceClient client = clientProvider.getIfAvailable();
         if (client == null) {
-            log.debug("AuditEvent received without sysadmin client: {}", auditInfo);
+            log.debug("Audit event received without sysadmin client: {}", auditInfo);
             return;
         }
         try {

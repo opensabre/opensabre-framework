@@ -3,11 +3,12 @@ package io.github.opensabre.governance.audit.aspect;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.opensabre.common.core.util.UserContextHolder;
+import io.github.opensabre.eda.api.EdaEvent;
+import io.github.opensabre.eda.api.EdaEventPublisher;
 import io.github.opensabre.governance.audit.annotations.Audit;
 import io.github.opensabre.governance.audit.entity.AuditInfo;
-import io.github.opensabre.governance.audit.event.AuditEvent;
+import io.github.opensabre.governance.audit.event.DefaultAuditEventHandler;
 import io.github.opensabre.webmvc.util.HttpUtils;
-import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -15,7 +16,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.context.ApplicationContext;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
@@ -33,16 +33,12 @@ import java.util.stream.IntStream;
 @Aspect
 public class AuditAspect {
 
-    /**
-     * spring上下文
-     */
-    @Resource
-    private ApplicationContext context;
-
     private final ObjectMapper objectMapper;
+    private final EdaEventPublisher eventPublisher;
 
-    public AuditAspect(ObjectMapper objectMapper) {
+    public AuditAspect(ObjectMapper objectMapper, EdaEventPublisher eventPublisher) {
         this.objectMapper = objectMapper;
+        this.eventPublisher = eventPublisher;
     }
 
     @Around("@annotation(audit)")
@@ -63,9 +59,9 @@ public class AuditAspect {
             AuditInfo auditinfo = buildAuditInfo(joinPoint.getArgs(), audit, result, exception, executionTime);
             auditinfo.setTargetKey(keyValue);
             // 事件通知
-            AuditEvent auditEvent = new AuditEvent(auditinfo);
-            context.publishEvent(auditEvent);
-            log.info("AuditEvent published: {}", auditEvent);
+            EdaEvent<AuditInfo> auditEvent = EdaEvent.of(DefaultAuditEventHandler.EVENT_TYPE, "governance", auditinfo);
+            eventPublisher.publishLocal(auditEvent);
+            log.info("Audit event published: eventId={}", auditEvent.eventId());
         }
         return result;
     }
