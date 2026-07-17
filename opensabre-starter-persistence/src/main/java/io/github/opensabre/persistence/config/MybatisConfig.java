@@ -5,19 +5,17 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.IllegalSQLInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-import io.github.opensabre.persistence.exception.PersistenceExceptionHandlerAdvice;
 import io.github.opensabre.persistence.handler.PoMetaObjectHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
 @AutoConfiguration
 @EnableTransactionManagement
-@Import(PersistenceExceptionHandlerAdvice.class)
 @PropertySource(value = "classpath:opensabre-persistence.properties", encoding = "UTF8")
 public class MybatisConfig {
 
@@ -34,6 +32,7 @@ public class MybatisConfig {
      * 初使化Mybatis审计字段自动赋值
      */
     @Bean
+    @ConditionalOnMissingBean(PoMetaObjectHandler.class)
     public PoMetaObjectHandler poMetaObjectHandler() {
         return new PoMetaObjectHandler();
     }
@@ -42,6 +41,7 @@ public class MybatisConfig {
      * mybatis插件
      */
     @Bean
+    @ConditionalOnMissingBean(MybatisPlusInterceptor.class)
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         // 分页插件

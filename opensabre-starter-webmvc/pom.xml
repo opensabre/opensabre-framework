@@ -22,6 +22,7 @@
         <!--   编译     -->
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <springdoc-openapi-starter.version>2.7.0</springdoc-openapi-starter.version>
         <!--   测试     -->
         <!--   依赖     -->
     </properties>
@@ -66,6 +67,10 @@
     <dependencies>
         <dependency>
             <groupId>io.github.opensabre</groupId>
+            <artifactId>opensabre-starter-boot</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.opensabre</groupId>
             <artifactId>opensabre-web</artifactId>
         </dependency>
         <!--spring web相关包-->
@@ -97,6 +102,26 @@
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <!-- OpenAPI and Knife4j are servlet-only capabilities. -->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-configuration-processor</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springdoc</groupId>
+                    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${springdoc-openapi-starter.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
