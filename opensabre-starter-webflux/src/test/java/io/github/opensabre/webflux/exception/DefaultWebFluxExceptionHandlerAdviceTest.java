@@ -9,6 +9,7 @@ import org.springframework.web.server.ServerWebInputException;
 import org.springframework.web.server.UnsupportedMediaTypeStatusException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class DefaultWebFluxExceptionHandlerAdviceTest {
 
@@ -24,6 +25,8 @@ class DefaultWebFluxExceptionHandlerAdviceTest {
         Result<?> result = advice.serverWebInputException(new ServerWebInputException("bad request"));
 
         assertEquals(SystemErrorType.ARGUMENT_NOT_VALID.getCode(), result.getCode());
+        assertEquals(SystemErrorType.ARGUMENT_NOT_VALID.getMesg() + "：数据解析错误：bad request", result.getMesg());
+        assertNull(result.getData());
     }
 
     @Test

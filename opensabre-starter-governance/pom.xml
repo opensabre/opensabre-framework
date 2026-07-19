@@ -31,6 +31,11 @@
     <dependencies>
         <dependency>
             <groupId>io.github.opensabre</groupId>
+            <artifactId>opensabre-starter-eda</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.opensabre</groupId>
             <artifactId>opensabre-starter-boot</artifactId>
         </dependency>
         <dependency>

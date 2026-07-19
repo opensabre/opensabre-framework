@@ -26,13 +26,13 @@ class ResultTest {
     }
 
     @Test
-    void testConstructErrorTypeWithData() {
-        Date data = new Date();
-        Result result = new Result(SystemErrorType.SYSTEM_BUSY, data);
+    void testConstructErrorTypeWithDetail() {
+        String detail = "用户名不能为空";
+        Result result = new Result(SystemErrorType.SYSTEM_BUSY, detail);
         assertTrue(result.isFail());
         assertEquals(result.getCode(), SystemErrorType.SYSTEM_BUSY.getCode());
-        assertEquals(result.getMesg(), SystemErrorType.SYSTEM_BUSY.getMesg());
-        assertEquals(result.getData(), data);
+        assertEquals(SystemErrorType.SYSTEM_BUSY.getMesg() + "：" + detail, result.getMesg());
+        assertNull(result.getData());
     }
 
     @Test
@@ -60,11 +60,12 @@ class ResultTest {
     }
 
     @Test
-    void failWithData() {
-        Date data = new Date();
-        Result result = Result.fail(data);
+    void failWithDetail() {
+        String detail = "用户名不能为空";
+        Result result = Result.fail(detail);
         assertFalse(result.isSuccess());
-        assertEquals(result.getData(), data);
+        assertEquals(SystemErrorType.SYSTEM_ERROR.getMesg() + "：" + detail, result.getMesg());
+        assertNull(result.getData());
     }
 
     @Test
@@ -75,21 +76,23 @@ class ResultTest {
     }
 
     @Test
-    void testFailWithBaseExceptionAndData() {
-        Date data = new Date();
-        Result result = Result.fail(new BaseException(), data);
+    void testFailWithBaseExceptionAndDetail() {
+        String detail = "用户名不能为空";
+        Result result = Result.fail(new BaseException(), detail);
         assertTrue(result.isFail());
         assertEquals(result.getCode(), SystemErrorType.SYSTEM_ERROR.getCode());
-        assertEquals(result.getData(), data);
+        assertEquals(SystemErrorType.SYSTEM_ERROR.getMesg() + "：" + detail, result.getMesg());
+        assertNull(result.getData());
     }
 
     @Test
-    void testFailWithErrorTypeAndData() {
-        Date data = new Date();
-        Result result = Result.fail(SystemErrorType.GATEWAY_ERROR, data);
+    void testFailWithErrorTypeAndDetail() {
+        String detail = "用户名不能为空";
+        Result result = Result.fail(SystemErrorType.GATEWAY_ERROR, detail);
         assertTrue(result.isFail());
         assertEquals(result.getCode(), SystemErrorType.GATEWAY_ERROR.getCode());
-        assertEquals(result.getData(), data);
+        assertEquals(SystemErrorType.GATEWAY_ERROR.getMesg() + "：" + detail, result.getMesg());
+        assertNull(result.getData());
     }
 
     @Test

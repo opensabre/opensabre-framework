@@ -15,6 +15,8 @@ public class GovernanceProperties {
 
     private RateLimit ratelimit = new RateLimit();
 
+    private Usage usage = new Usage();
+
     @Data
     public static class Sysadmin {
         private String serviceId = "base-sysadmin";
@@ -23,6 +25,19 @@ public class GovernanceProperties {
     @Data
     public static class Audit {
         private boolean enabled = true;
+        private Async async = new Async();
+
+        /**
+         * 审计异步线程池配置。
+         */
+        @Data
+        public static class Async {
+            private int corePoolSize = 2;
+            private int maxPoolSize = 8;
+            private int queueCapacity = 1_000;
+            private String threadNamePrefix = "audit-event-";
+            private boolean waitForTasksToCompleteOnShutdown = false;
+        }
     }
 
     @Data
@@ -30,4 +45,12 @@ public class GovernanceProperties {
         private boolean enabled = true;
         private boolean failOpen = true;
     }
+
+    @Data
+    public static class Usage {
+        private boolean enabled = true;
+        private Transport transport = Transport.EDA;
+    }
+
+    public enum Transport { HTTP, EDA }
 }

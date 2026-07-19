@@ -1,10 +1,11 @@
 package io.github.opensabre.governance.ratelimit.aspect;
 
-import io.github.opensabre.common.core.entity.vo.Result;
-import io.github.opensabre.governance.client.SysadminGovernanceClient;
 import io.github.opensabre.governance.client.dto.RateLimitCheckRequest;
 import io.github.opensabre.governance.client.dto.RateLimitCheckResponse;
+import io.github.opensabre.governance.client.SysadminGovernanceClient;
 import io.github.opensabre.governance.config.GovernanceProperties;
+import io.github.opensabre.governance.ratelimit.GovernanceRateLimiter;
+import io.github.opensabre.governance.ratelimit.HttpGovernanceRateLimiter;
 import io.github.opensabre.governance.ratelimit.annotations.RateLimit;
 import io.github.opensabre.governance.ratelimit.enums.RateLimitDimension;
 import io.github.opensabre.governance.ratelimit.exception.RateLimitExceededException;
@@ -32,9 +33,13 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class RateLimitAspect {
 
-    private final SysadminGovernanceClient client;
+    private final GovernanceRateLimiter rateLimiter;
 
-    private final GovernanceProperties properties;
+    /** @deprecated 使用 {@link GovernanceRateLimiter} 构造器，以隔离 HTTP 实现。 */
+    @Deprecated
+    public RateLimitAspect(SysadminGovernanceClient client, GovernanceProperties properties) {
+        this(new HttpGovernanceRateLimiter(client, properties));
+    }
 
     private final ExpressionParser parser = new SpelExpressionParser();
 
@@ -64,25 +69,7 @@ public class RateLimitAspect {
                 .period(rateLimit.period())
                 .enabled(rateLimit.enabled())
                 .build();
-        try {
-            Result<RateLimitCheckResponse> result = client.checkRateLimit(request);
-            RateLimitCheckResponse response = result == null ? null : result.getData();
-            if (response != null) {
-                return response;
-            }
-            throw new IllegalStateException("Empty sysadmin rate limit response");
-        } catch (Exception e) {
-            if (properties.getRatelimit().isFailOpen()) {
-                log.warn("Failed to check rate limit from sysadmin, fail-open enabled", e);
-                return RateLimitCheckResponse.builder()
-                        .allowed(true)
-                        .remaining(rateLimit.maxCount())
-                        .maxCount(rateLimit.maxCount())
-                        .resetTime(System.currentTimeMillis() + rateLimit.period() * 1000L)
-                        .build();
-            }
-            throw new IllegalStateException("Failed to check rate limit from sysadmin", e);
-        }
+        return rateLimiter.check(request).toResponse();
     }
 
     private Map<RateLimitDimension, String> extractDimensionValues() {
