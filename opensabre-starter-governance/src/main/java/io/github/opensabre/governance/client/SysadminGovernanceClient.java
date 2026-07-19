@@ -4,6 +4,7 @@ import io.github.opensabre.common.core.entity.vo.Result;
 import io.github.opensabre.governance.audit.entity.AuditInfo;
 import io.github.opensabre.governance.client.dto.RateLimitCheckRequest;
 import io.github.opensabre.governance.client.dto.RateLimitCheckResponse;
+import io.github.opensabre.governance.usage.UsageRecord;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,4 +17,7 @@ public interface SysadminGovernanceClient {
 
     @PostMapping("/ratelimit/check")
     Result<RateLimitCheckResponse> checkRateLimit(@RequestBody RateLimitCheckRequest request);
+
+    @PostMapping("/usage-counters/records")
+    Result<Boolean> recordUsage(@RequestBody UsageRecord request);
 }

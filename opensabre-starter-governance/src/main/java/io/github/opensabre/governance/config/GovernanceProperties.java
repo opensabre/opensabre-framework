@@ -15,6 +15,8 @@ public class GovernanceProperties {
 
     private RateLimit ratelimit = new RateLimit();
 
+    private Usage usage = new Usage();
+
     @Data
     public static class Sysadmin {
         private String serviceId = "base-sysadmin";
@@ -43,4 +45,12 @@ public class GovernanceProperties {
         private boolean enabled = true;
         private boolean failOpen = true;
     }
+
+    @Data
+    public static class Usage {
+        private boolean enabled = true;
+        private Transport transport = Transport.EDA;
+    }
+
+    public enum Transport { HTTP, EDA }
 }
