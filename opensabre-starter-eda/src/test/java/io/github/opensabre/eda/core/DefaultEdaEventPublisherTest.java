@@ -19,6 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class DefaultEdaEventPublisherTest {
 
@@ -79,6 +80,56 @@ class DefaultEdaEventPublisherTest {
         publisher.publish(EdaEvent.of("demo.created", "producer", "payload"), EventTarget.REMOTE);
 
         assertThat(published).hasValue(1);
+    }
+
+    @Test
+    void shouldContinueDispatchingWhenOneLocalHandlerFails() throws Exception {
+        executor.setCorePoolSize(2);
+        executor.setMaxPoolSize(2);
+        executor.initialize();
+        CountDownLatch latch = new CountDownLatch(1);
+        EdaEventHandler<String> failing = new EdaEventHandler<>() {
+            @Override
+            public String eventType() {
+                return "demo.created";
+            }
+
+            @Override
+            public void handle(EdaEvent<String> event) {
+                throw new IllegalStateException("handler failure");
+            }
+        };
+        EdaEventHandler<String> succeeding = new EdaEventHandler<>() {
+            @Override
+            public String eventType() {
+                return "demo.created";
+            }
+
+            @Override
+            public void handle(EdaEvent<String> event) {
+                latch.countDown();
+            }
+        };
+
+        publisher(List.of(failing, succeeding), List.of())
+                .publishLocal(EdaEvent.of("demo.created", "producer", "payload"));
+
+        assertThat(latch.await(2, TimeUnit.SECONDS)).isTrue();
+    }
+
+    @Test
+    void shouldFailRemotePublishWhenTransportIsRequired() {
+        executor.setCorePoolSize(1);
+        executor.setMaxPoolSize(1);
+        executor.initialize();
+        EdaProperties properties = new EdaProperties();
+        properties.getPublisher().setRemoteRequired(true);
+        DefaultEdaEventPublisher publisher = new DefaultEdaEventPublisher(provider(List.of()), provider(List.of()),
+                executor, properties, provider(List.of()));
+
+        assertThatThrownBy(() -> publisher.publish(EdaEvent.of("demo.created", "producer", "payload"),
+                EventTarget.REMOTE)).isInstanceOf(IllegalStateException.class)
+                .hasMessage("No EDA remote transport is available");
     }
 
     private DefaultEdaEventPublisher publisher(List<EdaEventHandler<?>> handlers, List<EventTransport> transports) {

@@ -63,6 +63,12 @@
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis-spring</artifactId>
         </dependency>
+        <!-- Only required to compile the servlet exception advice; never transitively exposed. -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <optional>true</optional>
+        </dependency>
         <!--数据库-->
         <dependency>
             <groupId>com.mysql</groupId>
