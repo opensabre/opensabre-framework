@@ -6,6 +6,8 @@ import io.github.opensabre.eda.api.EdaEventPublisher;
 import io.github.opensabre.governance.audit.aspect.AuditAspect;
 import io.github.opensabre.governance.audit.event.DefaultAuditEventHandler;
 import io.github.opensabre.governance.client.SysadminGovernanceClient;
+import io.github.opensabre.governance.errorcatalog.ErrorCatalogProvider;
+import io.github.opensabre.governance.errorcatalog.ErrorCatalogRegistrationListener;
 import io.github.opensabre.governance.ratelimit.aspect.RateLimitAspect;
 import io.github.opensabre.governance.ratelimit.GovernanceRateLimiter;
 import io.github.opensabre.governance.ratelimit.HttpGovernanceRateLimiter;
@@ -18,6 +20,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
+import io.github.opensabre.common.core.exception.SystemErrorType;
+import java.util.List;
 
 @AutoConfiguration
 @EnableFeignClients(basePackageClasses = SysadminGovernanceClient.class)
@@ -74,4 +78,15 @@ public class OpensabreGovernanceConfig {
     public RateLimitUsageRecorder rateLimitUsageRecorder(UsageCounterRecorder recorder) { return new RateLimitUsageRecorder(recorder); }
     @Bean @ConditionalOnMissingBean
     public NotificationUsageRecorder notificationUsageRecorder(UsageCounterRecorder recorder) { return new NotificationUsageRecorder(recorder); }
+
+    @Bean
+    @ConditionalOnMissingBean(name = "systemErrorCatalogProvider")
+    public ErrorCatalogProvider systemErrorCatalogProvider() { return ErrorCatalogProvider.of("framework", SystemErrorType.values()); }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "opensabre.governance.error-catalog", name = "enabled", havingValue = "true", matchIfMissing = true)
+    public ErrorCatalogRegistrationListener errorCatalogRegistrationListener(ObjectProvider<SysadminGovernanceClient> clientProvider,
+            List<ErrorCatalogProvider> providers, org.springframework.core.env.Environment environment) {
+        return new ErrorCatalogRegistrationListener(clientProvider, providers, environment);
+    }
 }

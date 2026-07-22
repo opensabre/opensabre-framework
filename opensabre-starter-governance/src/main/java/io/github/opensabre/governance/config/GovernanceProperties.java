@@ -16,6 +16,7 @@ public class GovernanceProperties {
     private RateLimit ratelimit = new RateLimit();
 
     private Usage usage = new Usage();
+    private ErrorCatalog errorCatalog = new ErrorCatalog();
 
     @Data
     public static class Sysadmin {
@@ -50,6 +51,12 @@ public class GovernanceProperties {
     public static class Usage {
         private boolean enabled = true;
         private Transport transport = Transport.EDA;
+    }
+    @Data
+    public static class ErrorCatalog {
+        private boolean enabled = true;
+        /** Shared internal credential for error catalog registration. */
+        private String registrationToken = "";
     }
 
     public enum Transport { HTTP, EDA }
