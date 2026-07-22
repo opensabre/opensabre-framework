@@ -14,3 +14,6 @@ opensabre:
     ratelimit:
       enabled: true
       fail-open: true
+    error-catalog:
+      enabled: true
+      registration-token: ${ERROR_CATALOG_REGISTRATION_TOKEN:}
