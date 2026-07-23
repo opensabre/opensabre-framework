@@ -14,6 +14,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RestMappingInfo {
     /**
+     * Preserves the original public constructor used by legacy mapping listeners.
+     *
+     * @param url mapping path
+     * @param method HTTP method
+     */
+    public RestMappingInfo(String url, String method) {
+        this.url = url;
+        this.method = method;
+    }
+
+    /**
      * Rest 的path url，如：/user/{name}
      */
     private String url;

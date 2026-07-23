@@ -10,6 +10,7 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import jakarta.annotation.Resource;
+import java.util.EnumSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -47,10 +48,9 @@ public class MappingInfoHandler {
                 continue;
             }
             Set<String> urls = getPatternValues(requestMappingInfo);
-            Set<RequestMethod> methods = requestMappingInfo.getMethodsCondition().getMethods();
-            if (methods.isEmpty()) {
-                continue;
-            }
+            Set<RequestMethod> declaredMethods = requestMappingInfo.getMethodsCondition().getMethods();
+            Set<RequestMethod> methods = declaredMethods.isEmpty()
+                    ? EnumSet.allOf(RequestMethod.class) : declaredMethods;
             Operation operation = handlerMethod.getMethodAnnotation(Operation.class);
             Set<RestMappingInfo> interfaceInfoSet = urls.stream()
                     .flatMap(url -> methods.stream().map(method -> toMappingInfo(
