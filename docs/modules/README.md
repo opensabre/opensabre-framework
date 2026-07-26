@@ -20,3 +20,4 @@
 # 模块文档
 
 - [治理计次与限次接入](governance-usage.md)
+- [错误码目录](error-catalog.md)
