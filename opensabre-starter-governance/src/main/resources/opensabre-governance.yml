@@ -17,3 +17,8 @@ opensabre:
     error-catalog:
       enabled: true
       registration-token: ${ERROR_CATALOG_REGISTRATION_TOKEN:}
+    dictionary:
+      enabled: true
+      registration-enabled: false
+      registration-token: ${DICTIONARY_REGISTRATION_TOKEN:${ERROR_CATALOG_REGISTRATION_TOKEN:}}
+      preload-codes: []

@@ -1,6 +1,8 @@
 package io.github.opensabre.governance.client;
 
 import io.github.opensabre.common.core.entity.vo.Result;
+import io.github.opensabre.governance.dictionary.DictionaryItem;
+import io.github.opensabre.governance.dictionary.DictionarySnapshot;
 import io.github.opensabre.governance.audit.entity.AuditInfo;
 import io.github.opensabre.governance.client.dto.RateLimitCheckRequest;
 import io.github.opensabre.governance.client.dto.RateLimitCheckResponse;
@@ -10,6 +12,10 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.List;
 
 @FeignClient(name = "${opensabre.governance.sysadmin.service-id:base-sysadmin}", contextId = "sysadminGovernanceClient")
 public interface SysadminGovernanceClient {
@@ -26,4 +32,11 @@ public interface SysadminGovernanceClient {
     @PostMapping("/error-catalog/snapshots")
     Result<Boolean> registerErrorCatalog(@RequestBody ErrorCatalogSnapshot request,
                                          @RequestHeader("X-Opensabre-Error-Catalog-Token") String token);
+
+    @PostMapping("/dicts/snapshots")
+    Result<Boolean> registerDictionaries(@RequestBody DictionarySnapshot request,
+                                         @RequestHeader("X-Opensabre-Dictionary-Token") String token);
+
+    @GetMapping("/dicts/{dictCode}/items/all")
+    Result<List<DictionaryItem>> getDictionaryItems(@PathVariable("dictCode") String dictCode);
 }

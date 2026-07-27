@@ -17,6 +17,7 @@ public class GovernanceProperties {
 
     private Usage usage = new Usage();
     private ErrorCatalog errorCatalog = new ErrorCatalog();
+    private Dictionary dictionary = new Dictionary();
 
     @Data
     public static class Sysadmin {
@@ -57,6 +58,14 @@ public class GovernanceProperties {
         private boolean enabled = true;
         /** Shared internal credential for error catalog registration. */
         private String registrationToken = "";
+    }
+
+    @Data
+    public static class Dictionary {
+        private boolean enabled = true;
+        private boolean registrationEnabled = false;
+        private String registrationToken = "";
+        private java.util.List<String> preloadCodes = java.util.List.of();
     }
 
     public enum Transport { HTTP, EDA }

@@ -8,6 +8,12 @@ import io.github.opensabre.governance.audit.event.DefaultAuditEventHandler;
 import io.github.opensabre.governance.client.SysadminGovernanceClient;
 import io.github.opensabre.governance.errorcatalog.ErrorCatalogProvider;
 import io.github.opensabre.governance.errorcatalog.ErrorCatalogRegistrationListener;
+import io.github.opensabre.governance.dictionary.DictionaryProvider;
+import io.github.opensabre.governance.dictionary.DictionaryRegistrationListener;
+import io.github.opensabre.governance.dictionary.DictionaryService;
+import io.github.opensabre.governance.dictionary.JetCacheDictionaryService;
+import io.github.opensabre.governance.dictionary.DictionaryPreloadListener;
+import com.alicp.jetcache.CacheManager;
 import io.github.opensabre.governance.ratelimit.aspect.RateLimitAspect;
 import io.github.opensabre.governance.ratelimit.GovernanceRateLimiter;
 import io.github.opensabre.governance.ratelimit.HttpGovernanceRateLimiter;
@@ -88,5 +94,32 @@ public class OpensabreGovernanceConfig {
     public ErrorCatalogRegistrationListener errorCatalogRegistrationListener(ObjectProvider<SysadminGovernanceClient> clientProvider,
             List<ErrorCatalogProvider> providers, org.springframework.core.env.Environment environment) {
         return new ErrorCatalogRegistrationListener(clientProvider, providers, environment);
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "opensabre.governance.dictionary", name = "registration-enabled",
+            havingValue = "true")
+    public DictionaryRegistrationListener dictionaryRegistrationListener(
+            ObjectProvider<SysadminGovernanceClient> clientProvider,
+            List<DictionaryProvider> providers,
+            org.springframework.core.env.Environment environment) {
+        return new DictionaryRegistrationListener(clientProvider, providers, environment);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(prefix = "opensabre.governance.dictionary", name = "enabled",
+            havingValue = "true", matchIfMissing = true)
+    public DictionaryService dictionaryService(CacheManager cacheManager, SysadminGovernanceClient client) {
+        return new JetCacheDictionaryService(cacheManager, client);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(prefix = "opensabre.governance.dictionary", name = "enabled",
+            havingValue = "true", matchIfMissing = true)
+    public DictionaryPreloadListener dictionaryPreloadListener(
+            DictionaryService dictionaryService, GovernanceProperties properties) {
+        return new DictionaryPreloadListener(dictionaryService, properties);
     }
 }
