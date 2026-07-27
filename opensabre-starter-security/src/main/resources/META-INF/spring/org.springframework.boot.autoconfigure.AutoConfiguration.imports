@@ -1,0 +1,4 @@
+io.github.opensabre.security.config.OpensabreSecurityAutoConfiguration
+io.github.opensabre.security.config.OpensabreSecurityWebMvcAutoConfiguration
+io.github.opensabre.security.config.OpensabreSecuritySpringSecurityAutoConfiguration
+io.github.opensabre.security.config.OpensabreSecurityRestClientAutoConfiguration

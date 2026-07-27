@@ -23,12 +23,12 @@ public class UserInterceptorTest {
     }
 
     @Test
-    public void preHandle_当设置token的username_那么username可以在线程中拿出来用() throws Exception {
+    public void preHandle_不再信任未签名token_user() throws Exception {
         UserInterceptor userInterceptor = new UserInterceptor();
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("x-client-token-user", "{\"user_name\":\"zhangsan\"}");
         userInterceptor.preHandle(request, new MockHttpServletResponse(), new Object());
-        assertEquals(UserContextHolder.getInstance().getUsername(), "zhangsan");
+        assertEquals(null, UserContextHolder.getInstance().getUsername());
     }
 
     @Test
@@ -51,5 +51,18 @@ public class UserInterceptorTest {
         userInterceptor.preHandle(request, new MockHttpServletResponse(), new Object());
 
         assertEquals("security-user", UserContextHolder.getInstance().getUsername());
+    }
+
+    @Test
+    public void preHandle_不覆盖安全组件建立的可信上下文() throws Exception {
+        UserContextHolder.getInstance().setContext(java.util.Map.of(
+                "user_id", "user-1", "user_name", "trusted-user", "roles", "admin"));
+        UserInterceptor userInterceptor = new UserInterceptor(request -> "untrusted-user");
+
+        userInterceptor.preHandle(
+                new MockHttpServletRequest(), new MockHttpServletResponse(), new Object());
+
+        assertEquals("trusted-user", UserContextHolder.getInstance().getUsername());
+        assertEquals("user-1", UserContextHolder.getInstance().getUserId());
     }
 }

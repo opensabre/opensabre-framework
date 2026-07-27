@@ -19,6 +19,7 @@
         <module>opensabre-starter-persistence</module>
         <module>opensabre-starter-eda</module>
         <module>opensabre-starter-governance</module>
+        <module>opensabre-starter-security</module>
         <module>opensabre-starter-webmvc</module>
         <module>opensabre-starter-webflux</module>
         <module>opensabre-test</module>
@@ -68,7 +69,7 @@
         <central-publishing-maven-plugin.version>0.9.0</central-publishing-maven-plugin.version>
         <lombok.version>1.18.42</lombok.version>
 
-        <revision>0.6.0</revision>
+        <revision>0.7.0</revision>
     </properties>
 
     <!-- 发布配置 -->
