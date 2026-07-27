@@ -1,23 +1,43 @@
 package io.github.opensabre.boot.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 /**
  * Rest注册信息
  */
 @Data
-@RequiredArgsConstructor
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class RestMappingInfo {
+    /**
+     * Preserves the original public constructor used by legacy mapping listeners.
+     *
+     * @param url mapping path
+     * @param method HTTP method
+     */
+    public RestMappingInfo(String url, String method) {
+        this.url = url;
+        this.method = method;
+    }
+
     /**
      * Rest 的path url，如：/user/{name}
      */
-    @NonNull
     private String url;
     /**
      * Rest 的方法，如：GET/POST ..
      */
-    @NonNull
     private String method;
+
+    private String code;
+    private String name;
+    private String type;
+    private String description;
+    private String handlerClass;
+    private String handlerMethod;
+    private boolean declaredPermission;
 }
