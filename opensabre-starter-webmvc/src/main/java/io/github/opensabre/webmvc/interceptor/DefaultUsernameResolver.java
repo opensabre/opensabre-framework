@@ -13,7 +13,7 @@ import java.util.Base64;
 /**
  * 默认用户名解析器。
  * 使用 OAuth2 Resource Server 时从已验证的 Spring Security 上下文读取用户名，
- * 未使用时兼容网关用户信息 Header 和 JWT subject。
+ * 未使用时仅从外部 Authorization JWT subject 读取。
  */
 public class DefaultUsernameResolver implements UsernameResolver {
 
@@ -29,8 +29,7 @@ public class DefaultUsernameResolver implements UsernameResolver {
         if (isResourceServerAvailable()) {
             return getUsernameFromSecurityContext();
         }
-        String username = getUsernameFromUserHeader(request);
-        return StringUtils.defaultIfBlank(username, getUsernameFromJwt(request));
+        return getUsernameFromJwt(request);
     }
 
     private boolean isResourceServerAvailable() {
@@ -55,19 +54,6 @@ public class DefaultUsernameResolver implements UsernameResolver {
         }
     }
 
-    private String getUsernameFromUserHeader(HttpServletRequest request) {
-        String userInfo = request.getHeader(UserInterceptor.X_CLIENT_TOKEN_USER);
-        if (StringUtils.isBlank(userInfo)) {
-            return StringUtils.EMPTY;
-        }
-        try {
-            JsonNode user = objectMapper.readTree(userInfo);
-            return user.path(UserInterceptor.USERNAME_KEY).asText(StringUtils.EMPTY);
-        } catch (java.io.IOException e) {
-            return StringUtils.EMPTY;
-        }
-    }
-
     private String getUsernameFromJwt(HttpServletRequest request) {
         String token = getJwtToken(request);
         if (StringUtils.isBlank(token)) {
@@ -88,9 +74,6 @@ public class DefaultUsernameResolver implements UsernameResolver {
 
     private String getJwtToken(HttpServletRequest request) {
         String authorization = request.getHeader("Authorization");
-        if (StringUtils.isBlank(authorization)) {
-            authorization = request.getHeader(UserInterceptor.X_CLIENT_TOKEN);
-        }
         return StringUtils.removeStartIgnoreCase(StringUtils.trimToEmpty(authorization), "Bearer ");
     }
 }

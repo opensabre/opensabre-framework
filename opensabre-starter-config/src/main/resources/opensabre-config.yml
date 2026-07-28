@@ -4,3 +4,7 @@ spring:
       config:
         server-addr: ${REGISTER_HOST:localhost}:${REGISTER_PORT:8848}
         file-extension: yml
+        shared-configs:
+          - data-id: ${OPENSABRE_SECURITY_CONFIG_DATA_ID:opensabre-security.yml}
+            group: ${OPENSABRE_SECURITY_CONFIG_GROUP:DEFAULT_GROUP}
+            refresh: true

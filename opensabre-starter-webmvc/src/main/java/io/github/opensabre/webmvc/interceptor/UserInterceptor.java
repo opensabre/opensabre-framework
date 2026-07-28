@@ -1,7 +1,5 @@
 package io.github.opensabre.webmvc.interceptor;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.opensabre.common.core.util.UserContextHolder;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -9,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -17,26 +15,14 @@ import java.util.Map;
  */
 public class UserInterceptor implements HandlerInterceptor {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private static final String BOUND_ATTRIBUTE = UserInterceptor.class.getName() + ".BOUND";
 
     private final UsernameResolver usernameResolver;
 
     /**
-     * 服务间调用token用户信息,格式为json
-     * {
-     * "user_name":"必须有"
-     * "自定义key:"value"
-     * }
-     */
-    public static final String X_CLIENT_TOKEN_USER = "x-client-token-user";
-    /**
      * 用户名的上下文键。
      */
     public static final String USERNAME_KEY = "user_name";
-    /**
-     * 服务间调用的认证token
-     */
-    public static final String X_CLIENT_TOKEN = "x-client-token";
 
     /**
      * 使用默认用户名解析器创建拦截器。
@@ -56,9 +42,15 @@ public class UserInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        //从网关获取并校验,通过校验就可信任x-client-token-user中的信息
-        checkToken(request.getHeader(X_CLIENT_TOKEN));
-        UserContextHolder.getInstance().setContext(getUserContext(request));
+        // The security starter owns signed x-client-token handling. Never overwrite its trusted context.
+        if (!UserContextHolder.getInstance().getContext().isEmpty()) {
+            return true;
+        }
+        Map<String, String> context = getUserContext(request);
+        if (!context.isEmpty()) {
+            UserContextHolder.getInstance().setContext(context);
+            request.setAttribute(BOUND_ATTRIBUTE, Boolean.TRUE);
+        }
         return true;
     }
 
@@ -69,12 +61,7 @@ public class UserInterceptor implements HandlerInterceptor {
      * @return 用户上下文
      */
     private Map<String, String> getUserContext(HttpServletRequest request) throws Exception {
-        Map<String, String> userContext = new HashMap<>();
-        String userInfoString = request.getHeader(X_CLIENT_TOKEN_USER);
-        if (StringUtils.isNotBlank(userInfoString)) {
-            userContext.putAll(objectMapper.readValue(userInfoString, new TypeReference<>() {
-            }));
-        }
+        Map<String, String> userContext = new LinkedHashMap<>();
         String username = usernameResolver.resolve(request);
         if (StringUtils.isNotBlank(username)) {
             userContext.put(USERNAME_KEY, username);
@@ -84,17 +71,10 @@ public class UserInterceptor implements HandlerInterceptor {
         return userContext;
     }
 
-    /**
-     * 校验Token
-     *
-     * @param token 传来的token
-     */
-    private void checkToken(String token) {
-        //TODO 从网关获取并校验,通过校验就可信任x-client-token-user中的信息
-    }
-
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) {
-        UserContextHolder.getInstance().clear();
+        if (Boolean.TRUE.equals(request.getAttribute(BOUND_ATTRIBUTE))) {
+            UserContextHolder.getInstance().clear();
+        }
     }
 }

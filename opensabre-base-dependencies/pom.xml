@@ -177,6 +177,11 @@
             </dependency>
             <dependency>
                 <groupId>io.github.opensabre</groupId>
+                <artifactId>opensabre-starter-security</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.opensabre</groupId>
                 <artifactId>opensabre-starter-webmvc</artifactId>
                 <version>${revision}</version>
             </dependency>

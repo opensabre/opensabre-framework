@@ -11,6 +11,7 @@
 | `opensabre-starter-persistence` | 持久化能力。 | 沉淀事务、迁移与审计约定。 |
 | `opensabre-starter-eda` | 事件驱动架构能力；见模块内 README。 | 固化事件契约、幂等与可观测性。 |
 | `opensabre-starter-governance` | 治理与审计相关能力。 | 补齐限流、审计、容错集成说明。 |
+| `opensabre-starter-security` | 内部短 Token、共享双密钥和可信用户上下文。 | 完成逐跳重签、密钥管理与 examples 验证。 |
 | `opensabre-starter-webmvc` | Servlet Web 应用能力；见模块内 README。 | 明确 MVC 扩展点与异常契约。 |
 | `opensabre-starter-webflux` | 响应式 Web 能力；见模块内 README。 | 明确响应式边界与阻塞调用限制。 |
 | `opensabre-test` | 测试支持。 | 扩展集成测试样板。 |
@@ -21,3 +22,4 @@
 
 - [治理计次与限次接入](governance-usage.md)
 - [错误码目录](error-catalog.md)
+- [内部 Token 安全组件](security-internal-token.md)

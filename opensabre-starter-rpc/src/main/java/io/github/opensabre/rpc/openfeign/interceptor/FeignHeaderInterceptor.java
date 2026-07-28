@@ -3,23 +3,24 @@ package io.github.opensabre.rpc.openfeign.interceptor;
 import com.google.common.collect.Maps;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
-import org.springframework.stereotype.Component;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
+import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * spring cloud feign传递header
  *
  * @author zhoutaoo
  */
-@Component
-@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class FeignHeaderInterceptor implements RequestInterceptor {
+
+    private static final Set<String> NON_FORWARDABLE_HEADERS = Set.of(
+            "authorization", "x-client-token", "x-client-token-user");
 
     /**
      * 获取request header 放入远程template中
@@ -35,13 +36,21 @@ public class FeignHeaderInterceptor implements RequestInterceptor {
      * @return header map
      */
     private Map<String, String> getHeaders() {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        if (!(RequestContextHolder.getRequestAttributes() instanceof ServletRequestAttributes attributes)) {
+            return Collections.emptyMap();
+        }
+        HttpServletRequest request = attributes.getRequest();
         Map<String, String> map = Maps.newHashMap();
         Enumeration<String> headerNames = request.getHeaderNames();
+        if (headerNames == null) {
+            return map;
+        }
         while (headerNames.hasMoreElements()) {
             String key = headerNames.nextElement();
             String value = request.getHeader(key);
-            map.put(key, value);
+            if (!NON_FORWARDABLE_HEADERS.contains(key.toLowerCase())) {
+                map.put(key, value);
+            }
         }
         return map;
     }
