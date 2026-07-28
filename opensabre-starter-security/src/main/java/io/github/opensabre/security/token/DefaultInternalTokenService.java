@@ -119,7 +119,12 @@ public class DefaultInternalTokenService implements InternalTokenService {
                 throw new InternalTokenException(InternalTokenError.UNKNOWN_KEY, "unknown internal token key id");
             }
             byte[] expectedSignature = sign(parts[0] + "." + parts[1], key);
-            byte[] actualSignature = BASE64_URL_DECODER.decode(parts[2]);
+            byte[] actualSignature;
+            try {
+                actualSignature = BASE64_URL_DECODER.decode(parts[2]);
+            } catch (IllegalArgumentException exception) {
+                throw new InternalTokenException(InternalTokenError.INVALID_SIGNATURE, "internal token signature encoding is invalid", exception);
+            }
             if (!MessageDigest.isEqual(expectedSignature, actualSignature)) {
                 throw new InternalTokenException(InternalTokenError.INVALID_SIGNATURE, "internal token signature is invalid");
             }
