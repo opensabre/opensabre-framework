@@ -89,6 +89,7 @@ class InternalTokenAuthenticationFilterTest {
     @Test
     void rejectsMissingTokenWhenRequiredBeforeAuthorization() throws Exception {
         InternalTokenProperties properties = new InternalTokenProperties();
+        properties.setEnabled(true);
         properties.setRequired(true);
         InternalTokenAuthenticationFilter filter = new InternalTokenAuthenticationFilter(
                 verifier((token, audience) -> claims()),
@@ -105,10 +106,12 @@ class InternalTokenAuthenticationFilterTest {
     }
 
     private static InternalTokenAuthenticationFilter filter(InternalTokenService tokenService) {
+        InternalTokenProperties properties = new InternalTokenProperties();
+        properties.setEnabled(true);
         return new InternalTokenAuthenticationFilter(
                 tokenService,
                 new InternalTokenUserContext(new ObjectMapper()),
-                new InternalTokenProperties(),
+                properties,
                 "base-sysadmin");
     }
 

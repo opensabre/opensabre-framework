@@ -15,6 +15,7 @@ class PropertiesInternalTokenKeyStatusProviderTest {
     @Test
     void shouldExposeMetadataWithoutSecretMaterial() {
         InternalTokenProperties properties = new InternalTokenProperties();
+        properties.setEnabled(true);
         properties.setKeyConfigVersion(7);
         properties.setActiveKeyId(" active-7 ");
         properties.setActiveKey("secret-material");

@@ -15,7 +15,19 @@ import java.util.Set;
 @ConfigurationProperties(prefix = "opensabre.security.internal-token")
 public class InternalTokenProperties {
 
-    private boolean enabled = true;
+    /**
+     * Internal tokens are opt-in so a framework version upgrade does not change
+     * existing application call chains before the shared key is configured.
+     */
+    private boolean enabled;
+    /**
+     * Whether the global Spring Boot RestClient builder may sign internal calls.
+     */
+    private boolean restClientEnabled;
+    /**
+     * Logical RestClient targets allowed to receive an internal token.
+     */
+    private Set<String> restClientAllowedTargets = new LinkedHashSet<>();
     /**
      * Whether every servlet request must carry an internal token.
      * Keep disabled for applications that also receive external JWT requests.

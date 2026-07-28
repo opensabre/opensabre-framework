@@ -74,7 +74,7 @@ class InternalTokenClientHttpRequestInterceptorTest {
     }
 
     @Test
-    void shouldOnlyStripCredentialsWhenGloballyDisabled() throws Exception {
+    void shouldPreserveCredentialsWhenGloballyDisabled() throws Exception {
         InternalTokenProperties properties = properties();
         properties.setEnabled(false);
         InternalTokenUserContext context = new InternalTokenUserContext(new ObjectMapper());
@@ -93,12 +93,37 @@ class InternalTokenClientHttpRequestInterceptorTest {
         interceptor.intercept(request, new byte[0],
                 (outbound, body) -> new MockClientHttpResponse(new byte[0], HttpStatus.OK));
 
-        assertFalse(request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION));
+        assertEquals("Bearer external", request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
+        assertEquals("caller-token", request.getHeaders().getFirst(InternalTokenConstants.HEADER));
+    }
+
+    @Test
+    void shouldPreserveCredentialsForTargetOutsideAllowList() throws Exception {
+        InternalTokenProperties properties = properties();
+        InternalTokenUserContext context = new InternalTokenUserContext(new ObjectMapper());
+        InternalTokenClientHttpRequestInterceptor interceptor =
+                new InternalTokenClientHttpRequestInterceptor(
+                        new DefaultInternalTokenService(new ObjectMapper(), properties),
+                        new InternalTokenRequestFactory(context),
+                        new HostInternalTokenTargetResolver(),
+                        properties,
+                        "base-middle");
+        MockClientHttpRequest request = new MockClientHttpRequest(
+                HttpMethod.GET, URI.create("https://oauth.example.com/token"));
+        request.getHeaders().set(HttpHeaders.AUTHORIZATION, "Bearer external");
+
+        interceptor.intercept(request, new byte[0],
+                (outbound, body) -> new MockClientHttpResponse(new byte[0], HttpStatus.OK));
+
+        assertEquals("Bearer external", request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
         assertFalse(request.getHeaders().containsKey(InternalTokenConstants.HEADER));
     }
 
     private static InternalTokenProperties properties() {
         InternalTokenProperties properties = new InternalTokenProperties();
+        properties.setEnabled(true);
+        properties.setRestClientEnabled(true);
+        properties.setRestClientAllowedTargets(Set.of("base-order"));
         properties.setActiveKeyId("active");
         properties.setActiveKey(Base64.getEncoder().encodeToString(
                 "0123456789abcdef0123456789abcdef".getBytes(StandardCharsets.UTF_8)));

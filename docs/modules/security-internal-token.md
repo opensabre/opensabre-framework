@@ -25,6 +25,11 @@ opensabre:
   security:
     internal-token:
       enabled: true
+      # RestClient 全局拦截默认关闭；开启后仍只处理白名单中的内部目标
+      rest-client-enabled: true
+      rest-client-allowed-targets:
+        - base-order
+        - base-sysadmin
       # 纯内部应用可设为 true；同时承接网关 JWT 的应用保持 false
       required: false
       key-config-version: 1
@@ -170,8 +175,9 @@ Starter 会关闭该过滤器的独立 Servlet 自动注册，避免它运行在
 
 ## RestClient 逐跳重签
 
-Servlet 应用通过 Spring Boot 注入的 `RestClient.Builder` 创建客户端时，会自动安装
-`InternalTokenClientHttpRequestInterceptor`。每次同步 HTTP 调用都会：
+内部 Token 与 RestClient 集成均显式开启，并且目标服务位于
+`rest-client-allowed-targets` 白名单时，Servlet 应用通过 Spring Boot 注入的
+`RestClient.Builder` 创建客户端会执行逐跳重签：
 
 1. 删除原有的 `Authorization`、`x-client-token` 和 `x-client-token-user`。
 2. 默认以请求 URI 的 host 作为目标服务名。
@@ -184,7 +190,8 @@ RestClient orderRestClient(RestClient.Builder builder) {
 }
 ```
 
-直接调用 `RestClient.builder()` 不会经过 Spring Boot 的自定义器。存在服务别名或特殊
+默认情况下 RestClient 集成关闭，不会删除外部 `Authorization`，也不会向第三方服务
+发送内部 Token。直接调用 `RestClient.builder()` 不会经过 Spring Boot 的自定义器。存在服务别名或特殊
 寻址规则时，可提供自己的 `InternalTokenTargetResolver` Bean，将请求 URI 映射为真实
 的 `aud`/`dst` 服务名。
 
@@ -206,6 +213,6 @@ RestClient orderRestClient(RestClient.Builder builder) {
 ## 安全约束
 
 - 不在代码库、日志、审计记录或管理页面返回共享密钥和完整 Token。
-- `enabled=false` 只用于受控实验或迁移，不得把未经验证的 Header 写入可信用户上下文。
+- `enabled` 默认关闭；应用完成共享密钥配置和调用链验证后再显式开启。
 - 共享 HMAC 意味着任一持有密钥的应用理论上具有全局签发能力，需要配合网络隔离、
   最小配置读取权限、短 TTL、快速轮换和完整审计。

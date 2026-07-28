@@ -83,6 +83,7 @@ class FeignInternalTokenInterceptorTest {
 
     private static InternalTokenProperties properties() {
         InternalTokenProperties properties = new InternalTokenProperties();
+        properties.setEnabled(true);
         properties.setActiveKeyId("active");
         properties.setActiveKey(Base64.getEncoder().encodeToString(
                 "0123456789abcdef0123456789abcdef".getBytes(StandardCharsets.UTF_8)));

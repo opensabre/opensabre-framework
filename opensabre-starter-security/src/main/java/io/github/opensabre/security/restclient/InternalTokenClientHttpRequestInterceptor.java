@@ -41,20 +41,26 @@ public class InternalTokenClientHttpRequestInterceptor implements ClientHttpRequ
     @Override
     public ClientHttpResponse intercept(
             HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
+        // A disabled integration must leave external HTTP requests untouched.
+        if (!properties.isEnabled() || !properties.isRestClientEnabled()) {
+            return execution.execute(request, body);
+        }
+        String target = targetResolver.resolve(request.getURI());
+        if (!properties.getRestClientAllowedTargets().contains(target)) {
+            return execution.execute(request, body);
+        }
+
         HttpHeaders headers = request.getHeaders();
         headers.remove(HttpHeaders.AUTHORIZATION);
         headers.remove(InternalTokenConstants.HEADER);
         headers.remove(LEGACY_USER_HEADER);
 
-        if (properties.isEnabled()) {
-            if (applicationName == null || applicationName.isBlank()) {
-                throw new IllegalStateException(
-                        "spring.application.name is required for internal token signing");
-            }
-            String target = targetResolver.resolve(request.getURI());
-            String token = tokenService.issue(requestFactory.create(applicationName, target));
-            headers.set(InternalTokenConstants.HEADER, token);
+        if (applicationName == null || applicationName.isBlank()) {
+            throw new IllegalStateException(
+                    "spring.application.name is required for internal token signing");
         }
+        String token = tokenService.issue(requestFactory.create(applicationName, target));
+        headers.set(InternalTokenConstants.HEADER, token);
         return execution.execute(request, body);
     }
 }
