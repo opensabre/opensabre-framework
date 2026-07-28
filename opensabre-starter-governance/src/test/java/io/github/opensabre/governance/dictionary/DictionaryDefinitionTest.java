@@ -12,8 +12,8 @@ class DictionaryDefinitionTest {
                 "sample_status", "样例状态", Status.values(), Status::code, Status::label);
 
         assertEquals("sample_status", definition.dictCode());
-        assertEquals("1", definition.items().getFirst().value());
-        assertEquals("正常", definition.items().getFirst().label());
+        assertEquals("1", definition.items().get(0).value());
+        assertEquals("正常", definition.items().get(0).label());
     }
 
     private enum Status {

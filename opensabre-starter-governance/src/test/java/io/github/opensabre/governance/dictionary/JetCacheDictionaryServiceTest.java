@@ -49,8 +49,8 @@ class JetCacheDictionaryServiceTest {
         JetCacheDictionaryService service = new JetCacheDictionaryService(cacheManager, client);
         service.init();
 
-        assertEquals("正常", service.items("sample_status").getFirst().label());
-        assertEquals("正常", service.items("sample_status").getFirst().label());
+        assertEquals("正常", service.items("sample_status").get(0).label());
+        assertEquals("正常", service.items("sample_status").get(0).label());
         assertEquals(1, loads.get());
         assertEquals(1, values.size());
     }
