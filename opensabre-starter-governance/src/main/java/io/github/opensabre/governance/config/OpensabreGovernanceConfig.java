@@ -87,7 +87,9 @@ public class OpensabreGovernanceConfig {
 
     @Bean
     @ConditionalOnMissingBean(name = "systemErrorCatalogProvider")
-    public ErrorCatalogProvider systemErrorCatalogProvider() { return ErrorCatalogProvider.of("framework", SystemErrorType.values()); }
+    public ErrorCatalogProvider systemErrorCatalogProvider() {
+        return ErrorCatalogProvider.common("opensabre-framework", "framework", SystemErrorType.values());
+    }
 
     @Bean
     @ConditionalOnProperty(prefix = "opensabre.governance.error-catalog", name = "enabled", havingValue = "true", matchIfMissing = true)

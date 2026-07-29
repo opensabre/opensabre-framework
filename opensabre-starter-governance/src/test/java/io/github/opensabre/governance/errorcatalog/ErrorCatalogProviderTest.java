@@ -13,4 +13,24 @@ class ErrorCatalogProviderTest {
         assertEquals("framework", entry.module());
         assertEquals(SystemErrorType.SYSTEM_ERROR.getMesg(), entry.message());
     }
+
+    @Test
+    void declaresFrameworkErrorsAsCommonDefinitions() {
+        ErrorCatalogEntry entry = ErrorCatalogProvider.common(
+                "opensabre-framework", "framework", SystemErrorType.values()).entries().iterator().next();
+
+        assertEquals("opensabre-framework", entry.owner());
+        assertEquals(ErrorCatalogScope.COMMON, entry.scope());
+    }
+
+    @Test
+    void resolvesApplicationOwnershipBeforeTransport() {
+        ErrorCatalogEntry entry = ErrorCatalogProvider.of(
+                "authorization", SystemErrorType.values()).entries().iterator().next();
+
+        ErrorCatalogEntry resolved = entry.resolveOwnership("base-authorization");
+
+        assertEquals("base-authorization", resolved.owner());
+        assertEquals(ErrorCatalogScope.APPLICATION, resolved.scope());
+    }
 }
