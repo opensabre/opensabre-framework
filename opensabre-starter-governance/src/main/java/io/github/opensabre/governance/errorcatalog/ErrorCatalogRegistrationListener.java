@@ -39,8 +39,11 @@ public class ErrorCatalogRegistrationListener {
             if (entriesByCode.isEmpty()) return;
             String application = environment.getProperty("spring.application.name", "unknown-application");
             String token = environment.getProperty("opensabre.governance.error-catalog.registration-token", "");
+            List<ErrorCatalogEntry> resolvedEntries = entriesByCode.values().stream()
+                    .map(entry -> entry.resolveOwnership(application))
+                    .toList();
             clientProvider.getObject().registerErrorCatalog(new ErrorCatalogSnapshot(application,
-                    OpensabreVersion.getVersion(), List.copyOf(entriesByCode.values())), token);
+                    OpensabreVersion.getVersion(), resolvedEntries), token);
             log.info("Registered {} error catalog entries for {}", entriesByCode.size(), application);
         } catch (Exception exception) { log.warn("Error catalog registration failed; startup is unaffected", exception); }
     }

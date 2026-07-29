@@ -13,4 +13,15 @@ public interface ErrorCatalogProvider {
         List<ErrorCatalogEntry> entries = Arrays.stream(errorTypes).map(type -> ErrorCatalogEntry.from(type, module)).toList();
         return () -> entries;
     }
+
+    /**
+     * Declares framework-owned error codes shared by every application.
+     */
+    static ErrorCatalogProvider common(String owner, String module, ErrorType[] errorTypes) {
+        List<ErrorCatalogEntry> entries = Arrays.stream(errorTypes)
+                .map(type -> new ErrorCatalogEntry(type.getCode(), type.getMesg(), module,
+                        null, true, false, null, owner, ErrorCatalogScope.COMMON))
+                .toList();
+        return () -> entries;
+    }
 }
