@@ -50,6 +50,7 @@ public class SpringSecurityInternalTokenPrincipalProvider implements InternalTok
 
             List<String> roles = new ArrayList<>();
             List<String> scopes = new ArrayList<>();
+            List<String> directAuthorities = new ArrayList<>();
             Object authorities = invoke(authentication, "getAuthorities");
             if (authorities instanceof Collection<?> collection) {
                 for (Object authority : collection) {
@@ -59,11 +60,12 @@ public class SpringSecurityInternalTokenPrincipalProvider implements InternalTok
                     } else if (value != null && value.startsWith("SCOPE_") && value.length() > 6) {
                         scopes.add(value.substring(6));
                     } else if (hasText(value)) {
-                        roles.add(value);
+                        directAuthorities.add(value);
                     }
                 }
             }
-            return Optional.of(new InternalTokenPrincipal(subject, username, roles, scopes));
+            return Optional.of(new InternalTokenPrincipal(
+                    subject, username, roles, scopes, directAuthorities));
         } catch (ReflectiveOperationException | RuntimeException exception) {
             return Optional.empty();
         }

@@ -13,6 +13,8 @@ import io.github.opensabre.governance.dictionary.DictionaryRegistrationListener;
 import io.github.opensabre.governance.dictionary.DictionaryService;
 import io.github.opensabre.governance.dictionary.JetCacheDictionaryService;
 import io.github.opensabre.governance.dictionary.DictionaryPreloadListener;
+import io.github.opensabre.governance.registration.GovernanceRegistrationCoordinator;
+import io.github.opensabre.governance.registration.GovernanceRegistrationEndpoint;
 import com.alicp.jetcache.CacheManager;
 import io.github.opensabre.governance.ratelimit.aspect.RateLimitAspect;
 import io.github.opensabre.governance.ratelimit.GovernanceRateLimiter;
@@ -26,8 +28,11 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import io.github.opensabre.common.core.exception.SystemErrorType;
 import java.util.List;
+import java.util.Map;
 
 @AutoConfiguration
 @EnableFeignClients(basePackageClasses = SysadminGovernanceClient.class)
@@ -35,6 +40,30 @@ import java.util.List;
 @PropertySource(value = "classpath:opensabre-governance.yml", encoding = "UTF8", factory = YamlPropertyLoaderFactory.class)
 @ConditionalOnProperty(prefix = "opensabre.governance", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class OpensabreGovernanceConfig {
+
+    @Bean("governanceRegistrationScheduler")
+    @ConditionalOnMissingBean(name = "governanceRegistrationScheduler")
+    public ThreadPoolTaskScheduler governanceRegistrationScheduler(GovernanceProperties properties) {
+        GovernanceProperties.Registration registration = properties.getRegistration();
+        ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
+        scheduler.setPoolSize(registration.getPoolSize());
+        scheduler.setThreadNamePrefix(registration.getThreadNamePrefix());
+        scheduler.setWaitForTasksToCompleteOnShutdown(registration.isWaitForTasksToCompleteOnShutdown());
+        scheduler.setAwaitTerminationSeconds((int) registration.getAwaitTermination().toSeconds());
+        scheduler.setRemoveOnCancelPolicy(true);
+        return scheduler;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public GovernanceRegistrationCoordinator governanceRegistrationCoordinator(
+            @Qualifier("governanceRegistrationScheduler")
+            ThreadPoolTaskScheduler governanceRegistrationScheduler,
+            GovernanceProperties properties,
+            ObjectProvider<io.micrometer.core.instrument.MeterRegistry> meterRegistryProvider) {
+        return new GovernanceRegistrationCoordinator(
+                governanceRegistrationScheduler, properties, meterRegistryProvider);
+    }
 
     @Bean
     @ConditionalOnMissingBean
@@ -94,8 +123,10 @@ public class OpensabreGovernanceConfig {
     @Bean
     @ConditionalOnProperty(prefix = "opensabre.governance.error-catalog", name = "enabled", havingValue = "true", matchIfMissing = true)
     public ErrorCatalogRegistrationListener errorCatalogRegistrationListener(ObjectProvider<SysadminGovernanceClient> clientProvider,
-            List<ErrorCatalogProvider> providers, org.springframework.core.env.Environment environment) {
-        return new ErrorCatalogRegistrationListener(clientProvider, providers, environment);
+            List<ErrorCatalogProvider> providers, org.springframework.core.env.Environment environment,
+            GovernanceRegistrationCoordinator registrationCoordinator) {
+        return new ErrorCatalogRegistrationListener(
+                clientProvider, providers, environment, registrationCoordinator);
     }
 
     @Bean
@@ -104,8 +135,28 @@ public class OpensabreGovernanceConfig {
     public DictionaryRegistrationListener dictionaryRegistrationListener(
             ObjectProvider<SysadminGovernanceClient> clientProvider,
             List<DictionaryProvider> providers,
-            org.springframework.core.env.Environment environment) {
-        return new DictionaryRegistrationListener(clientProvider, providers, environment);
+            org.springframework.core.env.Environment environment,
+            GovernanceRegistrationCoordinator registrationCoordinator) {
+        return new DictionaryRegistrationListener(
+                clientProvider, providers, environment, registrationCoordinator);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public GovernanceRegistrationEndpoint governanceRegistrationEndpoint(
+            GovernanceRegistrationCoordinator coordinator,
+            ObjectProvider<ErrorCatalogRegistrationListener> errorCatalogListener,
+            ObjectProvider<DictionaryRegistrationListener> dictionaryListener) {
+        Map<String, Runnable> triggers = new java.util.LinkedHashMap<>();
+        ErrorCatalogRegistrationListener errorCatalog = errorCatalogListener.getIfAvailable();
+        DictionaryRegistrationListener dictionary = dictionaryListener.getIfAvailable();
+        if (errorCatalog != null) {
+            triggers.put("error-catalog", errorCatalog::register);
+        }
+        if (dictionary != null) {
+            triggers.put("dictionary", dictionary::register);
+        }
+        return new GovernanceRegistrationEndpoint(coordinator, Map.copyOf(triggers));
     }
 
     @Bean

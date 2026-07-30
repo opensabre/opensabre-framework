@@ -15,6 +15,7 @@ opensabre:
 ```
 
 `registration-enabled` 默认关闭。只有后端实现字典快照注册协议后才可开启。
+0.7.1 起注册任务使用[治理注册运行时](governance-registration.md)执行有限重试并暴露运行状态。
 
 ## 声明与读取
 

@@ -21,7 +21,7 @@ class SpringSecurityInternalTokenPrincipalProviderTest {
     }
 
     @Test
-    void preservesDirectRoleAuthoritiesAndSeparatesScopes() {
+    void separatesRolesScopesAndDirectAuthorities() {
         SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken(
                         "operator",
@@ -34,7 +34,8 @@ class SpringSecurityInternalTokenPrincipalProviderTest {
         InternalTokenPrincipal principal = provider.currentPrincipal().orElseThrow();
 
         assertEquals("operator", principal.subject());
-        assertEquals(List.of("ADMIN", "AUDITOR"), principal.roles());
+        assertEquals(List.of("AUDITOR"), principal.roles());
         assertEquals(List.of("keys.read"), principal.scopes());
+        assertEquals(List.of("ADMIN"), principal.authorities());
     }
 }

@@ -153,15 +153,28 @@ SecurityFilterChain securityFilterChain(
 }
 ```
 
-过滤器把内部 Token 的 `roles` 原样映射为 Authority，把 `scopes` 映射为
-`SCOPE_<scope>`，并同步绑定 `UserContextHolder`。外部 Bearer JWT 和内部 Token
+过滤器把内部 Token 的 `roles` 视为 Spring Security 角色：无前缀值（包括 0.7.0
+签发的 Token）会补为 `ROLE_`，已有 `ROLE_` 前缀则保持不变。因此应用应使用
+`hasRole("ADMIN")` 或 `hasAuthority("ROLE_ADMIN")`；此前使用
+`hasAuthority("ADMIN")` 的应用需要迁移。`scopes` 映射为 `SCOPE_<scope>`，
+其他非角色 Authority 通过独立的 `authorities` claim 原值传递，因此
+`hasAuthority("ORDER_WRITE")` 可跨服务保持一致。接收端同时绑定
+`UserContextHolder`。外部 Bearer JWT 和内部 Token
 不能同时出现在同一请求中：网关到首应用只携带外部 JWT，后续服务调用只携带逐跳
 重签的 `x-client-token`。
+
+滚动升级说明：0.7.0 可以校验带 `authorities` 的 0.7.1 Token，但 0.7.0
+中间服务重签时不会继续携带该新 claim。依赖直接 Authority 的调用链应先将所有
+负责重签的中间服务升级到 0.7.1；角色和 scope 不受此限制。
 
 Starter 会关闭该过滤器的独立 Servlet 自动注册，避免它运行在 Spring Security
 上下文生命周期之外；没有 `SecurityFilterChain` 的应用仍由 MVC 拦截器完成验证。
 
 ## Feign 逐跳重签
+
+内部 Token 签名拦截器在 Spring Bean 类型的 Feign 拦截器中最后执行，并在签名前清理
+`Authorization`、`x-client-token` 与 `x-client-token-user`。应用自定义拦截器必须排在
+签名拦截器之前；不要通过 Feign 属性默认 Header 或后置拦截器再次添加这些受管凭证。
 
 `opensabre-starter-rpc` 引入安全 Starter。每次 Feign 调用都会：
 
