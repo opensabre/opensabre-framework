@@ -51,5 +51,6 @@ Framework 客户端约定：
 | `POST` | `/dicts/snapshots` | 携带 `X-Opensabre-Dictionary-Token` 注册应用字典快照 |
 | `GET` | `/dicts/{dictCode}/items/all` | 返回包含停用项的完整字典项列表 |
 
-截至 0.7.0 发布时，`base-sysadmin` 的当前发布分支仅提供字典 CRUD 与 options API，尚未实现以上两个治理协议端点。因此读取/注册链路在接入前必须先确认后端兼容版本；未补齐时保持 `registration-enabled=false`。
-跟踪 Issue：[https://github.com/opensabre/base-sysadmin/issues/10](https://github.com/opensabre/base-sysadmin/issues/10)
+`base-sysadmin` 0.7.1 已实现以上两个治理协议端点，并校验字典归属与注册凭据。
+Framework 与 Sysadmin 应同时升级到 0.7.1 后再开启 `registration-enabled`；
+混用旧版 Sysadmin 时保持为 `false`。
