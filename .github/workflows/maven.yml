@@ -9,12 +9,14 @@ jobs:
     # 任务的步骤
     steps:
       # 1. 声明 checkout 仓库代码到工作区
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       # 2. 安装Java 环境 这里会用到的参数就是 Git Action secrets中配置的，
     - name: Set up JDK 17
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v4
       with:
         java-version: 17
+        distribution: temurin
+        cache: maven
       # 3.编译打包
     - name: Build with Maven
       run: mvn -B package javadoc:javadoc --file pom.xml
