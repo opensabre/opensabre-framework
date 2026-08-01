@@ -4,6 +4,7 @@ import io.github.opensabre.security.config.InternalTokenProperties;
 import io.github.opensabre.security.context.InternalTokenUserContext;
 import io.github.opensabre.security.token.InternalTokenClaims;
 import io.github.opensabre.security.token.InternalTokenConstants;
+import io.github.opensabre.security.token.InternalTokenError;
 import io.github.opensabre.security.token.InternalTokenException;
 import io.github.opensabre.security.token.InternalTokenService;
 import jakarta.servlet.FilterChain;
@@ -71,7 +72,7 @@ public class InternalTokenAuthenticationFilter extends OncePerRequestFilter {
         if (hasBearerToken(request)) {
             response.sendError(
                     HttpServletResponse.SC_UNAUTHORIZED,
-                    "external and internal tokens cannot be used together");
+                    InternalTokenError.AMBIGUOUS_CREDENTIALS.name());
             return;
         }
         if (!StringUtils.hasText(applicationName)) {
@@ -115,12 +116,24 @@ public class InternalTokenAuthenticationFilter extends OncePerRequestFilter {
         Set<GrantedAuthority> authorities = new LinkedHashSet<>();
         claims.roles().stream()
                 .filter(StringUtils::hasText)
-                .map(SimpleGrantedAuthority::new)
+                .map(InternalTokenAuthenticationFilter::roleAuthority)
                 .forEach(authorities::add);
         claims.scopes().stream()
                 .filter(StringUtils::hasText)
                 .map(scope -> new SimpleGrantedAuthority("SCOPE_" + scope))
                 .forEach(authorities::add);
+        claims.authorities().stream()
+                .filter(StringUtils::hasText)
+                .map(SimpleGrantedAuthority::new)
+                .forEach(authorities::add);
         return authorities;
+    }
+
+    /**
+     * Restores Spring Security role semantics while accepting 0.7.0 tokens
+     * that encoded role names without the {@code ROLE_} prefix.
+     */
+    private static SimpleGrantedAuthority roleAuthority(String role) {
+        return new SimpleGrantedAuthority(role.startsWith("ROLE_") ? role : "ROLE_" + role);
     }
 }

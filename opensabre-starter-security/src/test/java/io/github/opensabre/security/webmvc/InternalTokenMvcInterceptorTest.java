@@ -63,6 +63,22 @@ class InternalTokenMvcInterceptorTest {
     }
 
     @Test
+    void shouldRejectAmbiguousExternalAndInternalCredentials() throws Exception {
+        InternalTokenProperties properties = properties();
+        InternalTokenService service = new DefaultInternalTokenService(new ObjectMapper(), properties);
+        InternalTokenMvcInterceptor interceptor = new InternalTokenMvcInterceptor(
+                service, new InternalTokenUserContext(new ObjectMapper()), properties, "base-order");
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addHeader("x-client-token", service.issue(request()));
+        request.addHeader("Authorization", "Bearer external-jwt");
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        assertEquals(false, interceptor.preHandle(request, response, new Object()));
+        assertEquals(401, response.getStatus());
+        assertEquals("AMBIGUOUS_CREDENTIALS", response.getErrorMessage());
+    }
+
+    @Test
     void shouldAllowExternalJwtRequestWhenTokenIsNotRequired() throws Exception {
         InternalTokenProperties properties = properties();
         InternalTokenMvcInterceptor interceptor = new InternalTokenMvcInterceptor(
@@ -113,6 +129,7 @@ class InternalTokenMvcInterceptorTest {
 
     private static InternalTokenProperties properties() {
         InternalTokenProperties properties = new InternalTokenProperties();
+        properties.setEnabled(true);
         properties.setActiveKeyId("active");
         properties.setActiveKey(Base64.getEncoder().encodeToString(
                 "0123456789abcdef0123456789abcdef".getBytes(StandardCharsets.UTF_8)));

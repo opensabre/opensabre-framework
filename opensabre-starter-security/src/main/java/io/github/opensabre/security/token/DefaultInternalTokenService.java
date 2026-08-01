@@ -73,6 +73,7 @@ public class DefaultInternalTokenService implements InternalTokenService {
         payload.put("dst", request.audience());
         payload.put("scope", request.scopes());
         payload.put("roles", request.roles());
+        payload.put("authorities", request.authorities());
         payload.put("hop", request.hop());
         payload.put("parent_jti", request.parentTokenId());
         payload.put("trace_id", request.traceId());
@@ -231,6 +232,7 @@ public class DefaultInternalTokenService implements InternalTokenService {
                 text(claims, "dst"),
                 strings(claims, "scope"),
                 strings(claims, "roles"),
+                strings(claims, "authorities"),
                 number(claims, "hop").intValue(),
                 nullableText(claims, "parent_jti"),
                 nullableText(claims, "trace_id"),

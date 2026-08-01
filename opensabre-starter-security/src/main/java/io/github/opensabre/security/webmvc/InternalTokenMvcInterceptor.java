@@ -3,6 +3,7 @@ package io.github.opensabre.security.webmvc;
 import io.github.opensabre.security.config.InternalTokenProperties;
 import io.github.opensabre.security.context.InternalTokenUserContext;
 import io.github.opensabre.security.token.InternalTokenConstants;
+import io.github.opensabre.security.token.InternalTokenError;
 import io.github.opensabre.security.token.InternalTokenException;
 import io.github.opensabre.security.token.InternalTokenService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -54,6 +55,12 @@ public class InternalTokenMvcInterceptor implements HandlerInterceptor {
             }
             return true;
         }
+        if (hasBearerToken(request)) {
+            response.sendError(
+                    HttpServletResponse.SC_UNAUTHORIZED,
+                    InternalTokenError.AMBIGUOUS_CREDENTIALS.name());
+            return false;
+        }
         if (!StringUtils.hasText(applicationName)) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "spring.application.name is required");
             return false;
@@ -66,6 +73,12 @@ public class InternalTokenMvcInterceptor implements HandlerInterceptor {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, exception.getError().name());
             return false;
         }
+    }
+
+    private static boolean hasBearerToken(HttpServletRequest request) {
+        String authorization = request.getHeader("Authorization");
+        return StringUtils.hasText(authorization)
+                && authorization.regionMatches(true, 0, "Bearer ", 0, 7);
     }
 
     private boolean isExcluded(String requestUri) {

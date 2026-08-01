@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockFilterChain;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.authorization.AuthorityAuthorizationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -51,7 +52,16 @@ class InternalTokenAuthenticationFilterTest {
         assertThat(observed.get().getName()).isEqualTo("admin");
         assertThat(observed.get().getAuthorities())
                 .extracting("authority")
-                .containsExactlyInAnyOrder("ADMIN", "SCOPE_internal-token:read");
+                .containsExactlyInAnyOrder("ROLE_ADMIN", "SCOPE_internal-token:read", "ORDER_WRITE");
+        assertThat(AuthorityAuthorizationManager.hasRole("ADMIN")
+                .check(() -> observed.get(), null)
+                .isGranted()).isTrue();
+        assertThat(AuthorityAuthorizationManager.hasAuthority("SCOPE_internal-token:read")
+                .check(() -> observed.get(), null)
+                .isGranted()).isTrue();
+        assertThat(AuthorityAuthorizationManager.hasAuthority("ORDER_WRITE")
+                .check(() -> observed.get(), null)
+                .isGranted()).isTrue();
         assertThat(UserContextHolder.getInstance().getContext()).isEmpty();
         assertThat(SecurityContextHolder.getContext().getAuthentication()).isNull();
     }
@@ -84,11 +94,13 @@ class InternalTokenAuthenticationFilterTest {
         filter.doFilter(request, response, new MockFilterChain());
 
         assertThat(response.getStatus()).isEqualTo(401);
+        assertThat(response.getErrorMessage()).isEqualTo("AMBIGUOUS_CREDENTIALS");
     }
 
     @Test
     void rejectsMissingTokenWhenRequiredBeforeAuthorization() throws Exception {
         InternalTokenProperties properties = new InternalTokenProperties();
+        properties.setEnabled(true);
         properties.setRequired(true);
         InternalTokenAuthenticationFilter filter = new InternalTokenAuthenticationFilter(
                 verifier((token, audience) -> claims()),
@@ -105,10 +117,12 @@ class InternalTokenAuthenticationFilterTest {
     }
 
     private static InternalTokenAuthenticationFilter filter(InternalTokenService tokenService) {
+        InternalTokenProperties properties = new InternalTokenProperties();
+        properties.setEnabled(true);
         return new InternalTokenAuthenticationFilter(
                 tokenService,
                 new InternalTokenUserContext(new ObjectMapper()),
-                new InternalTokenProperties(),
+                properties,
                 "base-sysadmin");
     }
 
@@ -135,7 +149,8 @@ class InternalTokenAuthenticationFilterTest {
         return new InternalTokenClaims(
                 "base-order", "user-1", "admin", "base-sysadmin", "jti-1",
                 1, 1, 60, "base-order", "base-sysadmin",
-                List.of("internal-token:read"), List.of("ADMIN"), 1, null, "trace-1", 3,
+                List.of("internal-token:read"), List.of("ADMIN"), List.of("ORDER_WRITE"),
+                1, null, "trace-1", 3,
                 Map.of("tenant", "default"));
     }
 }

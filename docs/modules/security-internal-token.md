@@ -25,6 +25,11 @@ opensabre:
   security:
     internal-token:
       enabled: true
+      # RestClient 全局拦截默认关闭；开启后仍只处理白名单中的内部目标
+      rest-client-enabled: true
+      rest-client-allowed-targets:
+        - base-order
+        - base-sysadmin
       # 纯内部应用可设为 true；同时承接网关 JWT 的应用保持 false
       required: false
       key-config-version: 1
@@ -66,7 +71,7 @@ Token 是 `typ=OS-INTERNAL`、`alg=HS256` 的 compact JWS。核心字段包括�
 - `sub`、`username`：当前操作用户。
 - `jti`、`parent_jti`：本跳和上一跳 Token 标识。
 - `iat`、`nbf`、`exp`：有效期，硬上限 120 秒。
-- `scope`、`roles`：授权快照。
+- `scope`、`roles`、`authorities`：分别表示 Scope、Spring Security 角色和非角色直接 Authority 快照。
 - `hop`：调用跳数。
 - `trace_id`：链路标识。
 - `key_config_version`：共享密钥配置版本。
@@ -148,15 +153,28 @@ SecurityFilterChain securityFilterChain(
 }
 ```
 
-过滤器把内部 Token 的 `roles` 原样映射为 Authority，把 `scopes` 映射为
-`SCOPE_<scope>`，并同步绑定 `UserContextHolder`。外部 Bearer JWT 和内部 Token
+过滤器把内部 Token 的 `roles` 视为 Spring Security 角色：无前缀值（包括 0.7.0
+签发的 Token）会补为 `ROLE_`，已有 `ROLE_` 前缀则保持不变。因此应用应使用
+`hasRole("ADMIN")` 或 `hasAuthority("ROLE_ADMIN")`；此前使用
+`hasAuthority("ADMIN")` 的应用需要迁移。`scopes` 映射为 `SCOPE_<scope>`，
+其他非角色 Authority 通过独立的 `authorities` claim 原值传递，因此
+`hasAuthority("ORDER_WRITE")` 可跨服务保持一致。接收端同时绑定
+`UserContextHolder`。外部 Bearer JWT 和内部 Token
 不能同时出现在同一请求中：网关到首应用只携带外部 JWT，后续服务调用只携带逐跳
 重签的 `x-client-token`。
+
+滚动升级说明：0.7.0 可以校验带 `authorities` 的 0.7.1 Token，但 0.7.0
+中间服务重签时不会继续携带该新 claim。依赖直接 Authority 的调用链应先将所有
+负责重签的中间服务升级到 0.7.1；角色和 scope 不受此限制。
 
 Starter 会关闭该过滤器的独立 Servlet 自动注册，避免它运行在 Spring Security
 上下文生命周期之外；没有 `SecurityFilterChain` 的应用仍由 MVC 拦截器完成验证。
 
 ## Feign 逐跳重签
+
+内部 Token 签名拦截器在 Spring Bean 类型的 Feign 拦截器中最后执行，并在签名前清理
+`Authorization`、`x-client-token` 与 `x-client-token-user`。应用自定义拦截器必须排在
+签名拦截器之前；不要通过 Feign 属性默认 Header 或后置拦截器再次添加这些受管凭证。
 
 `opensabre-starter-rpc` 引入安全 Starter。每次 Feign 调用都会：
 
@@ -170,8 +188,9 @@ Starter 会关闭该过滤器的独立 Servlet 自动注册，避免它运行在
 
 ## RestClient 逐跳重签
 
-Servlet 应用通过 Spring Boot 注入的 `RestClient.Builder` 创建客户端时，会自动安装
-`InternalTokenClientHttpRequestInterceptor`。每次同步 HTTP 调用都会：
+内部 Token 与 RestClient 集成均显式开启，并且目标服务位于
+`rest-client-allowed-targets` 白名单时，Servlet 应用通过 Spring Boot 注入的
+`RestClient.Builder` 创建客户端会执行逐跳重签：
 
 1. 删除原有的 `Authorization`、`x-client-token` 和 `x-client-token-user`。
 2. 默认以请求 URI 的 host 作为目标服务名。
@@ -184,7 +203,8 @@ RestClient orderRestClient(RestClient.Builder builder) {
 }
 ```
 
-直接调用 `RestClient.builder()` 不会经过 Spring Boot 的自定义器。存在服务别名或特殊
+默认情况下 RestClient 集成关闭，不会删除外部 `Authorization`，也不会向第三方服务
+发送内部 Token。直接调用 `RestClient.builder()` 不会经过 Spring Boot 的自定义器。存在服务别名或特殊
 寻址规则时，可提供自己的 `InternalTokenTargetResolver` Bean，将请求 URI 映射为真实
 的 `aud`/`dst` 服务名。
 
@@ -206,6 +226,6 @@ RestClient orderRestClient(RestClient.Builder builder) {
 ## 安全约束
 
 - 不在代码库、日志、审计记录或管理页面返回共享密钥和完整 Token。
-- `enabled=false` 只用于受控实验或迁移，不得把未经验证的 Header 写入可信用户上下文。
+- `enabled` 默认关闭；应用完成共享密钥配置和调用链验证后再显式开启。
 - 共享 HMAC 意味着任一持有密钥的应用理论上具有全局签发能力，需要配合网络隔离、
   最小配置读取权限、短 TTL、快速轮换和完整审计。

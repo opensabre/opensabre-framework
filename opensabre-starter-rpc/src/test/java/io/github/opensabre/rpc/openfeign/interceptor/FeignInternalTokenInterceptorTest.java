@@ -1,6 +1,7 @@
 package io.github.opensabre.rpc.openfeign.interceptor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import feign.Target;
 import io.github.opensabre.common.core.util.UserContextHolder;
@@ -14,16 +15,20 @@ import io.github.opensabre.security.token.InternalTokenRequestFactory;
 import io.github.opensabre.security.token.InternalTokenService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.annotation.AnnotationAwareOrderComparator;
+import org.springframework.core.Ordered;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FeignInternalTokenInterceptorTest {
 
@@ -69,10 +74,58 @@ class FeignInternalTokenInterceptorTest {
                 new InternalTokenRequestFactory(context), properties, "base-middle");
         RequestTemplate template = template("base-order");
         template.header(InternalTokenConstants.HEADER, "caller-token");
+        template.header("Authorization", "Bearer external-token");
+        template.header("x-client-token-user", "{\"username\":\"forged\"}");
 
         interceptor.apply(template);
 
         assertNull(template.headers().get(InternalTokenConstants.HEADER));
+        assertEquals(
+                List.of("Bearer external-token"),
+                List.copyOf(template.headers().get("Authorization")));
+        assertNull(template.headers().get("x-client-token-user"));
+    }
+
+    @Test
+    void shouldRemoveAllManagedCredentialsBeforeSigningAndRemainIdempotent() {
+        InternalTokenProperties properties = properties();
+        FeignInternalTokenInterceptor interceptor = new FeignInternalTokenInterceptor(
+                new DefaultInternalTokenService(new ObjectMapper(), properties),
+                new InternalTokenRequestFactory(new InternalTokenUserContext(new ObjectMapper())),
+                properties,
+                "base-middle");
+        RequestTemplate template = template("base-order");
+        template.header("Authorization", "Bearer external-token");
+        template.header("X-CLIENT-TOKEN", "caller-token");
+        template.header("x-client-token-user", "{\"username\":\"forged\"}");
+
+        interceptor.apply(template);
+        interceptor.apply(template);
+
+        assertNull(template.headers().get("Authorization"));
+        assertNull(template.headers().get("x-client-token-user"));
+        assertEquals(1, template.headers().get(InternalTokenConstants.HEADER).size());
+        assertTrue(interceptor.getOrder() > 0);
+    }
+
+    @Test
+    void shouldRunAfterRegularSpringManagedFeignInterceptors() {
+        InternalTokenProperties properties = properties();
+        FeignInternalTokenInterceptor signer = new FeignInternalTokenInterceptor(
+                new DefaultInternalTokenService(new ObjectMapper(), properties),
+                new InternalTokenRequestFactory(new InternalTokenUserContext(new ObjectMapper())),
+                properties,
+                "base-middle");
+        List<RequestInterceptor> interceptors = new ArrayList<>(List.of(
+                signer, new ManagedCredentialAddingInterceptor()));
+        AnnotationAwareOrderComparator.sort(interceptors);
+        RequestTemplate template = template("base-order");
+
+        interceptors.forEach(interceptor -> interceptor.apply(template));
+
+        assertNull(template.headers().get("Authorization"));
+        assertNull(template.headers().get("x-client-token-user"));
+        assertEquals(1, template.headers().get(InternalTokenConstants.HEADER).size());
     }
 
     private static RequestTemplate template(String targetName) {
@@ -83,6 +136,7 @@ class FeignInternalTokenInterceptorTest {
 
     private static InternalTokenProperties properties() {
         InternalTokenProperties properties = new InternalTokenProperties();
+        properties.setEnabled(true);
         properties.setActiveKeyId("active");
         properties.setActiveKey(Base64.getEncoder().encodeToString(
                 "0123456789abcdef0123456789abcdef".getBytes(StandardCharsets.UTF_8)));
@@ -92,5 +146,19 @@ class FeignInternalTokenInterceptorTest {
     }
 
     private interface TestClient {
+    }
+
+    private static final class ManagedCredentialAddingInterceptor
+            implements RequestInterceptor, Ordered {
+        @Override
+        public void apply(RequestTemplate template) {
+            template.header("Authorization", "Bearer external-token");
+            template.header("x-client-token-user", "{\"username\":\"forged\"}");
+        }
+
+        @Override
+        public int getOrder() {
+            return 0;
+        }
     }
 }
