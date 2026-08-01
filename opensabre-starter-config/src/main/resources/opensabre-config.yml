@@ -4,12 +4,5 @@ spring:
       config:
         server-addr: ${REGISTER_HOST:localhost}:${REGISTER_PORT:8848}
         file-extension: yml
-        shared-configs:
-          # 跨服务、非敏感的运行配置，例如资源服务 JWK 地址。
-          - data-id: ${OPENSABRE_COMMON_CONFIG_DATA_ID:opensabre-common.yml}
-            group: ${OPENSABRE_COMMON_CONFIG_GROUP:DEFAULT_GROUP}
-            refresh: true
-          # 安全策略配置与通用运行配置分离，密钥本身不得写入 Nacos 公共配置。
-          - data-id: ${OPENSABRE_SECURITY_CONFIG_DATA_ID:opensabre-security.yml}
-            group: ${OPENSABRE_SECURITY_CONFIG_GROUP:DEFAULT_GROUP}
-            refresh: true
+        # Nacos 连接属性由应用 bootstrap.yml 或部署环境提供。
+        # 公共配置由 META-INF/spring.factories 中的 BootstrapConfiguration 提前加载。
