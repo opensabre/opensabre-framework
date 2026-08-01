@@ -95,8 +95,12 @@ class DefaultInternalTokenServiceTest {
         DefaultInternalTokenService service = service(
                 properties("active", "0123456789abcdef0123456789abcdef"), NOW);
         String token = service.issue(request("base-order", Map.of()));
-        String tampered = token.substring(0, token.length() - 1)
-                + (token.endsWith("a") ? "b" : "a");
+        int signatureStart = token.lastIndexOf('.') + 1;
+        char firstSignatureCharacter = token.charAt(signatureStart);
+        // 修改有效 Base64URL 位，避免只修改末尾未参与解码的填充位。
+        String tampered = token.substring(0, signatureStart)
+                + (firstSignatureCharacter == 'A' ? 'B' : 'A')
+                + token.substring(signatureStart + 1);
 
         InternalTokenException exception = assertThrows(
                 InternalTokenException.class, () -> service.verify(tampered, "base-order"));
