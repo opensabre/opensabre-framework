@@ -1,9 +1,14 @@
 package io.github.opensabre.governance.errorcatalog;
 
 import io.github.opensabre.governance.client.SysadminGovernanceClient;
+import io.github.opensabre.governance.config.GovernanceProperties;
+import io.github.opensabre.governance.registration.GovernanceRegistrationCoordinator;
+import io.micrometer.core.instrument.MeterRegistry;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.mock.env.MockEnvironment;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import java.lang.reflect.Proxy;
 import java.util.List;
@@ -14,6 +19,15 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ErrorCatalogRegistrationListenerTest {
+
+    private ThreadPoolTaskScheduler scheduler;
+
+    @AfterEach
+    void shutdownScheduler() {
+        if (scheduler != null) {
+            scheduler.shutdown();
+        }
+    }
 
     @Test
     void registersResolvedSnapshotAfterApplicationIsReady() throws InterruptedException {
@@ -54,7 +68,22 @@ class ErrorCatalogRegistrationListenerTest {
                 .withProperty("spring.application.name", "base-demo")
                 .withProperty("opensabre.governance.error-catalog.registration-token",
                         "registration-secret");
-        return new ErrorCatalogRegistrationListener(clientProvider, List.of(provider), environment);
+        scheduler = new ThreadPoolTaskScheduler();
+        scheduler.setPoolSize(1);
+        scheduler.setThreadNamePrefix("error-catalog-registration-test-");
+        scheduler.initialize();
+        ObjectProvider<MeterRegistry> meterRegistryProvider = new ObjectProvider<>() {
+            @Override
+            public MeterRegistry getObject() {
+                return null;
+            }
+        };
+        GovernanceProperties properties = new GovernanceProperties();
+        properties.getRegistration().setMaxAttempts(1);
+        GovernanceRegistrationCoordinator coordinator = new GovernanceRegistrationCoordinator(
+                scheduler, properties, meterRegistryProvider);
+        return new ErrorCatalogRegistrationListener(
+                clientProvider, List.of(provider), environment, coordinator);
     }
 
     private SysadminGovernanceClient client(RegistrationCall registrationCall) {
