@@ -71,7 +71,7 @@ Token 是 `typ=OS-INTERNAL`、`alg=HS256` 的 compact JWS。核心字段包括�
 - `sub`、`username`：当前操作用户。
 - `jti`、`parent_jti`：本跳和上一跳 Token 标识。
 - `iat`、`nbf`、`exp`：有效期，硬上限 120 秒。
-- `scope`、`roles`：授权快照。
+- `scope`、`roles`、`authorities`：分别表示 Scope、Spring Security 角色和非角色直接 Authority 快照。
 - `hop`：调用跳数。
 - `trace_id`：链路标识。
 - `key_config_version`：共享密钥配置版本。
