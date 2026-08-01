@@ -1,6 +1,7 @@
 package io.github.opensabre.governance.dictionary;
 
 import io.github.opensabre.governance.client.SysadminGovernanceClient;
+import io.github.opensabre.governance.registration.GovernanceRegistrationCoordinator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
@@ -12,7 +13,6 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * 应用就绪后尽力注册字典，sysadmin 不可用不会阻塞应用启动。
@@ -24,14 +24,14 @@ public class DictionaryRegistrationListener {
     private final ObjectProvider<SysadminGovernanceClient> clientProvider;
     private final List<DictionaryProvider> providers;
     private final Environment environment;
+    private final GovernanceRegistrationCoordinator registrationCoordinator;
 
     @EventListener(ApplicationReadyEvent.class)
     public void register() {
-        CompletableFuture.runAsync(this::registerSafely);
+        registrationCoordinator.submit("dictionary", this::registerOnce);
     }
 
-    private void registerSafely() {
-        try {
+    private void registerOnce() {
             Map<String, DictionaryDefinition> definitions = new LinkedHashMap<>();
             for (DictionaryProvider provider : providers) {
                 Collection<DictionaryDefinition> provided = provider.dictionaries();
@@ -41,8 +41,8 @@ public class DictionaryRegistrationListener {
                 for (DictionaryDefinition definition : provided) {
                     DictionaryDefinition previous = definitions.putIfAbsent(definition.dictCode(), definition);
                     if (previous != null && !previous.equals(definition)) {
-                        log.error("Skip dictionary registration: code {} conflicts locally", definition.dictCode());
-                        return;
+                        throw new IllegalStateException(
+                                "Dictionary code conflicts locally: " + definition.dictCode());
                     }
                 }
             }
@@ -54,8 +54,5 @@ public class DictionaryRegistrationListener {
             clientProvider.getObject().registerDictionaries(
                     DictionarySnapshot.from(application, List.copyOf(definitions.values())), token);
             log.info("Registered {} dictionaries for {}", definitions.size(), application);
-        } catch (Exception exception) {
-            log.warn("Dictionary registration failed; startup is unaffected", exception);
-        }
     }
 }

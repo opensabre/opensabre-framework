@@ -27,7 +27,8 @@ class InternalTokenRequestFactoryTest {
         InternalTokenRequestFactory factory = new InternalTokenRequestFactory(
                 context,
                 () -> Optional.of(new InternalTokenPrincipal(
-                        "user-1", "zhangsan", List.of("admin"), List.of("order:read"))));
+                        "user-1", "zhangsan", List.of("admin"), List.of("order:read"),
+                        List.of("ORDER_WRITE"))));
 
         InternalTokenRequest request = factory.create("base-organization", "base-order");
 
@@ -35,6 +36,7 @@ class InternalTokenRequestFactoryTest {
         assertEquals("zhangsan", request.username());
         assertEquals(List.of("admin"), request.roles());
         assertEquals(List.of("order:read"), request.scopes());
+        assertEquals(List.of("ORDER_WRITE"), request.authorities());
         assertEquals(1, request.hop());
         assertNull(request.parentTokenId());
     }

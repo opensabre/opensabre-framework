@@ -23,4 +23,5 @@
 - [治理计次与限次接入](governance-usage.md)
 - [错误码目录](error-catalog.md)
 - [字典治理组件](dictionary.md)
+- [治理注册运行时](governance-registration.md)
 - [内部 Token 安全组件](security-internal-token.md)

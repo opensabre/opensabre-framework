@@ -2,6 +2,7 @@ package io.github.opensabre.governance.errorcatalog;
 
 import io.github.opensabre.boot.metadata.OpensabreVersion;
 import io.github.opensabre.governance.client.SysadminGovernanceClient;
+import io.github.opensabre.governance.registration.GovernanceRegistrationCoordinator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
@@ -12,7 +13,6 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 /** Best-effort post-startup catalog registration; Sysadmin downtime never blocks the application. */
 @Slf4j
@@ -21,10 +21,13 @@ public class ErrorCatalogRegistrationListener {
     private final ObjectProvider<SysadminGovernanceClient> clientProvider;
     private final List<ErrorCatalogProvider> providers;
     private final Environment environment;
+    private final GovernanceRegistrationCoordinator registrationCoordinator;
     @EventListener(ApplicationReadyEvent.class)
-    public void register() { CompletableFuture.runAsync(this::registerSafely); }
-    private void registerSafely() {
-        try {
+    public void register() {
+        registrationCoordinator.submit("error-catalog", this::registerOnce);
+    }
+
+    private void registerOnce() {
             Map<String, ErrorCatalogEntry> entriesByCode = new LinkedHashMap<>();
             for (ErrorCatalogProvider provider : providers) {
                 Collection<ErrorCatalogEntry> entries = provider.entries();
@@ -32,7 +35,8 @@ public class ErrorCatalogRegistrationListener {
                 for (ErrorCatalogEntry entry : entries) {
                     ErrorCatalogEntry previous = entriesByCode.putIfAbsent(entry.code(), entry);
                     if (previous != null && !previous.equals(entry)) {
-                        log.error("Skip error catalog registration: code {} conflicts locally", entry.code()); return;
+                        throw new IllegalStateException(
+                                "Error catalog code conflicts locally: " + entry.code());
                     }
                 }
             }
@@ -45,6 +49,5 @@ public class ErrorCatalogRegistrationListener {
             clientProvider.getObject().registerErrorCatalog(new ErrorCatalogSnapshot(application,
                     OpensabreVersion.getVersion(), resolvedEntries), token);
             log.info("Registered {} error catalog entries for {}", entriesByCode.size(), application);
-        } catch (Exception exception) { log.warn("Error catalog registration failed; startup is unaffected", exception); }
     }
 }

@@ -35,6 +35,7 @@ class DefaultInternalTokenServiceTest {
         assertEquals("zhangsan", claims.username());
         assertEquals(List.of("order:read"), claims.scopes());
         assertEquals(List.of("admin"), claims.roles());
+        assertEquals(List.of("ORDER_WRITE"), claims.authorities());
         assertEquals("tenant-a", claims.extensions().get("tenant"));
         assertEquals(42, claims.keyConfigVersion());
     }
@@ -140,6 +141,7 @@ class DefaultInternalTokenServiceTest {
                 audience,
                 List.of("order:read"),
                 List.of("admin"),
+                List.of("ORDER_WRITE"),
                 1,
                 "parent-token",
                 "trace-1",

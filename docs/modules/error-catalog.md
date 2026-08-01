@@ -1,6 +1,8 @@
 # 错误码目录
 
-`opensabre-starter-governance` 会在应用完成启动后，异步上报基础错误码及应用声明的业务错误码。上报失败只记录日志，不影响应用可用性。
+`opensabre-starter-governance` 会在应用完成启动后，异步上报基础错误码及应用声明的业务错误码。
+0.7.1 起上报由[治理注册运行时](governance-registration.md)执行有限重试、指标和状态记录；
+失败不影响应用可用性。
 
 应用通过 `ErrorCatalogProvider` 声明业务枚举：
 

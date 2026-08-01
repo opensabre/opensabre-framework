@@ -3,6 +3,15 @@ opensabre:
     enabled: true
     sysadmin:
       service-id: base-sysadmin
+    registration:
+      max-attempts: 4
+      initial-backoff: 1s
+      max-backoff: 30s
+      jitter: 0.2
+      pool-size: 2
+      thread-name-prefix: governance-registration-
+      wait-for-tasks-to-complete-on-shutdown: true
+      await-termination: 35s
     audit:
       enabled: true
       async:

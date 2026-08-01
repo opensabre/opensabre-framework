@@ -54,6 +54,9 @@ public class InternalTokenRequestFactory {
         List<String> roles = current != null
                 ? new ArrayList<>(holder.getRoles())
                 : principal == null ? List.of() : principal.roles();
+        List<String> authorities = current != null
+                ? current.authorities()
+                : principal == null ? List.of() : principal.authorities();
         int hop = current == null ? 1 : current.hop() + 1;
         String parentTokenId = current == null ? null : current.tokenId();
         Map<String, Object> extensions = current == null ? Map.of() : current.extensions();
@@ -65,6 +68,7 @@ public class InternalTokenRequestFactory {
                 audience,
                 scopes,
                 roles,
+                authorities,
                 hop,
                 parentTokenId,
                 holder.getValue("trace_id"),

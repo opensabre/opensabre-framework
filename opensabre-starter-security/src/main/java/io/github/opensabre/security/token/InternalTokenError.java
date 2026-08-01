@@ -5,6 +5,7 @@ package io.github.opensabre.security.token;
  */
 public enum InternalTokenError {
     MISSING_TOKEN,
+    AMBIGUOUS_CREDENTIALS,
     MALFORMED_TOKEN,
     UNSUPPORTED_ALGORITHM,
     UNKNOWN_KEY,
