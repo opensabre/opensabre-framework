@@ -69,6 +69,8 @@ public class GovernanceProperties {
         private boolean registrationEnabled = false;
         private String registrationToken = "";
         private java.util.List<String> preloadCodes = java.util.List.of();
+        /** 自动扫描标准字典枚举的包；为空时使用 Spring Boot 应用自动配置包。 */
+        private java.util.List<String> scanPackages = java.util.List.of();
     }
 
     /**
