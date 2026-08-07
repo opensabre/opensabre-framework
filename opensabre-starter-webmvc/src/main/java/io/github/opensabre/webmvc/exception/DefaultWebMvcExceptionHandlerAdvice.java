@@ -4,9 +4,13 @@ import io.github.opensabre.common.core.entity.vo.Result;
 import io.github.opensabre.common.core.exception.SystemErrorType;
 import jakarta.servlet.ServletException;
 import io.github.opensabre.common.core.exception.BaseException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -19,6 +23,9 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
+
+import java.util.Optional;
 
 /**
  * 默认全局异常处理类
@@ -38,6 +45,37 @@ public class DefaultWebMvcExceptionHandlerAdvice {
     public Result<?> argumentInvalidException(MethodArgumentNotValidException ex) {
         log.warn("service exception:{}", ex.getMessage());
         return Result.fail(SystemErrorType.ARGUMENT_NOT_VALID, ex.getBindingResult().getFieldError().getDefaultMessage());
+    }
+
+    @ExceptionHandler(value = {HandlerMethodValidationException.class})
+    public Result<?> handlerMethodValidationException(HandlerMethodValidationException ex) {
+        log.warn("handler method validation exception:{}", ex.getMessage());
+        return Result.fail(SystemErrorType.ARGUMENT_NOT_VALID, ex.getMessage());
+    }
+
+    @ExceptionHandler(value = {ConstraintViolationException.class})
+    public Result<?> constraintViolationException(ConstraintViolationException ex) {
+        log.warn("constraint violation exception:{}", ex.getMessage());
+        String message = ex.getConstraintViolations().stream()
+                .map(ConstraintViolation::getMessage)
+                .findFirst()
+                .orElse(ex.getMessage());
+        return Result.fail(SystemErrorType.ARGUMENT_NOT_VALID, message);
+    }
+
+    /**
+     * 处理校验器执行期间的基础设施异常，例如字典中心不可用。
+     */
+    @ExceptionHandler(value = {ValidationException.class})
+    public ResponseEntity<Result<?>> validationException(ValidationException ex) {
+        Optional<BaseException> baseException = findCause(ex, BaseException.class);
+        if (baseException.isPresent()) {
+            log.error("validation dependency unavailable: {}", baseException.get().getMessage(), ex);
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                    .body(Result.fail(baseException.get().getErrorType()));
+        }
+        log.error("validation engine exception", ex);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Result.fail());
     }
 
     @ExceptionHandler(value = {HttpMessageNotReadableException.class, MethodArgumentTypeMismatchException.class})
@@ -84,5 +122,16 @@ public class DefaultWebMvcExceptionHandlerAdvice {
     public Result<?> exception(Throwable ex) {
         log.error("exception: ", ex);
         return Result.fail();
+    }
+
+    private <T extends Throwable> Optional<T> findCause(Throwable throwable, Class<T> causeType) {
+        Throwable current = throwable;
+        while (current != null) {
+            if (causeType.isInstance(current)) {
+                return Optional.of(causeType.cast(current));
+            }
+            current = current.getCause();
+        }
+        return Optional.empty();
     }
 }

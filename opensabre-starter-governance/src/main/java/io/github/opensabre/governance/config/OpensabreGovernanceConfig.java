@@ -9,6 +9,7 @@ import io.github.opensabre.governance.client.SysadminGovernanceClient;
 import io.github.opensabre.governance.errorcatalog.ErrorCatalogProvider;
 import io.github.opensabre.governance.errorcatalog.ErrorCatalogRegistrationListener;
 import io.github.opensabre.governance.dictionary.DictionaryProvider;
+import io.github.opensabre.governance.dictionary.ClasspathDictionaryEnumProvider;
 import io.github.opensabre.governance.dictionary.DictionaryRegistrationListener;
 import io.github.opensabre.governance.dictionary.DictionaryService;
 import io.github.opensabre.governance.dictionary.JetCacheDictionaryService;
@@ -27,6 +28,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
@@ -139,6 +143,22 @@ public class OpensabreGovernanceConfig {
             GovernanceRegistrationCoordinator registrationCoordinator) {
         return new DictionaryRegistrationListener(
                 clientProvider, providers, environment, registrationCoordinator);
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "opensabre.governance.dictionary", name = "enabled",
+            havingValue = "true", matchIfMissing = true)
+    public DictionaryProvider dictionaryEnumProvider(
+            ResourceLoader resourceLoader,
+            BeanFactory beanFactory,
+            GovernanceProperties properties) {
+        List<String> scanPackages = properties.getDictionary().getScanPackages();
+        if (scanPackages == null || scanPackages.isEmpty()) {
+            scanPackages = AutoConfigurationPackages.has(beanFactory)
+                    ? AutoConfigurationPackages.get(beanFactory)
+                    : List.of();
+        }
+        return new ClasspathDictionaryEnumProvider(resourceLoader, scanPackages);
     }
 
     @Bean

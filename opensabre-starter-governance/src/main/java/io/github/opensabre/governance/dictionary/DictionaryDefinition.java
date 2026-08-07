@@ -24,4 +24,26 @@ public record DictionaryDefinition(String dictCode, String dictName, List<Dictio
                 .toList();
         return new DictionaryDefinition(code, name, items);
     }
+
+    /**
+     * 将实现标准字典接口的枚举转换为字典定义。
+     *
+     * @param code 字典编码
+     * @param name 字典名称
+     * @param enumType 标准字典枚举类型
+     * @param <E> 枚举类型
+     * @return 字典定义
+     */
+    public static <E extends Enum<E> & DictionaryEnum> DictionaryDefinition of(
+            String code, String name, Class<E> enumType) {
+        E[] values = enumType.getEnumConstants();
+        List<DictionaryItem> items = IntStream.range(0, values.length)
+                .mapToObj(index -> {
+                    E item = values[index];
+                    Integer sort = item.sort() == null ? index + 1 : item.sort();
+                    return new DictionaryItem(item.value(), item.label(), sort, item.tagType(), 1);
+                })
+                .toList();
+        return new DictionaryDefinition(code, name, items);
+    }
 }
