@@ -1,6 +1,6 @@
 # 字典治理组件
 
-`opensabre-starter-governance` 0.7.6-SNAPSHOT 提供应用侧字典声明、启动注册、预热和本地缓存读取能力。
+`opensabre-starter-governance` 0.7.6 提供应用侧字典声明、启动注册、预热和本地缓存读取能力。
 
 ## 配置
 
