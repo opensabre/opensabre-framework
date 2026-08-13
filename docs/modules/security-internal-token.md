@@ -56,11 +56,13 @@ opensabre:
         - locale
 ```
 
-配置中心轮换时，新密钥成为 active，旧 active 成为 previous。所有应用确认加载新
-`key-config-version` 后，previous 仍须至少保留最大 Token 生命周期与时钟偏差之和。
-安全 Starter 默认通过配置中心共享配置 `opensabre-security.yml` 加载这份配置，
-Data ID 和 Group 可分别用 `OPENSABRE_SECURITY_CONFIG_DATA_ID`、
-`OPENSABRE_SECURITY_CONFIG_GROUP` 覆盖。
+配置中心轮换时，新密钥成为 active，旧 active 成为 previous。内部 Token 配置与其他
+平台公共配置统一存放在 `opensabre-common.yml`，Data ID 和 Group 可分别用
+`OPENSABRE_COMMON_CONFIG_DATA_ID`、`OPENSABRE_COMMON_CONFIG_GROUP` 覆盖。
+
+当前公共配置在应用 Bootstrap 阶段加载，尚不支持热刷新。轮换后必须按接收方优先、
+调用方随后滚动重启全部相关应用；确认每个实例均加载新的 `key-config-version` 后，
+previous 仍须至少保留最大 Token 生命周期与时钟偏差之和，之后才能退役。
 
 ## Claims
 
