@@ -43,7 +43,8 @@ public class DefaultInternalTokenService implements InternalTokenService {
 
     @Override
     public String issue(InternalTokenRequest request) {
-        validateRequest(request);
+        InternalTokenProperties properties = this.properties.snapshot();
+        validateRequest(request, properties);
         HmacKeyRing keyRing = new HmacKeyRing(properties);
         long now = clock.instant().getEpochSecond();
         long ttl = properties.getTtl().toSeconds();
@@ -53,7 +54,7 @@ public class DefaultInternalTokenService implements InternalTokenService {
                     InternalTokenError.INVALID_CONFIGURATION,
                     "ttl must be positive, no greater than max-ttl, and max-ttl must not exceed 120 seconds");
         }
-        validateExtensions(request.extensions());
+        validateExtensions(request.extensions(), properties);
 
         Map<String, Object> header = new LinkedHashMap<>();
         header.put("alg", InternalTokenConstants.ALGORITHM);
@@ -99,6 +100,7 @@ public class DefaultInternalTokenService implements InternalTokenService {
 
     @Override
     public InternalTokenClaims verify(String token, String expectedAudience) {
+        InternalTokenProperties properties = this.properties.snapshot();
         if (token == null || token.isBlank()) {
             throw new InternalTokenException(InternalTokenError.MISSING_TOKEN, "internal token is missing");
         }
@@ -133,8 +135,8 @@ public class DefaultInternalTokenService implements InternalTokenService {
             }
             
             InternalTokenClaims claims = toClaims(decodeMap(parts[1]));
-            validateClaims(claims, expectedAudience);
-            validateExtensions(claims.extensions());
+            validateClaims(claims, expectedAudience, properties);
+            validateExtensions(claims.extensions(), properties);
             return claims;
         } catch (InternalTokenException exception) {
             throw exception;
@@ -143,7 +145,7 @@ public class DefaultInternalTokenService implements InternalTokenService {
         }
     }
 
-    private void validateRequest(InternalTokenRequest request) {
+    private void validateRequest(InternalTokenRequest request, InternalTokenProperties properties) {
         if (request == null
                 || !hasText(request.issuer())
                 || !hasText(request.subject())
@@ -168,7 +170,8 @@ public class DefaultInternalTokenService implements InternalTokenService {
         }
     }
 
-    private void validateClaims(InternalTokenClaims claims, String expectedAudience) {
+    private void validateClaims(InternalTokenClaims claims, String expectedAudience,
+                                InternalTokenProperties properties) {
         if (!hasText(expectedAudience)
                 || !expectedAudience.equals(claims.audience())
                 || !expectedAudience.equals(claims.destination())) {
@@ -201,7 +204,7 @@ public class DefaultInternalTokenService implements InternalTokenService {
         }
     }
 
-    private void validateExtensions(Map<String, Object> extensions) {
+    private void validateExtensions(Map<String, Object> extensions, InternalTokenProperties properties) {
         Set<String> allowedKeys = properties.getAllowedExtensionKeys();
         if (!extensions.isEmpty() && (allowedKeys.isEmpty() || !allowedKeys.containsAll(extensions.keySet()))) {
             throw new InternalTokenException(InternalTokenError.INVALID_EXTENSIONS, "extension key is not allowed");

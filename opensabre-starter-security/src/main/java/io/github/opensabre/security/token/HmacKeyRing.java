@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Immutable active/previous HMAC key snapshot.
  */
-final class HmacKeyRing {
+public final class HmacKeyRing {
 
     private static final int MINIMUM_KEY_BYTES = 32;
 
@@ -17,7 +17,7 @@ final class HmacKeyRing {
     private final byte[] activeKey;
     private final Map<String, byte[]> verificationKeys;
 
-    HmacKeyRing(InternalTokenProperties properties) {
+    public HmacKeyRing(InternalTokenProperties properties) {
         this.activeKeyId = requireText(properties.getActiveKeyId(), "active-key-id");
         this.activeKey = decodeKey(properties.getActiveKey(), "active-key");
         Map<String, byte[]> keys = new LinkedHashMap<>();

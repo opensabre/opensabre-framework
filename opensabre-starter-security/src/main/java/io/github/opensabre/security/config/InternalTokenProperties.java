@@ -56,4 +56,33 @@ public class InternalTokenProperties {
     private Set<String> allowedExtensionKeys = new LinkedHashSet<>();
     private Set<String> excludedPaths = new LinkedHashSet<>(Set.of(
             "/actuator/**", "/v3/**", "/doc.html", "/webjars/**", "/assets/**"));
+
+    public synchronized InternalTokenProperties snapshot() {
+        InternalTokenProperties copy = new InternalTokenProperties();
+        copy.replaceWith(this);
+        return copy;
+    }
+
+    public synchronized void replaceWith(InternalTokenProperties source) {
+        enabled = source.enabled;
+        restClientEnabled = source.restClientEnabled;
+        restClientAllowedTargets = new LinkedHashSet<>(source.restClientAllowedTargets);
+        required = source.required;
+        keyConfigVersion = source.keyConfigVersion;
+        activeKeyId = source.activeKeyId;
+        activeKey = source.activeKey;
+        previousKeyId = source.previousKeyId;
+        previousKey = source.previousKey;
+        activeKeyActivatedAt = source.activeKeyActivatedAt;
+        previousKeyRetireAfter = source.previousKeyRetireAfter;
+        ttl = source.ttl;
+        maxTtl = source.maxTtl;
+        clockSkew = source.clockSkew;
+        maxHop = source.maxHop;
+        maxTokenBytes = source.maxTokenBytes;
+        maxExtensionBytes = source.maxExtensionBytes;
+        allowedIssuers = new LinkedHashSet<>(source.allowedIssuers);
+        allowedExtensionKeys = new LinkedHashSet<>(source.allowedExtensionKeys);
+        excludedPaths = new LinkedHashSet<>(source.excludedPaths);
+    }
 }
