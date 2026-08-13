@@ -60,9 +60,12 @@ opensabre:
 平台公共配置统一存放在 `opensabre-common.yml`，Data ID 和 Group 可分别用
 `OPENSABRE_COMMON_CONFIG_DATA_ID`、`OPENSABRE_COMMON_CONFIG_GROUP` 覆盖。
 
-当前公共配置在应用 Bootstrap 阶段加载，尚不支持热刷新。轮换后必须按接收方优先、
-调用方随后滚动重启全部相关应用；确认每个实例均加载新的 `key-config-version` 后，
-previous 仍须至少保留最大 Token 生命周期与时钟偏差之和，之后才能退役。
+安全 Starter 在 Bootstrap 阶段加载公共配置，并订阅 Nacos 后续变更。候选配置只有在
+完整解析、密钥和时效参数校验通过且 `key-config-version` 未倒退时才会原子替换；
+失败时继续使用上一份有效快照。每个实例通过 Actuator
+`/actuator/internalTokenKeyStatus` 暴露不含密钥的版本、active key ID 和刷新状态。
+previous 仍须至少保留最大 Token 生命周期与时钟偏差之和，并在所有目标实例确认
+加载新版本后才能退役。
 
 ## Claims
 
@@ -228,6 +231,8 @@ RestClient orderRestClient(RestClient.Builder builder) {
 ## 安全约束
 
 - 不在代码库、日志、审计记录或管理页面返回共享密钥和完整 Token。
+- 外部 JWT 首跳在 Spring Security 完成验证后自动绑定 `UserContextHolder`，供审计与
+  持久化元数据使用；不信任客户端自报用户名 Header。
 - `enabled` 默认关闭；应用完成共享密钥配置和调用链验证后再显式开启。
 - 共享 HMAC 意味着任一持有密钥的应用理论上具有全局签发能力，需要配合网络隔离、
   最小配置读取权限、短 TTL、快速轮换和完整审计。
