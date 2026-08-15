@@ -18,7 +18,7 @@ OpenSabre 1.0 以 0.7.7 为功能基线直接升级到 Spring Boot 4，不提供
 
 ## 必须处理的破坏性变更
 
-1. 将 OpenSabre 父 POM 或 BOM 版本改为 `1.0.0-SNAPSHOT`，编译 release 改为 21。
+1. 将 OpenSabre 父 POM 或 BOM 版本改为 `1.0.0`，编译 release 改为 21。
 2. 删除 `bootstrap.yml`，把应用名、端口及云配置迁入 `application.yml`。
 3. 使用 `spring.config.import` 显式导入 Nacos 配置，例如：
 
