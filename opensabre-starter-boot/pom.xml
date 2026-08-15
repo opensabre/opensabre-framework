@@ -16,10 +16,6 @@
     <name>opensabre-starter-boot</name>
     <description>Opensabre Boot Starter</description>
 
-    <properties>
-        <logback-core.version>1.5.13</logback-core.version>
-    </properties>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -33,11 +29,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- 加载bootstrap.yml文件 -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bootstrap</artifactId>
-        </dependency>
         <!--opensabre 常用web组件-->
         <dependency>
             <groupId>io.github.opensabre</groupId>
@@ -47,12 +38,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>ch.qos.logback</groupId>
-                    <artifactId>logback-core</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <!-- 分布式链路追踪 -->
         <dependency>
@@ -72,7 +57,6 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
-            <version>${logback-core.version}</version>
         </dependency>
         <!--  提示文件生成   -->
         <dependency>

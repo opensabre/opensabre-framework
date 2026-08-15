@@ -4,5 +4,5 @@ spring:
       config:
         server-addr: ${REGISTER_HOST:localhost}:${REGISTER_PORT:8848}
         file-extension: yml
-        # Nacos 连接属性由应用 bootstrap.yml 或部署环境提供。
-        # 公共配置由 META-INF/spring.factories 中的 BootstrapConfiguration 提前加载。
+        # Spring Cloud Alibaba 2025.1 requires applications to import Nacos
+        # configuration explicitly from application.yml via spring.config.import.

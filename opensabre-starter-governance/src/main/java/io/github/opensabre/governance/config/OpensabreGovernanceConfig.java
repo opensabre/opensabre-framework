@@ -1,6 +1,6 @@
 package io.github.opensabre.governance.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import io.github.opensabre.boot.config.YamlPropertyLoaderFactory;
 import io.github.opensabre.eda.api.EdaEventPublisher;
 import io.github.opensabre.governance.audit.aspect.AuditAspect;

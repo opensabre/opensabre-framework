@@ -56,7 +56,7 @@ public class PrefixLogBackDesensitizer extends AbstractLogBackDesensitizer {
         Matcher matcher = sensitiveRule.pattern().matcher(originStr);
         while (matcher.find()) {
             String passwd = matcher.group(keywordsGroupIndex);
-            message.set(message.get().replaceAll(passwd, sensitiveRule.replace(passwd)));
+            message.set(message.get().replace(passwd, sensitiveRule.replace(passwd)));
         }
         return message.get();
     }

@@ -33,11 +33,6 @@
             <groupId>io.github.opensabre</groupId>
             <artifactId>opensabre-starter-boot</artifactId>
         </dependency>
-        <!-- 加载bootstrap.yml文件 -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bootstrap</artifactId>
-        </dependency>
         <!--注册中心-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

@@ -1,11 +1,10 @@
 package io.github.opensabre.boot.sensitive.rest;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.BeanProperty;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.ContextualSerializer;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.BeanProperty;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
 import io.github.opensabre.boot.annotations.Desensitization;
 import io.github.opensabre.boot.sensitive.rest.strategy.CustomSensitiveStrategy;
 import io.github.opensabre.boot.sensitive.rest.strategy.DefaultSensitiveStrategy;
@@ -15,7 +14,6 @@ import io.github.opensabre.boot.sensitive.rule.DefaultSensitiveRule;
 import io.github.opensabre.boot.sensitive.rule.SensitiveRule;
 import lombok.NoArgsConstructor;
 
-import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -23,7 +21,7 @@ import java.util.Optional;
  * 脱敏数据处理类
  */
 @NoArgsConstructor
-public class DesensitizationSerialize extends JsonSerializer<String> implements ContextualSerializer {
+public class DesensitizationSerialize extends ValueSerializer<String> {
     /**
      * 脱敏策略
      */
@@ -57,14 +55,15 @@ public class DesensitizationSerialize extends JsonSerializer<String> implements 
     }
 
     @Override
-    public void serialize(String str, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+    public void serialize(String str, JsonGenerator jsonGenerator, SerializationContext serializationContext)
+            throws JacksonException {
         jsonGenerator.writeString(sensitiveStrategy.desensitizing(type, str));
     }
 
     @Override
-    public JsonSerializer<?> createContextual(SerializerProvider serializerProvider, BeanProperty beanProperty) throws JsonMappingException {
+    public ValueSerializer<?> createContextual(SerializationContext serializationContext, BeanProperty beanProperty) {
         if (Objects.isNull(beanProperty)) {
-            return serializerProvider.findNullValueSerializer(null);
+            return serializationContext.findNullValueSerializer(null);
         }
         // 判断数据类型是否为String类型
         if (Objects.equals(beanProperty.getType().getRawClass(), String.class)) {
@@ -82,6 +81,6 @@ public class DesensitizationSerialize extends JsonSerializer<String> implements 
                     return new DesensitizationSerialize(desensitization.type());
             }
         }
-        return serializerProvider.findValueSerializer(beanProperty.getType(), beanProperty);
+        return serializationContext.findValueSerializer(beanProperty.getType());
     }
 }

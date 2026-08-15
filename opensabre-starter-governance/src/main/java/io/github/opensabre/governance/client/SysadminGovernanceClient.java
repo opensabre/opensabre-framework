@@ -8,6 +8,7 @@ import io.github.opensabre.governance.client.dto.RateLimitCheckRequest;
 import io.github.opensabre.governance.client.dto.RateLimitCheckResponse;
 import io.github.opensabre.governance.errorcatalog.ErrorCatalogSnapshot;
 import io.github.opensabre.governance.usage.UsageRecord;
+import io.github.opensabre.rpc.openfeign.config.OpensabreFeignClientConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(name = "${opensabre.governance.sysadmin.service-id:base-sysadmin}", contextId = "sysadminGovernanceClient")
+@FeignClient(name = "${opensabre.governance.sysadmin.service-id:base-sysadmin}",
+        contextId = "sysadminGovernanceClient",
+        configuration = OpensabreFeignClientConfiguration.class)
 public interface SysadminGovernanceClient {
 
     @PostMapping("/audit/log")

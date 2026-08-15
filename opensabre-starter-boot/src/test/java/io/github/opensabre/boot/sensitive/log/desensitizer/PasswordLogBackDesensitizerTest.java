@@ -38,5 +38,6 @@ class PasswordLogBackDesensitizerTest {
         assertEquals("this a Secret : ******** please change it", passwordLogBackDesensitizer.desensitizing(loggingEvent, "this a Secret : 12345678 please change it"));
         assertEquals("this a Secret : ********* please change it", passwordLogBackDesensitizer.desensitizing(loggingEvent, "this a Secret : 12345678, please change it"));
         assertEquals("this a Secret : ********* please change it. passwd:******", passwordLogBackDesensitizer.desensitizing(loggingEvent, "this a Secret : 12345678, please change it. passwd:123456"));
+        assertEquals("token:********************************", passwordLogBackDesensitizer.desensitizing(loggingEvent, "token:[authorization_jws:base-service]"));
     }
 }

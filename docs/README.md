@@ -6,6 +6,7 @@
 | --- | --- |
 | [架构与模块](architecture.md) | 多模块边界、依赖关系与事实源 |
 | [开发与验证](development.md) | 构建、测试和兼容性要求 |
+| [1.0 升级指南](migration-1.0.md) | 从 0.x / Boot 3 升级到 1.x / Boot 4 |
 | [Starter 模块地图](modules/README.md) | 每个模块的介绍、功能、使用和规划入口 |
 | [规划](roadmap.md) | 框架演进方向 |
 

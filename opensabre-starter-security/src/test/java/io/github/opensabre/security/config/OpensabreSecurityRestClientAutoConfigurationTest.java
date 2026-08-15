@@ -1,12 +1,12 @@
 package io.github.opensabre.security.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import io.github.opensabre.security.restclient.InternalTokenClientHttpRequestInterceptor;
 import io.github.opensabre.security.restclient.InternalTokenTargetResolver;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
-import org.springframework.boot.web.client.RestClientCustomizer;
+import org.springframework.boot.restclient.RestClientCustomizer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

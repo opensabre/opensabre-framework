@@ -1,6 +1,6 @@
 package io.github.opensabre.security.webmvc;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import io.github.opensabre.common.core.util.UserContextHolder;
 import io.github.opensabre.security.config.InternalTokenProperties;
 import io.github.opensabre.security.context.InternalTokenUserContext;
@@ -54,13 +54,13 @@ class InternalTokenAuthenticationFilterTest {
                 .extracting("authority")
                 .containsExactlyInAnyOrder("ROLE_ADMIN", "SCOPE_internal-token:read", "ORDER_WRITE");
         assertThat(AuthorityAuthorizationManager.hasRole("ADMIN")
-                .check(() -> observed.get(), null)
+                .authorize(() -> observed.get(), null)
                 .isGranted()).isTrue();
         assertThat(AuthorityAuthorizationManager.hasAuthority("SCOPE_internal-token:read")
-                .check(() -> observed.get(), null)
+                .authorize(() -> observed.get(), null)
                 .isGranted()).isTrue();
         assertThat(AuthorityAuthorizationManager.hasAuthority("ORDER_WRITE")
-                .check(() -> observed.get(), null)
+                .authorize(() -> observed.get(), null)
                 .isGranted()).isTrue();
         assertThat(UserContextHolder.getInstance().getContext()).isEmpty();
         assertThat(SecurityContextHolder.getContext().getAuthentication()).isNull();

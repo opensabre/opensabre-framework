@@ -57,12 +57,14 @@ public class InternalTokenProperties {
     private Set<String> excludedPaths = new LinkedHashSet<>(Set.of(
             "/actuator/**", "/v3/**", "/doc.html", "/webjars/**", "/assets/**"));
 
+    /** Returns a detached, internally consistent copy for one signing or verification operation. */
     public synchronized InternalTokenProperties snapshot() {
         InternalTokenProperties copy = new InternalTokenProperties();
         copy.replaceWith(this);
         return copy;
     }
 
+    /** Atomically replaces the live configuration after a candidate has been fully validated. */
     public synchronized void replaceWith(InternalTokenProperties source) {
         enabled = source.enabled;
         restClientEnabled = source.restClientEnabled;

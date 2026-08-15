@@ -29,11 +29,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- 加载bootstrap.yml文件 -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bootstrap</artifactId>
-        </dependency>
         <!--配置中心-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
