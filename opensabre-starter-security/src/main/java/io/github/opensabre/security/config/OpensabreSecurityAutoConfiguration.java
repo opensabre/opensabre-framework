@@ -1,7 +1,6 @@
 package io.github.opensabre.security.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.alibaba.cloud.nacos.NacosConfigManager;
+import tools.jackson.databind.ObjectMapper;
 import io.github.opensabre.security.context.InternalTokenUserContext;
 import io.github.opensabre.security.key.InternalTokenKeyStatusProvider;
 import io.github.opensabre.security.key.PropertiesInternalTokenKeyStatusProvider;
@@ -13,9 +12,10 @@ import io.github.opensabre.security.token.InternalTokenRequestFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import com.alibaba.cloud.nacos.NacosConfigManager;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * Auto-configuration for OpenSabre internal token services.
@@ -62,7 +62,8 @@ public class OpensabreSecurityAutoConfiguration {
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = "opensabre.security.internal-token", name = "enabled", havingValue = "true")
     public InternalTokenConfigurationRefresher internalTokenConfigurationRefresher(
-            NacosConfigManager configManager, InternalTokenProperties properties,
+            NacosConfigManager configManager,
+            InternalTokenProperties properties,
             @Value("${OPENSABRE_COMMON_CONFIG_DATA_ID:opensabre-common.yml}") String dataId,
             @Value("${OPENSABRE_COMMON_CONFIG_GROUP:DEFAULT_GROUP}") String group) {
         return new InternalTokenConfigurationRefresher(configManager, properties, dataId, group);
@@ -71,7 +72,8 @@ public class OpensabreSecurityAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = "opensabre.security.internal-token", name = "enabled", havingValue = "true")
-    public InternalTokenRefreshEndpoint internalTokenRefreshEndpoint(InternalTokenConfigurationRefresher refresher) {
+    public InternalTokenRefreshEndpoint internalTokenRefreshEndpoint(
+            InternalTokenConfigurationRefresher refresher) {
         return new InternalTokenRefreshEndpoint(refresher);
     }
 }

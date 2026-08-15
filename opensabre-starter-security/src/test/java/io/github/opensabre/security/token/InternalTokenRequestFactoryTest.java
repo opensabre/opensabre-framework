@@ -1,6 +1,6 @@
 package io.github.opensabre.security.token;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import io.github.opensabre.common.core.util.UserContextHolder;
 import io.github.opensabre.security.context.InternalTokenUserContext;
 import io.github.opensabre.security.principal.InternalTokenPrincipal;

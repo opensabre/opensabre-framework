@@ -1,2 +1,0 @@
-org.springframework.cloud.bootstrap.BootstrapConfiguration=\
-io.github.opensabre.config.bootstrap.OpensabreNacosBootstrapConfiguration

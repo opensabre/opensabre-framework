@@ -1,6 +1,6 @@
 package io.github.opensabre.security.restclient;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import io.github.opensabre.common.core.util.UserContextHolder;
 import io.github.opensabre.security.config.InternalTokenProperties;
 import io.github.opensabre.security.context.InternalTokenUserContext;
@@ -69,8 +69,8 @@ class InternalTokenClientHttpRequestInterceptorTest {
         assertEquals(inboundClaims.tokenId(), outboundClaims.parentTokenId());
         assertEquals(2, outboundClaims.hop());
         assertEquals("base-middle", outboundClaims.issuer());
-        assertFalse(request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION));
-        assertFalse(request.getHeaders().containsKey("x-client-token-user"));
+        assertFalse(request.getHeaders().containsHeader(HttpHeaders.AUTHORIZATION));
+        assertFalse(request.getHeaders().containsHeader("x-client-token-user"));
     }
 
     @Test
@@ -116,7 +116,7 @@ class InternalTokenClientHttpRequestInterceptorTest {
                 (outbound, body) -> new MockClientHttpResponse(new byte[0], HttpStatus.OK));
 
         assertEquals("Bearer external", request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
-        assertFalse(request.getHeaders().containsKey(InternalTokenConstants.HEADER));
+        assertFalse(request.getHeaders().containsHeader(InternalTokenConstants.HEADER));
     }
 
     private static InternalTokenProperties properties() {

@@ -1,7 +1,7 @@
 package io.github.opensabre.security.token;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 import io.github.opensabre.security.config.InternalTokenProperties;
 
 import javax.crypto.Mac;

@@ -1,7 +1,7 @@
 package io.github.opensabre.boot.annotations;
 
 import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import tools.jackson.databind.annotation.JsonSerialize;
 import io.github.opensabre.boot.sensitive.rest.DesensitizationSerialize;
 import io.github.opensabre.boot.sensitive.rule.DefaultSensitiveRule;
 

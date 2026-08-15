@@ -1,7 +1,7 @@
 package io.github.opensabre.governance.audit.aspect;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import io.github.opensabre.common.core.util.UserContextHolder;
 import io.github.opensabre.eda.api.EdaEvent;
 import io.github.opensabre.eda.api.EdaEventPublisher;
@@ -145,7 +145,7 @@ public class AuditAspect {
         }
         try {
             return objectMapper.writeValueAsString(obj);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             log.warn("序列化对象失败", e);
             return "serialize error";
         }

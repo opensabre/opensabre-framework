@@ -53,7 +53,7 @@ mvn flatten:flatten
 
 ### Core Modules
 
-- **opensabre-base-dependencies**: Central dependency management with Spring Boot 3.4.1, Spring Cloud 2024.0.0, and Spring Cloud Alibaba 2023.0.3.2
+- **opensabre-base-dependencies**: Central dependency management with Spring Boot 4.0.7, Spring Cloud 2025.1.2, and Spring Cloud Alibaba 2025.1.0.0
 - **opensabre-web**: Core web utilities including exception handling, validation, and entity converters
 - **opensabre-starter-boot**: Auto-configuration for global exception handling, response wrapping, and sensitive data processing
 - **opensabre-starter-rpc**: RPC components with OpenFeign configuration, load balancing, and Sentinel integration
@@ -121,13 +121,13 @@ All REST APIs return `Result<T>` objects with standardized structure:
 
 ## Technology Stack
 
-- **Java 17**: Primary development language
-- **Spring Boot 3.4.1**: Application framework
-- **Spring Cloud 2024.0.0**: Microservices framework
-- **Spring Cloud Alibaba 2023.0.3.2**: Alibaba cloud components
-- **MyBatis Plus 3.5.5**: ORM framework
-- **JetCache 2.7.7**: Multi-level caching
-- **Knife4j 4.5.0**: API documentation
+- **Java 21**: Primary development language
+- **Spring Boot 4.0.7**: Application framework
+- **Spring Cloud 2025.1.2**: Microservices framework
+- **Spring Cloud Alibaba 2025.1.0.0**: Alibaba cloud components
+- **MyBatis Plus 3.5.17**: ORM framework
+- **JetCache 2.8.0.RC**: Multi-level caching
+- **OpenAPI annotations**: API contract metadata; documentation UI is selected by each application
 - **Hutool 5.8.35**: Utility library
 - **JUnit 5**: Testing framework
 

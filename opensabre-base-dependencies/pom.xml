@@ -21,27 +21,25 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!--  编译  -->
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.release>21</maven.compiler.release>
         <lombok.version>1.18.42</lombok.version>
-        <spring-boot-maven-plugin.version>3.4.1</spring-boot-maven-plugin.version>
+        <spring-boot-maven-plugin.version>4.0.7</spring-boot-maven-plugin.version>
         <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
-        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
         <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
         <!--  依赖  -->
-        <spring.boot.version>3.4.1</spring.boot.version>
-        <spring.cloud.version>2024.0.0</spring.cloud.version>
-        <spring.cloud.alibaba.version>2023.0.3.2</spring.cloud.alibaba.version>
+        <spring.boot.version>4.0.7</spring.boot.version>
+        <spring.cloud.version>2025.1.2</spring.cloud.version>
+        <spring.cloud.alibaba.version>2025.1.0.0</spring.cloud.alibaba.version>
         <!--swagger文档相关-->
-        <knife4j-openapi3.version>4.5.0</knife4j-openapi3.version>
-        <swagger-annotations.version>2.2.25</swagger-annotations.version>
+        <swagger-annotations.version>2.2.47</swagger-annotations.version>
         <!--数据库相关-->
         <mysql-connector-j.version>8.2.0</mysql-connector-j.version>
-        <mybatis-plus-boot-starter.version>3.5.5</mybatis-plus-boot-starter.version>
-        <mybatis-spring.version>3.0.4</mybatis-spring.version>
+        <mybatis-plus-boot-starter.version>3.5.17</mybatis-plus-boot-starter.version>
+        <mybatis-spring.version>4.0.0</mybatis-spring.version>
         <!--中间件-->
-        <jetcache-starter-redis.version>2.7.7</jetcache-starter-redis.version>
-        <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
+        <jetcache-starter-redis.version>2.8.0.RC</jetcache-starter-redis.version>
+        <jakarta.servlet-api.version>6.1.0</jakarta.servlet-api.version>
         <feign-interceptors>1.1.2</feign-interceptors>
         <!--工具-->
         <hutool.version>5.8.35</hutool.version>
@@ -116,12 +114,6 @@
                 <groupId>org.apache.httpcomponents.client5</groupId>
                 <artifactId>httpclient5</artifactId>
                 <version>${httpclient5.version}</version>
-            </dependency>
-            <!--springdoc - restfull API文档-->
-            <dependency>
-                <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
-                <version>${knife4j-openapi3.version}</version>
             </dependency>
             <!--Swagger - RESTFULL API文档-->
             <dependency>
@@ -204,12 +196,22 @@
             <!--持久化数据库-->
             <dependency>
                 <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <artifactId>mybatis-plus-spring-boot4-starter</artifactId>
                 <version>${mybatis-plus-boot-starter.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-extension</artifactId>
+                <version>${mybatis-plus-boot-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-jsqlparser</artifactId>
+                <version>${mybatis-plus-boot-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-spring</artifactId>
                 <version>${mybatis-plus-boot-starter.version}</version>
             </dependency>
             <dependency>
@@ -338,10 +340,6 @@
                                 <username>${secret.id}</username>
                                 <password>${secret.key}</password>
                             </auth>
-                            <tags>
-                                <tag>latest</tag>
-                                <tag>${project.version}</tag>
-                            </tags>
                         </to>
                         <!-- 容器配置 -->
                         <container>

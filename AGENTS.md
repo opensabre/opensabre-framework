@@ -2,7 +2,7 @@
 
 ## Project Structure & Module Organization
 
-This is a Java 17 multi-module Maven project for Opensabre framework starters. The root `pom.xml` aggregates modules and controls the shared `${revision}` version. Dependency versions live in `opensabre-base-dependencies`.
+This is a Java 21 multi-module Maven project for OpenSabre framework starters. The root `pom.xml` aggregates modules and controls the shared `${revision}` version. Dependency versions live in `opensabre-base-dependencies`.
 
 - `opensabre-web`: shared web models, validators, converters, and exceptions.
 - `opensabre-starter-*`: Spring Boot auto-configuration starters for boot, cache, config, EDA, persistence, register, RPC, and Web MVC features.
@@ -21,7 +21,7 @@ This is a Java 17 multi-module Maven project for Opensabre framework starters. T
 
 ## Coding Style & Naming Conventions
 
-Use UTF-8 and Java 17. Follow the existing Java style: 4-space indentation, one public top-level class per file, packages under `io.github.opensabre`, and concise JavaDoc for public APIs. Lombok is used where it removes boilerplate. Keep starter configuration classes named `Opensabre*Config` and resource files named by module, for example `opensabre-rpc.yml`.
+Use UTF-8 and Java 21. Follow the existing Java style: 4-space indentation, one public top-level class per file, packages under `io.github.opensabre`, and concise JavaDoc for public APIs. Lombok is used where it removes boilerplate. Keep starter configuration classes named `Opensabre*Config` and resource files named by module, for example `opensabre-rpc.yml`.
 
 Entity suffixes are meaningful: `Po` for persistence objects, `Vo` for responses, `Form` for request forms, and `Param` for query or service parameters.
 

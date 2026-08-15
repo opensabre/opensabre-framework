@@ -1,6 +1,6 @@
 package io.github.opensabre.security.context;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import io.github.opensabre.common.core.util.UserContextHolder;
 import io.github.opensabre.security.token.InternalTokenClaims;
 import org.junit.jupiter.api.AfterEach;

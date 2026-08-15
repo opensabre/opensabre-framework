@@ -20,23 +20,35 @@ import java.time.Instant;
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicReference;
 
+/** Subscribes to the common Nacos document and atomically refreshes internal-token settings. */
 public class InternalTokenConfigurationRefresher implements SmartLifecycle {
+
     private static final Logger log = LoggerFactory.getLogger(InternalTokenConfigurationRefresher.class);
     private static final String PREFIX = "opensabre.security.internal-token";
+
     private final ConfigService configService;
     private final InternalTokenProperties properties;
     private final String dataId;
     private final String group;
     private final AtomicReference<InternalTokenRefreshStatus> status;
     private final Listener listener = new Listener() {
-        @Override public Executor getExecutor() { return null; }
-        @Override public void receiveConfigInfo(String configInfo) { refresh(configInfo); }
+        @Override
+        public Executor getExecutor() {
+            return null;
+        }
+
+        @Override
+        public void receiveConfigInfo(String configInfo) {
+            refresh(configInfo);
+        }
     };
     private volatile boolean running;
 
-    public InternalTokenConfigurationRefresher(NacosConfigManager configManager,
-                                               InternalTokenProperties properties,
-                                               String dataId, String group) {
+    public InternalTokenConfigurationRefresher(
+            NacosConfigManager configManager,
+            InternalTokenProperties properties,
+            String dataId,
+            String group) {
         this.configService = configManager.getConfigService();
         this.properties = properties;
         this.dataId = dataId;
@@ -46,7 +58,8 @@ public class InternalTokenConfigurationRefresher implements SmartLifecycle {
                 initial.getKeyConfigVersion(), initial.getActiveKeyId(), Instant.now(), true, "initial"));
     }
 
-    @Override public void start() {
+    @Override
+    public void start() {
         try {
             configService.addListener(dataId, group, listener);
             running = true;
@@ -56,13 +69,20 @@ public class InternalTokenConfigurationRefresher implements SmartLifecycle {
         }
     }
 
-    @Override public void stop() {
+    @Override
+    public void stop() {
         configService.removeListener(dataId, group, listener);
         running = false;
     }
 
-    @Override public boolean isRunning() { return running; }
-    public InternalTokenRefreshStatus currentStatus() { return status.get(); }
+    @Override
+    public boolean isRunning() {
+        return running;
+    }
+
+    public InternalTokenRefreshStatus currentStatus() {
+        return status.get();
+    }
 
     void refresh(String yaml) {
         InternalTokenProperties before = properties.snapshot();
@@ -76,13 +96,15 @@ public class InternalTokenConfigurationRefresher implements SmartLifecycle {
                 return;
             }
             properties.replaceWith(candidate);
-            status.set(new InternalTokenRefreshStatus(candidate.getKeyConfigVersion(),
-                    candidate.getActiveKeyId(), Instant.now(), true, "refreshed"));
+            Instant now = Instant.now();
+            status.set(new InternalTokenRefreshStatus(
+                    candidate.getKeyConfigVersion(), candidate.getActiveKeyId(), now, true, "refreshed"));
             log.info("Refreshed internal-token configuration: version={}, activeKeyId={}",
                     candidate.getKeyConfigVersion(), candidate.getActiveKeyId());
         } catch (Exception exception) {
-            status.set(new InternalTokenRefreshStatus(before.getKeyConfigVersion(), before.getActiveKeyId(),
-                    Instant.now(), false, exception.getMessage()));
+            status.set(new InternalTokenRefreshStatus(
+                    before.getKeyConfigVersion(), before.getActiveKeyId(), Instant.now(), false,
+                    exception.getMessage()));
             log.error("Rejected internal-token configuration refresh; keeping version {}: {}",
                     before.getKeyConfigVersion(), exception.getMessage());
         }
@@ -90,17 +112,20 @@ public class InternalTokenConfigurationRefresher implements SmartLifecycle {
 
     private static InternalTokenProperties bind(String yaml) throws Exception {
         MutablePropertySources sources = new MutablePropertySources();
-        for (PropertySource<?> source : new YamlPropertySourceLoader().load("opensabreInternalTokenRefresh",
+        for (PropertySource<?> source : new YamlPropertySourceLoader().load(
+                "opensabreInternalTokenRefresh",
                 new ByteArrayResource(yaml.getBytes(StandardCharsets.UTF_8)))) {
             sources.addLast(source);
         }
-        return new Binder(ConfigurationPropertySources.from(sources)).bind(PREFIX,
-                Bindable.of(InternalTokenProperties.class)).orElseThrow(
-                () -> new IllegalArgumentException("internal-token configuration is missing"));
+        return new Binder(ConfigurationPropertySources.from(sources))
+                .bind(PREFIX, Bindable.of(InternalTokenProperties.class))
+                .orElseThrow(() -> new IllegalArgumentException("internal-token configuration is missing"));
     }
 
     private static void validate(InternalTokenProperties candidate) {
-        if (!candidate.isEnabled()) return;
+        if (!candidate.isEnabled()) {
+            return;
+        }
         new HmacKeyRing(candidate);
         long ttl = candidate.getTtl().toSeconds();
         long maxTtl = candidate.getMaxTtl().toSeconds();

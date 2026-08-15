@@ -1,6 +1,6 @@
 package io.github.opensabre.rpc.openfeign.interceptor;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import feign.Target;

@@ -1,7 +1,8 @@
 package io.github.opensabre.webmvc.interceptor;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.ClassUtils;
@@ -67,7 +68,7 @@ public class DefaultUsernameResolver implements UsernameResolver {
             String payload = new String(Base64.getUrlDecoder().decode(tokenParts[1]), StandardCharsets.UTF_8);
             JsonNode claims = objectMapper.readTree(payload);
             return claims.path("sub").asText(StringUtils.EMPTY);
-        } catch (IllegalArgumentException | java.io.IOException e) {
+        } catch (IllegalArgumentException | JacksonException e) {
             return StringUtils.EMPTY;
         }
     }

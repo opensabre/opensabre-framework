@@ -1,7 +1,7 @@
 package io.github.opensabre.security.context;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import io.github.opensabre.common.core.util.UserContextHolder;
 import io.github.opensabre.security.token.InternalTokenClaims;
 import io.github.opensabre.security.token.InternalTokenError;
@@ -72,7 +72,7 @@ public class InternalTokenUserContext {
     private String toJson(Object value) {
         try {
             return objectMapper.writeValueAsString(value);
-        } catch (JsonProcessingException exception) {
+        } catch (JacksonException exception) {
             throw new InternalTokenException(
                     InternalTokenError.INVALID_EXTENSIONS, "cannot bind token claims to user context", exception);
         }
