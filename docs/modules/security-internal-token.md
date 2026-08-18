@@ -67,6 +67,11 @@ opensabre:
 previous 仍须至少保留最大 Token 生命周期与时钟偏差之和，并在所有目标实例确认
 加载新版本后才能退役。
 
+公共配置导入应使用 `optional:nacos:opensabre-common.yml`：未启用内部 Token 的应用在 Data ID
+不存在、内容为空或 Nacos 暂不可用时可以首次启动，且不会创建刷新器。显式启用内部 Token 的应用
+不得依赖缺失或非法配置，也不得回退到固定共享密钥；应通过密钥状态端点和部署健康检查将其标记为
+未就绪。
+
 ## Claims
 
 Token 是 `typ=OS-INTERNAL`、`alg=HS256` 的 compact JWS。核心字段包括：

@@ -40,4 +40,13 @@ class OpensabreSecuritySpringSecurityAutoConfigurationTest {
                             .doesNotHaveBean("internalTokenAuthenticationFilter");
                 });
     }
+
+    @Test
+    void doesNotCreateNacosRefresherWhenInternalTokenIsDisabled() {
+        contextRunner.run(context -> {
+            assertThat(context).hasNotFailed();
+            assertThat(context).doesNotHaveBean(InternalTokenConfigurationRefresher.class);
+            assertThat(context).doesNotHaveBean(InternalTokenRefreshEndpoint.class);
+        });
+    }
 }

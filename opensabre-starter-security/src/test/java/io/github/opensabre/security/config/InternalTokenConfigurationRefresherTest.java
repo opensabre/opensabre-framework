@@ -39,6 +39,19 @@ class InternalTokenConfigurationRefresherTest {
     }
 
     @Test
+    void rejectsEmptyConfigurationAndKeepsLastGoodSnapshot() {
+        InternalTokenProperties live = initial();
+        InternalTokenConfigurationRefresher refresher = refresher(live);
+
+        refresher.refresh("");
+
+        assertThat(live.getKeyConfigVersion()).isEqualTo(1);
+        assertThat(live.getActiveKeyId()).isEqualTo("key-1");
+        assertThat(refresher.currentStatus().successful()).isFalse();
+        assertThat(refresher.currentStatus().message()).contains("internal-token configuration is missing");
+    }
+
+    @Test
     void rejectsOutOfOrderVersion() {
         InternalTokenProperties live = initial();
         InternalTokenConfigurationRefresher refresher = refresher(live);
