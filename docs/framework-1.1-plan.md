@@ -12,7 +12,7 @@ Java 21 为编译和最低运行基线，以 JDK 21、25 为 CI 保障版本；J
 | Spring Cloud | 2025.1.2 | 2025.1.2 | 已官方声明支持 Boot 4.1 |
 | Spring Cloud Alibaba | 2025.1.0.0 | 待正式兼容版本 | 不使用上游 SNAPSHOT 发布 |
 | Java | 21 | 编译 21；CI 21/25 | 两套完整构建、测试和 Javadoc 通过 |
-| 镜像 | Temurin 21 Alpine JVM | JDK/JRE 25 JVM；Linux amd64 Native | 非 root、日志、时区、健康检查均验证 |
+| 镜像 | Temurin 21 Alpine JVM | Temurin 25 Alpine JVM | 非 root、日志、时区、健康检查及容器内存参数均验证 |
 
 Spring Cloud Alibaba 的公开 2025.1.0.0 版本表只声明支持 Boot 4.0.x；其 `2025.1.x` 分支虽已
 切换到 Boot 4.1.0 和 Cloud 2025.1.2，但尚未发布为正式 BOM。Framework 可在保持已发布
@@ -23,7 +23,7 @@ Spring Cloud Alibaba 的公开 2025.1.0.0 版本表只声明支持 Boot 4.0.x；
 
 ### 阶段 1：构建矩阵与可复现基线（进行中）
 
-1. 在 `feature/1.1` 分支上维护所有变更，发布前再创建 `release/1.1.0`。
+1. 1.1.0 已作为升级基线发布；后续优化在 `feature/1.1.1-jvm-optimization` 上维护。
 2. GitHub Actions 建立 JDK 21/25 矩阵，运行 `mvn -B verify javadoc:javadoc --file pom.xml`。
 3. 在两套 JDK 下记录 Framework 全模块构建结果；任何 JDK 25 特有失败先修复构建插件或测试。
 
@@ -41,7 +41,7 @@ Spring Cloud Alibaba 的公开 2025.1.0.0 版本表只声明支持 Boot 4.0.x；
 
 完成标准：JDK 21/25 的全模块 `verify` 与 Javadoc 均通过，且没有未解释的依赖覆盖。
 
-### 阶段 3：Native 能力和 Runtime Hints
+### 阶段 3：Native 能力和 Runtime Hints（延期）
 
 1. 复用 Spring Boot 4.1 的 Native Build Tools 路径，提供可选 `-Pnative`，不改变默认 JVM 构建。
 2. 以已有 Native 原型的 base 应用为验证样本；将反射、代理、资源和序列化问题收敛为各 Starter
@@ -51,13 +51,13 @@ Spring Cloud Alibaba 的公开 2025.1.0.0 版本表只声明支持 Boot 4.0.x；
 
 完成标准：样本应用可由文档化命令构建并运行 Native，核心链路有自动化或可重复的集成验证。
 
-### 阶段 4：JVM 25 / Native OCI 镜像
+### 阶段 4：JVM 25 OCI 镜像（1.1.1）
 
 1. 在现有 Jib 所有权扩展、非 root `1001`、`${REGISTRY_URL}`、认证、版本/latest 标签和
    `/app/logs` 卷基础上扩展，不另建平行发布链路。
-2. JVM profile 默认使用可配置的 JDK/JRE 25 基础镜像；Native profile 使用无 JDK 的最小 Linux
+2. JVM profile 默认使用可配置的 JDK/JRE 25 基础镜像；Native profile 不在 1.1.1 范围内。
    运行时镜像，并显式保留 CA 证书、时区和必要字体。
-3. 对两种镜像验证用户、入口命令、端口、health、配置和日志，并记录层复用率。
+3. 对 JVM 镜像验证用户、入口命令、端口、health、配置、日志和 JVM 内存边界，并记录层复用率。
 
 完成标准：两种镜像均以非 root 启动，现有 Registry 和日志约定不被破坏。
 
@@ -66,7 +66,7 @@ Spring Cloud Alibaba 的公开 2025.1.0.0 版本表只声明支持 Boot 4.0.x；
 1. 用候选 Framework 版本在本地升级至少一个受影响 base 应用；启动其配置中心与依赖服务，确认
    实际订阅预期 Nacos Data ID，再测试受保护接口等关键链路。
 2. 记录 1.0.0 与 1.1 的镜像大小、压缩推送大小、启动时间和空载内存，注明环境和测量命令。
-3. 完成升级指南、Native/Jib 使用指南、版本矩阵、变更日志、回滚与降级清单。
+3. 完成升级指南、Jib 使用指南、版本矩阵、变更日志、回滚与降级清单。
 4. 经维护者确认后推送候选分支；CI 成功且再次确认后才创建 Release、Maven Central 发布和分支合并。
 
 完成标准：Issue #64 全部验收项有链接到测试、命令、基准和文档的证据；发布动作仍须单独审批。

@@ -18,11 +18,11 @@ Spring Cloud 2025.1.2 已支持 Spring Boot 4.1。Spring Cloud Alibaba 的已发
 
 ## 应用升级步骤
 
-1. 将父 POM 或 BOM 更新至 Framework 1.1 候选版本，保留 `maven.compiler.release` 为 `21`。
+1. 将父 POM 或 BOM 更新至 Framework 1.1.1，保留 `maven.compiler.release` 为 `21`。
 2. 在 JDK 21、JDK 25 分别执行应用的 `mvn test`；业务使用 Spring Cloud Alibaba 时，至少启动一次
    使用真实 Nacos Config Data 的集成环境。
 3. 验证配置实际订阅预期 Nacos Data ID、服务注册、数据库、缓存、RPC、鉴权和健康检查。
-4. 若应用使用反射、JDK 动态代理、资源扫描或动态序列化，在 Native 阶段将所需提示提交到对应
+4. 若应用使用反射、JDK 动态代理、资源扫描或动态序列化，在后续 Native 阶段将所需提示提交到对应
    Framework Starter，而不是在每个应用复制 `reflect-config.json`。
 
 ## Nacos 公共配置
@@ -53,6 +53,9 @@ GitHub Actions 对 JDK 21 和 JDK 25 执行相同命令。发布前还必须完�
 
 ## 已知限制
 
-- 此阶段不改变默认 JVM 打包路径；Native Image 和双模式 OCI 镜像将作为独立阶段交付。
+- 1.1.1 将默认 JVM 运行时切换为 `eclipse-temurin:25-jre-alpine`，并设置容器内存比例（初始 10%，最大 60%）、线程栈 `256k`、Metaspace 上限 `128m`、Direct Memory 上限 `128m` 及 OOM 退出策略。应用可通过 Jib 属性覆盖这些默认值；使用大量线程、动态代理或 Netty 的应用应在压测后调整。
+- Native Image 暂不纳入 1.1.1 发布范围，保留为后续专项工作；MyBatis-Plus、Nacos、Sentinel 的 Native 兼容性需要独立验证。
+- Sentinel 依赖在 `opensabre-starter-rpc` 中改为可选依赖，不再默认进入应用镜像；需要 Sentinel 的应用必须显式声明对应依赖，并在部署层启用 Sentinel 控制台。
+- AppCDS 试点结论：Spring Boot fat jar 直接生成的归档与 Jib exploded classpath 不一致，不能直接复用。后续应在 Jib 的 `/app/classes:/app/resources:/app/libs/*` 布局上按应用生成归档，并作为显式 profile 启用，暂不作为默认镜像内容。
 - Spring Cloud Alibaba 的正式 Boot 4.1 认证尚待其上游发布，不能据此直接宣称所有 Alibaba 组件已
   获完整生产认证。
