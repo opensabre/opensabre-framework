@@ -53,7 +53,7 @@ GitHub Actions 对 JDK 21 和 JDK 25 执行相同命令。发布前还必须完�
 
 ## 已知限制
 
-- 1.1.1 将默认 JVM 运行时切换为 `eclipse-temurin:25-jre-alpine`，并设置容器内存比例（初始 10%，最大 60%）及 OOM 退出策略。
+- 1.1.1 将默认 JVM 运行时切换为 `eclipse-temurin:25-jre-alpine`，并设置容器内存比例（初始 10%，最大 60%）、线程栈 `256k`、Metaspace 上限 `128m`、Direct Memory 上限 `128m` 及 OOM 退出策略。应用可通过 Jib 属性覆盖这些默认值；使用大量线程、动态代理或 Netty 的应用应在压测后调整。
 - Native Image 暂不纳入 1.1.1 发布范围，保留为后续专项工作；MyBatis-Plus、Nacos、Sentinel 的 Native 兼容性需要独立验证。
 - Spring Cloud Alibaba 的正式 Boot 4.1 认证尚待其上游发布，不能据此直接宣称所有 Alibaba 组件已
   获完整生产认证。

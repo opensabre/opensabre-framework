@@ -49,6 +49,9 @@
         <jib.base.image>eclipse-temurin:25-jre-alpine</jib.base.image>
         <jib.jvm.initial-ram-percentage>10</jib.jvm.initial-ram-percentage>
         <jib.jvm.max-ram-percentage>60</jib.jvm.max-ram-percentage>
+        <jib.jvm.stack-size>256k</jib.jvm.stack-size>
+        <jib.jvm.max-metaspace-size>128m</jib.jvm.max-metaspace-size>
+        <jib.jvm.max-direct-memory-size>128m</jib.jvm.max-direct-memory-size>
         <!--  测试  -->
         <junit-jupiter.version>5.11.4</junit-jupiter.version>
         <httpclient5.version>5.4.1</httpclient5.version>
@@ -360,6 +363,9 @@
                                 <jvmFlag>-XX:+UseContainerSupport</jvmFlag>
                                 <jvmFlag>-XX:InitialRAMPercentage=${jib.jvm.initial-ram-percentage}</jvmFlag>
                                 <jvmFlag>-XX:MaxRAMPercentage=${jib.jvm.max-ram-percentage}</jvmFlag>
+                                <jvmFlag>-Xss${jib.jvm.stack-size}</jvmFlag>
+                                <jvmFlag>-XX:MaxMetaspaceSize=${jib.jvm.max-metaspace-size}</jvmFlag>
+                                <jvmFlag>-XX:MaxDirectMemorySize=${jib.jvm.max-direct-memory-size}</jvmFlag>
                                 <jvmFlag>-XX:+ExitOnOutOfMemoryError</jvmFlag>
                             </jvmFlags>
                             <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
