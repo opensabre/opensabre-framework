@@ -46,6 +46,9 @@
         <guava.version>33.4.0-jre</guava.version>
         <jasypt-springboot.version>3.0.5</jasypt-springboot.version>
         <jib-maven-plugin.version>3.5.2</jib-maven-plugin.version>
+        <jib.base.image>eclipse-temurin:25-jre-alpine</jib.base.image>
+        <jib.jvm.initial-ram-percentage>10</jib.jvm.initial-ram-percentage>
+        <jib.jvm.max-ram-percentage>60</jib.jvm.max-ram-percentage>
         <!--  测试  -->
         <junit-jupiter.version>5.11.4</junit-jupiter.version>
         <httpclient5.version>5.4.1</httpclient5.version>
@@ -331,7 +334,7 @@
                         </pluginExtensions>
                         <!-- 基础镜像 -->
                         <from>
-                            <image>eclipse-temurin:21-jre-alpine</image>
+                            <image>${jib.base.image}</image>
                         </from>
                         <!-- 目标镜像 -->
                         <to>
@@ -353,7 +356,12 @@
                                 <!-- 设置时区 -->
                                 <TZ>Asia/Shanghai</TZ>
                             </environment>
-                            <jvmFlags>-XX:+UseContainerSupport</jvmFlags>
+                            <jvmFlags>
+                                <jvmFlag>-XX:+UseContainerSupport</jvmFlag>
+                                <jvmFlag>-XX:InitialRAMPercentage=${jib.jvm.initial-ram-percentage}</jvmFlag>
+                                <jvmFlag>-XX:MaxRAMPercentage=${jib.jvm.max-ram-percentage}</jvmFlag>
+                                <jvmFlag>-XX:+ExitOnOutOfMemoryError</jvmFlag>
+                            </jvmFlags>
                             <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
                         </container>
                     </configuration>
