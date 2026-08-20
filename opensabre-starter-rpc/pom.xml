@@ -61,16 +61,19 @@
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+            <optional>true</optional>
         </dependency>
         <!--服务调用熔断降级规则数据源-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-alibaba-sentinel-datasource</artifactId>
+            <optional>true</optional>
         </dependency>
         <!-- Sentinel数据源之 Nacos -->
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-datasource-nacos</artifactId>
+            <optional>true</optional>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
         <dependency>
