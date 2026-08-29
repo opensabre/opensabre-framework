@@ -42,7 +42,7 @@ public class ErrorCatalogRegistrationListener {
             }
             if (entriesByCode.isEmpty()) return;
             String application = environment.getProperty("spring.application.name", "unknown-application");
-            String token = environment.getProperty("opensabre.governance.error-catalog.registration-token", "");
+            String token = environment.getProperty("opensabre.governance.registration-token", "");
             List<ErrorCatalogEntry> resolvedEntries = entriesByCode.values().stream()
                     .map(entry -> entry.resolveOwnership(application))
                     .toList();

@@ -50,7 +50,7 @@ public class DictionaryRegistrationListener {
                 return;
             }
             String application = environment.getProperty("spring.application.name", "unknown-application");
-            String token = environment.getProperty("opensabre.governance.dictionary.registration-token", "");
+            String token = environment.getProperty("opensabre.governance.registration-token", "");
             clientProvider.getObject().registerDictionaries(
                     DictionarySnapshot.from(application, List.copyOf(definitions.values())), token);
             log.info("Registered {} dictionaries for {}", definitions.size(), application);

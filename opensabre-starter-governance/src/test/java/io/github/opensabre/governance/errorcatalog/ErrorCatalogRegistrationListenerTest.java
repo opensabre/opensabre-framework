@@ -66,7 +66,7 @@ class ErrorCatalogRegistrationListenerTest {
                         true, false, null));
         MockEnvironment environment = new MockEnvironment()
                 .withProperty("spring.application.name", "base-demo")
-                .withProperty("opensabre.governance.error-catalog.registration-token",
+                .withProperty("opensabre.governance.registration-token",
                         "registration-secret");
         scheduler = new ThreadPoolTaskScheduler();
         scheduler.setPoolSize(1);

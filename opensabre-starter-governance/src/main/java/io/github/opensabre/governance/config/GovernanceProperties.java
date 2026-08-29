@@ -11,6 +11,9 @@ public class GovernanceProperties {
 
     private boolean enabled = true;
 
+    /** Shared credential for governance registration and reporting capabilities. */
+    private String registrationToken = "";
+
     private Sysadmin sysadmin = new Sysadmin();
 
     private Audit audit = new Audit();
@@ -59,7 +62,8 @@ public class GovernanceProperties {
     @Data
     public static class ErrorCatalog {
         private boolean enabled = true;
-        /** Shared internal credential for error catalog registration. */
+        /** @deprecated Use {@code opensabre.governance.registration-token}. */
+        @Deprecated(forRemoval = true)
         private String registrationToken = "";
     }
 
@@ -67,6 +71,8 @@ public class GovernanceProperties {
     public static class Dictionary {
         private boolean enabled = true;
         private boolean registrationEnabled = false;
+        /** @deprecated Use {@code opensabre.governance.registration-token}. */
+        @Deprecated(forRemoval = true)
         private String registrationToken = "";
         private java.util.List<String> preloadCodes = java.util.List.of();
         /** 自动扫描标准字典枚举的包；为空时使用 Spring Boot 应用自动配置包。 */
