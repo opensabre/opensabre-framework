@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.env.YamlPropertySourceLoader;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.StandardEnvironment;
+import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
@@ -18,15 +19,18 @@ class GovernanceDefaultPropertiesTest {
     void sharesGovernanceTokenAndEnablesDictionaryRegistration() throws IOException {
         StandardEnvironment environment = new StandardEnvironment();
         environment.getPropertySources().addFirst(new MapPropertySource(
-                "governance-token", Map.of("GOVERNANCE_REGISTRATION_TOKEN", "shared-token")));
+                "governance-token", Map.of(
+                        "opensabre.governance.registration-token", "shared-token")));
         new YamlPropertySourceLoader().load(
                         "opensabre-governance", new ClassPathResource("opensabre-governance.yml"))
                 .forEach(environment.getPropertySources()::addLast);
 
         assertEquals("shared-token", environment.getProperty(
-                "opensabre.governance.error-catalog.registration-token"));
-        assertEquals("shared-token", environment.getProperty(
-                "opensabre.governance.dictionary.registration-token"));
+                "opensabre.governance.registration-token"));
+        assertEquals("shared-token", Binder.get(environment)
+                .bind("opensabre.governance", GovernanceProperties.class)
+                .orElseThrow(() -> new IllegalStateException("governance properties were not bound"))
+                .getRegistrationToken());
         assertEquals(Boolean.TRUE, environment.getProperty(
                 "opensabre.governance.dictionary.registration-enabled", Boolean.class));
     }

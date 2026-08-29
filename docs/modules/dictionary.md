@@ -7,16 +7,15 @@
 ```yaml
 opensabre:
   governance:
+    registration-token: ENC(...)
     dictionary:
       enabled: true
       registration-enabled: true
-      registration-token: ${DICTIONARY_REGISTRATION_TOKEN:${GOVERNANCE_REGISTRATION_TOKEN:${ERROR_CATALOG_REGISTRATION_TOKEN:}}}
       preload-codes: [order_status]
 ```
 
 `registration-enabled` 默认开启；没有声明 `DictionaryProvider` 的应用不会发起注册请求。
-字典与错误码上报默认共享 `GOVERNANCE_REGISTRATION_TOKEN`，也可通过
-`DICTIONARY_REGISTRATION_TOKEN` 单独覆盖。`ERROR_CATALOG_REGISTRATION_TOKEN` 仅作为旧部署兼容回退。
+字典与错误码上报统一读取 Nacos 公共配置 `opensabre.governance.registration-token`，该值支持 Jasypt `ENC(...)` 密文。
 注册任务使用[治理注册运行时](governance-registration.md)执行有限重试并暴露运行状态。
 
 ## 声明与读取
