@@ -14,7 +14,7 @@
 `UserContextHolder` 绑定、MVC 入站校验、Feign/RestClient 逐跳重签，
 以及密钥状态和轮换的框架 SPI。管理端已接入共享配置后端、管理 API 和页面，
 密钥操作复用 OpenSabre Governance 通用审计能力。
-WebFlux/WebClient 暂不实现。
+WebClient 通用逐跳重签暂不实现；WebFlux 已支持控制面读取 Actuator 基础指标的专用内部 Token 校验。
 
 ## 共享配置
 
@@ -46,7 +46,7 @@ opensabre:
       max-token-bytes: 8192
       max-extension-bytes: 2048
       excluded-paths:
-        - /actuator/**
+        - /actuator/health/**
         - /v3/**
       allowed-issuers:
         - base-organization
@@ -180,6 +180,23 @@ SecurityFilterChain securityFilterChain(
 Starter 会关闭该过滤器的独立 Servlet 自动注册，避免它运行在 Spring Security
 上下文生命周期之外；没有 `SecurityFilterChain` 的应用仍由 MVC 拦截器完成验证。
 
+## Actuator 监控访问
+
+OpenSabre 控制面读取应用运行状态时使用内部 Token，不配置独立 Actuator 用户名、密码，
+也不匿名放行指标。`base-gateway-admin` 针对每个目标应用签发短期服务 Token，写入
+`x-client-token`，目标应用校验签名、issuer、audience 和专用 Authority
+`ACTUATOR_METRICS_READ`。
+
+共享契约仅允许控制面当前展示的五个指标：CPU 使用率、堆内存已用/上限、进程运行时长和
+活动线程数。路径由 `ActuatorMonitoringAccess` 统一维护，应用安全配置不得复制字符串列表。
+Servlet 应用把 `InternalTokenAuthenticationFilter` 加入自身安全链，并对共享路径要求该
+Authority；响应式应用由 Starter 的 `ActuatorMonitoringWebFilter` 执行同一校验。
+
+- 缺失、过期、签名错误或 audience 不匹配的 Token 返回 401。
+- Token 有效但缺少 `ACTUATOR_METRICS_READ` 返回 403。
+- 其他 Actuator 端点不因此获得访问权限，仍遵循应用原有安全策略。
+- `allowed-issuers` 必须包含 `base-gateway-admin`，被监控应用名必须与服务发现名称一致。
+
 ## Feign 逐跳重签
 
 内部 Token 签名拦截器在 Spring Bean 类型的 Feign 拦截器中最后执行，并在签名前清理
@@ -218,7 +235,7 @@ RestClient orderRestClient(RestClient.Builder builder) {
 寻址规则时，可提供自己的 `InternalTokenTargetResolver` Bean，将请求 URI 映射为真实
 的 `aud`/`dst` 服务名。
 
-本迭代不注册 WebClient filter，也不提供 WebFlux 入站校验。
+本迭代不注册通用 WebClient filter；Actuator 监控使用专用签发器和 WebFlux 入站过滤器。
 
 ## 密钥状态与轮换 SPI
 

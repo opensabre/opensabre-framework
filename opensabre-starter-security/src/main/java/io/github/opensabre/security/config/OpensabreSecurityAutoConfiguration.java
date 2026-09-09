@@ -1,5 +1,6 @@
 package io.github.opensabre.security.config;
 
+import io.github.opensabre.security.actuator.ActuatorMonitoringTokenIssuer;
 import tools.jackson.databind.ObjectMapper;
 import io.github.opensabre.security.context.InternalTokenUserContext;
 import io.github.opensabre.security.key.InternalTokenKeyStatusProvider;
@@ -29,6 +30,15 @@ public class OpensabreSecurityAutoConfiguration {
     public InternalTokenService internalTokenService(
             ObjectMapper objectMapper, InternalTokenProperties properties) {
         return new DefaultInternalTokenService(objectMapper, properties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ActuatorMonitoringTokenIssuer actuatorMonitoringTokenIssuer(
+            InternalTokenService tokenService,
+            InternalTokenProperties properties,
+            @Value("${spring.application.name:}") String applicationName) {
+        return new ActuatorMonitoringTokenIssuer(tokenService, properties, applicationName);
     }
 
     @Bean
