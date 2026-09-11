@@ -8,7 +8,9 @@
 | [开发与验证](development.md) | 构建、测试和兼容性要求 |
 | [1.0 升级指南](migration-1.0.md) | 从 0.x / Boot 3 升级到 1.x / Boot 4 |
 | [1.1 升级指南](migration-1.1.md) | 从 Framework 1.0 / Boot 4.0 升级到 Boot 4.1 |
+| [1.1.4 升级指南](migration-1.1.4.md) | 从 Framework 1.1.3 升级并接入文档聚合与统一监控 |
 | [Starter 模块地图](modules/README.md) | 每个模块的介绍、功能、使用和规划入口 |
+| [应用监控组件](modules/monitoring.md) | Actuator 内部 Token、实例采集与 Prometheus 查询边界 |
 | [规划](roadmap.md) | 框架演进方向 |
 
 ## 已有散落文档

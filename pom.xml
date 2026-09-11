@@ -21,6 +21,7 @@
         <module>opensabre-starter-eda</module>
         <module>opensabre-starter-governance</module>
         <module>opensabre-starter-security</module>
+        <module>opensabre-starter-monitoring</module>
         <module>opensabre-starter-webmvc</module>
         <module>opensabre-starter-webflux</module>
         <module>opensabre-test</module>

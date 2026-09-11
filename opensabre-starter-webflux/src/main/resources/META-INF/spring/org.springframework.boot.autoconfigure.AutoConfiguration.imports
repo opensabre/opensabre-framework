@@ -1,1 +1,2 @@
 io.github.opensabre.webflux.config.OpensabreWebFluxConfig
+io.github.opensabre.webflux.openapi.OpensabreGatewayOpenApiAutoConfiguration

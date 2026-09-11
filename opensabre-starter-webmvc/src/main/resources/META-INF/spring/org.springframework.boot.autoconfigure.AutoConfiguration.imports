@@ -1,1 +1,2 @@
 io.github.opensabre.webmvc.config.OpensabreWebMvcConfig
+io.github.opensabre.webmvc.openapi.OpensabreOpenApiAutoConfiguration

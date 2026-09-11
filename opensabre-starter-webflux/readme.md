@@ -27,6 +27,27 @@ pom.xml
 <dependency>
     <groupId>io.github.opensabre</groupId>
     <artifactId>opensabre-starter-webflux</artifactId>
-    <version>0.3.0</version>
+    <version>1.1.4</version>
 </dependency>
 ```
+
+## 网关 OpenAPI 聚合
+
+当 classpath 中存在 Spring Cloud Gateway 时，starter 从当前 `RouteDefinitionLocator` 自动生成
+Knife4j 文档服务清单，并在 `RefreshRoutesEvent` 后重建清单，不需要在应用配置中维护
+`springdoc.swagger-ui.urls`。仅聚合 `lb://` 且具有静态 `Path` 前缀的路由；同一服务存在多条路由时
+优先选择 `/api/` 前缀。
+
+```yaml
+opensabre:
+  openapi:
+    gateway:
+      enabled: true
+      api-docs-path: /v3/api-docs
+      excluded-route-ids:
+        - internal-only
+      display-names:
+        base-authorization: 授权服务
+```
+
+关闭 `opensabre.openapi.gateway.enabled` 可停用聚合；页面和接口是否允许访问仍由网关安全策略决定。

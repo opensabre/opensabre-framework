@@ -11,9 +11,10 @@
 | `opensabre-starter-persistence` | 持久化能力。 | 沉淀事务、迁移与审计约定。 |
 | `opensabre-starter-eda` | 事件驱动架构能力；见模块内 README。 | 固化事件契约、幂等与可观测性。 |
 | `opensabre-starter-governance` | 治理与审计相关能力。 | 补齐限流、审计、容错集成说明。 |
+| `opensabre-starter-monitoring` | Actuator 指标提供端默认、内部 Token 采集客户端和 Prometheus 只读查询。 | 保持指标契约稳定并扩展控制面展示。 |
 | `opensabre-starter-security` | 内部短 Token、共享双密钥和可信用户上下文。 | 完成逐跳重签、密钥管理与 examples 验证。 |
-| `opensabre-starter-webmvc` | Servlet Web 应用能力；见模块内 README。 | 明确 MVC 扩展点与异常契约。 |
-| `opensabre-starter-webflux` | 响应式 Web 能力；见模块内 README。 | 明确响应式边界与阻塞调用限制。 |
+| `opensabre-starter-webmvc` | Servlet Web 与标准 OpenAPI/Knife4j 能力；见模块内 README。 | 明确 MVC 扩展点与异常契约。 |
+| `opensabre-starter-webflux` | 响应式 Web 与网关 OpenAPI 动态聚合能力；见模块内 README。 | 明确响应式边界与阻塞调用限制。 |
 | `opensabre-test` | 测试支持。 | 扩展集成测试样板。 |
 | `opensabre-web` | 通用 Web 能力；见模块内 README。 | 稳定响应、异常、校验等公共契约。 |
 

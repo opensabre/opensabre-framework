@@ -23,12 +23,30 @@ pom.xml
 <dependency>
     <groupId>io.github.opensabre</groupId>
     <artifactId>opensabre-starter-webmvc</artifactId>
-    <version>0.3.0</version>
+    <version>1.1.4</version>
 </dependency>
 ```
 
-## 0.5.0 依赖调整
+## OpenAPI 与 Knife4j
 
-Servlet Web 应用应同时显式引入 `opensabre-starter-boot` 和本 starter。1.0 起本 starter 使用 Boot 4 默认 Tomcat，并不再捆绑 Springdoc、Knife4j 或文档 UI；需要 API 文档的应用应自行选择兼容 Jackson 3 的实现。
+1.1.4 起 starter 提供与当前 Spring Boot/Jackson 版本兼容的 Springdoc 和 Knife4j，默认暴露
+`/v3/api-docs`、`/v3/api-docs/swagger-config` 与 `/doc.html`。应用只需通过
+`opensabre.rest.swagger` 设置标题、描述、版本和许可证；应用自定义 `OpenAPI` Bean 时，
+starter 会自动退让。
 
-WebFlux 或非 Web 服务只引入所需的 Boot、WebFlux 等 starter，不应引入本 starter。
+使用 Springdoc 标准开关统一控制暴露：
+
+```yaml
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+```
+
+生产环境是否允许访问这些路径仍由应用或网关的 Spring Security 策略决定，starter 不匿名放行。
+
+## 依赖边界
+
+Servlet Web 应用应同时显式引入 `opensabre-starter-boot` 和本 starter。本 starter 使用 Boot 4
+默认 Tomcat。WebFlux 或非 Web 服务只引入所需 starter。

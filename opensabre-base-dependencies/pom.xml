@@ -33,6 +33,8 @@
         <spring.cloud.alibaba.version>2025.1.0.0</spring.cloud.alibaba.version>
         <!--swagger文档相关-->
         <swagger-annotations.version>2.2.47</swagger-annotations.version>
+        <springdoc.version>3.0.3</springdoc.version>
+        <knife4j.version>4.5.0</knife4j.version>
         <!--数据库相关-->
         <mysql-connector-j.version>8.2.0</mysql-connector-j.version>
         <flyway.version>11.18.0</flyway.version>
@@ -128,6 +130,21 @@
                 <artifactId>swagger-annotations-jakarta</artifactId>
                 <version>${swagger-annotations.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
+                <version>${springdoc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-ui</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
             <!--opensabre 组件-->
             <dependency>
                 <groupId>io.github.opensabre</groupId>
@@ -182,6 +199,11 @@
             <dependency>
                 <groupId>io.github.opensabre</groupId>
                 <artifactId>opensabre-starter-security</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.opensabre</groupId>
+                <artifactId>opensabre-starter-monitoring</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
