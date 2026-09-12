@@ -26,6 +26,9 @@ public class GatewayOpenApiAggregator implements ApplicationListener<Application
 
     private static final Log LOGGER = LogFactory.getLog(GatewayOpenApiAggregator.class);
     private static final String PATH_PREDICATE = "Path";
+    private static final String OPENAPI_ENABLED = "opensabre.openapi.enabled";
+    private static final String OPENAPI_PATH = "opensabre.openapi.path";
+    private static final String OPENAPI_NAME = "opensabre.openapi.name";
 
     private final RouteDefinitionLocator routeDefinitions;
     private final SwaggerUiConfigProperties swaggerUi;
@@ -70,31 +73,63 @@ public class GatewayOpenApiAggregator implements ApplicationListener<Application
         return uri != null
                 && "lb".equalsIgnoreCase(uri.getScheme())
                 && !properties.getExcludedRouteIds().contains(route.getId())
-                && externalPrefix(route) != null;
+                && metadataEnabled(route)
+                && documentPath(route) != null;
     }
 
     private Set<SwaggerUrl> aggregate(java.util.List<RouteDefinition> routes) {
-        Map<String, String> servicePaths = new LinkedHashMap<>();
+        Map<String, DocumentRoute> serviceRoutes = new LinkedHashMap<>();
         for (RouteDefinition route : routes) {
             String serviceId = route.getUri().getHost();
-            String path = externalPrefix(route);
-            servicePaths.merge(serviceId, path, this::preferredPath);
+            DocumentRoute candidate = new DocumentRoute(
+                    documentPath(route), displayName(route, serviceId), hasMetadataPath(route));
+            serviceRoutes.merge(serviceId, candidate, this::preferredRoute);
         }
         Set<SwaggerUrl> urls = new LinkedHashSet<>();
-        servicePaths.forEach((serviceId, prefix) -> urls.add(new SwaggerUrl(
+        serviceRoutes.forEach((serviceId, route) -> urls.add(new SwaggerUrl(
                 serviceId,
-                prefix + normalizedDocsPath(),
-                properties.getDisplayNames().getOrDefault(serviceId, serviceId))));
+                route.path(),
+                route.displayName())));
         return urls;
     }
 
-    private String preferredPath(String left, String right) {
-        boolean leftApi = left.startsWith("/api/");
-        boolean rightApi = right.startsWith("/api/");
+    private DocumentRoute preferredRoute(DocumentRoute left, DocumentRoute right) {
+        if (left.explicit() != right.explicit()) {
+            return left.explicit() ? left : right;
+        }
+        boolean leftApi = left.path().startsWith("/api/");
+        boolean rightApi = right.path().startsWith("/api/");
         if (leftApi != rightApi) {
             return leftApi ? left : right;
         }
-        return left.length() <= right.length() ? left : right;
+        return left.path().length() <= right.path().length() ? left : right;
+    }
+
+    private boolean metadataEnabled(RouteDefinition route) {
+        Object enabled = route.getMetadata().get(OPENAPI_ENABLED);
+        return enabled == null || Boolean.parseBoolean(enabled.toString());
+    }
+
+    private String documentPath(RouteDefinition route) {
+        Object configured = route.getMetadata().get(OPENAPI_PATH);
+        if (configured != null && !configured.toString().isBlank()) {
+            return normalizePath(configured.toString());
+        }
+        String prefix = externalPrefix(route);
+        return prefix == null ? null : prefix + normalizedDocsPath();
+    }
+
+    private boolean hasMetadataPath(RouteDefinition route) {
+        Object path = route.getMetadata().get(OPENAPI_PATH);
+        return path != null && !path.toString().isBlank();
+    }
+
+    private String displayName(RouteDefinition route, String serviceId) {
+        Object configured = route.getMetadata().get(OPENAPI_NAME);
+        if (configured != null && !configured.toString().isBlank()) {
+            return configured.toString();
+        }
+        return properties.getDisplayNames().getOrDefault(serviceId, serviceId);
     }
 
     private String externalPrefix(RouteDefinition route) {
@@ -102,9 +137,7 @@ public class GatewayOpenApiAggregator implements ApplicationListener<Application
                 .filter(predicate -> PATH_PREDICATE.equalsIgnoreCase(predicate.getName()))
                 .flatMap(predicate -> predicate.getArgs().entrySet().stream())
                 .sorted(Map.Entry.comparingByKey())
-                .filter(entry -> entry.getKey().toLowerCase(Locale.ROOT)
-                                .startsWith(NameUtils.GENERATED_NAME_PREFIX)
-                        || "pattern".equalsIgnoreCase(entry.getKey()))
+                .filter(entry -> isPathPatternKey(entry.getKey()))
                 .map(Map.Entry::getValue)
                 .flatMap(value -> java.util.Arrays.stream(value.split(",")))
                 .map(String::trim)
@@ -112,6 +145,14 @@ public class GatewayOpenApiAggregator implements ApplicationListener<Application
                 .filter(prefix -> prefix != null && !prefix.isBlank())
                 .findFirst()
                 .orElse(null);
+    }
+
+    private boolean isPathPatternKey(String key) {
+        String normalized = key.toLowerCase(Locale.ROOT);
+        return normalized.startsWith(NameUtils.GENERATED_NAME_PREFIX)
+                || "pattern".equals(normalized)
+                || "patterns".equals(normalized)
+                || normalized.startsWith("patterns.");
     }
 
     private String staticPrefix(String pattern) {
@@ -124,11 +165,17 @@ public class GatewayOpenApiAggregator implements ApplicationListener<Application
     }
 
     private String normalizedDocsPath() {
-        String path = properties.getApiDocsPath();
+        return normalizePath(properties.getApiDocsPath());
+    }
+
+    private String normalizePath(String path) {
         return path.startsWith("/") ? path : "/" + path;
     }
 
     private void updateUrls(Set<SwaggerUrl> urls) {
         swaggerUi.setUrls(urls);
+    }
+
+    private record DocumentRoute(String path, String displayName, boolean explicit) {
     }
 }

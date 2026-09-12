@@ -38,6 +38,17 @@ Knife4j 文档服务清单，并在 `RefreshRoutesEvent` 后重建清单，不�
 `springdoc.swagger-ui.urls`。仅聚合 `lb://` 且具有静态 `Path` 前缀的路由；同一服务存在多条路由时
 优先选择 `/api/` 前缀。
 
+控制面发布路由时可通过 metadata 显式声明文档入口。显式入口优先于路径推断；设置
+`opensabre.openapi.enabled=false` 可排除不应展示文档的内部服务。路径推断兼容 Gateway 简写生成的
+`_genkey_N`、单值 `pattern`，以及控制面序列化的 `patterns.N` 参数格式。
+
+```yaml
+metadata:
+  opensabre.openapi.enabled: true
+  opensabre.openapi.path: /api/iqc/v3/api-docs
+  opensabre.openapi.name: IQC 平台
+```
+
 ```yaml
 opensabre:
   openapi:

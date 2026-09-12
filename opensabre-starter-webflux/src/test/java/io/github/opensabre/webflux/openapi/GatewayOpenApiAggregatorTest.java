@@ -61,6 +61,45 @@ class GatewayOpenApiAggregatorTest {
     }
 
     @Test
+    void supportsIndexedPathArgumentsPublishedByGatewayControlPlane() {
+        RouteDefinitionLocator locator = () -> Flux.just(
+                routeWithArgs("auth-api", "lb://base-authorization",
+                        Map.of("patterns.0", "/api/auth/**")),
+                routeWithArgs("auth-login", "lb://base-authorization",
+                        Map.of("patterns.0", "/oauth2/**", "patterns.1", "/login")));
+        var swaggerUi = new SwaggerUiConfigProperties();
+
+        var urls = new GatewayOpenApiAggregator(
+                locator, swaggerUi, new OpenApiGatewayProperties()).refresh().block();
+
+        assertThat(urls).singleElement().satisfies(url ->
+                assertThat(url.getUrl()).isEqualTo("/api/auth/v3/api-docs"));
+    }
+
+    @Test
+    void prefersExplicitDocumentRouteMetadataAndSupportsOptOut() {
+        RouteDefinition inferred = route("iqc-api", "lb://iqc-platform", "/api/iqc/**");
+        RouteDefinition explicit = route("iqc-docs", "lb://iqc-platform", "/internal/docs/**");
+        explicit.setMetadata(Map.of(
+                "opensabre.openapi.enabled", true,
+                "opensabre.openapi.path", "/api/iqc/v3/api-docs",
+                "opensabre.openapi.name", "IQC Platform"));
+        RouteDefinition excluded = route("internal-api", "lb://internal-service", "/internal/**");
+        excluded.setMetadata(Map.of("opensabre.openapi.enabled", false));
+        var swaggerUi = new SwaggerUiConfigProperties();
+
+        var urls = new GatewayOpenApiAggregator(
+                () -> Flux.just(inferred, explicit, excluded),
+                swaggerUi, new OpenApiGatewayProperties()).refresh().block();
+
+        assertThat(urls).singleElement().satisfies(url -> {
+            assertThat(url.getName()).isEqualTo("iqc-platform");
+            assertThat(url.getDisplayName()).isEqualTo("IQC Platform");
+            assertThat(url.getUrl()).isEqualTo("/api/iqc/v3/api-docs");
+        });
+    }
+
+    @Test
     void rebuildsDocumentsWhenGatewayPublishesARouteRefresh() {
         var routes = new AtomicReference<>(List.of(
                 route("auth-api", "lb://base-authorization", "/api/auth/**")));
@@ -82,12 +121,16 @@ class GatewayOpenApiAggregatorTest {
     }
 
     private RouteDefinition route(String id, String uri, String paths) {
+        return routeWithArgs(id, uri, Map.of(NameUtils.generateName(0), paths));
+    }
+
+    private RouteDefinition routeWithArgs(String id, String uri, Map<String, String> args) {
         RouteDefinition route = new RouteDefinition();
         route.setId(id);
         route.setUri(URI.create(uri));
         PredicateDefinition path = new PredicateDefinition();
         path.setName("Path");
-        path.setArgs(Map.of(NameUtils.generateName(0), paths));
+        path.setArgs(args);
         route.setPredicates(List.of(path));
         return route;
     }
